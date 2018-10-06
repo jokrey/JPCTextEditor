@@ -1,7 +1,5 @@
-package jokrey.utililities.swing.text_editor;
+package jokrey.utililities.swing.text_editor.ui.core;
 
-
-import jokrey.utilities.asap_queue.ASAP_Queue;
 
 /**
  * Connects the various JPC sub functionality back to their parent without a direct, TOO OPEN, reference.

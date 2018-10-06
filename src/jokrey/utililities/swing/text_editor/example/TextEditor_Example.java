@@ -1,6 +1,6 @@
 package jokrey.utililities.swing.text_editor.example;
 
-import jokrey.utililities.swing.text_editor.JPCSimpleTextEditor;
+import jokrey.utililities.swing.text_editor.ui.JPCSimpleTextEditor;
 import javax.swing.*;
 import java.awt.*;
 

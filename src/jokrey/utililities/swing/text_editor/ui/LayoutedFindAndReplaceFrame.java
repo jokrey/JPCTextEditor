@@ -1,7 +1,7 @@
-package jokrey.utililities.swing.text_editor;
+package jokrey.utililities.swing.text_editor.ui;
 
-import jokrey.utililities.swing.text_editor.example.CustomEditorConnector;
-import jokrey.utililities.swing.text_editor.example.LayoutChangingPanel;
+import jokrey.utililities.swing.text_editor.ui.additional.CustomEditorConnector;
+import jokrey.utililities.swing.text_editor.ui.additional.LayoutChangingPanel;
 import jokrey.utililities.swing.text_editor.text_storage.*;
 import jokrey.utililities.swing.text_editor.user_input.UserInputHandler;
 import jokrey.utililities.swing.text_editor.user_input.cursor.TextInterval;

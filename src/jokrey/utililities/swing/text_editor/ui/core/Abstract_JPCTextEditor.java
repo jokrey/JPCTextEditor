@@ -1,12 +1,13 @@
-package jokrey.utililities.swing.text_editor;
+package jokrey.utililities.swing.text_editor.ui.core;
 
+import jokrey.utililities.swing.text_editor.ui.FindAndReplaceFrame;
+import jokrey.utililities.swing.text_editor.ui.JPCTextEditor;
 import jokrey.utililities.swing.text_editor.text_storage.*;
 import jokrey.utililities.swing.text_editor.user_input.ContextFunctionalityLibrary;
 import jokrey.utililities.swing.text_editor.user_input.RawUserInputHandler;
 import jokrey.utililities.swing.text_editor.user_input.UserInputHandler;
 import jokrey.utililities.swing.text_editor.user_input.cursor.TextDisplayCursor;
 import jokrey.utilities.asap_queue.ASAP_Queue;
-import jokrey.utilities.asap_queue.CannotBeExecutedException;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,10 +1,8 @@
 package jokrey.utililities.swing.text_editor.text_storage;
 
-import jokrey.utililities.swing.text_editor.FontMetricsSupplier;
+import jokrey.utililities.swing.text_editor.ui.core.FontMetricsSupplier;
 
-import javax.swing.*;
 import java.util.Arrays;
-import java.awt.*;
 
 /**
  * Immutable.

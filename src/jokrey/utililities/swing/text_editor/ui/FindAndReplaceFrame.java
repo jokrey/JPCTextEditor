@@ -1,5 +1,6 @@
-package jokrey.utililities.swing.text_editor;
+package jokrey.utililities.swing.text_editor.ui;
 
+import jokrey.utililities.swing.text_editor.ui.core.JPC_Connector;
 import jokrey.utililities.swing.text_editor.text_storage.ContentEditor;
 import jokrey.utililities.swing.text_editor.user_input.UserInputHandler;
 import javax.swing.*;

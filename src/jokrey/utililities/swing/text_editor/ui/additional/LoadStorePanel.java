@@ -1,6 +1,6 @@
-package jokrey.utililities.swing.text_editor.example;
+package jokrey.utililities.swing.text_editor.ui.additional;
 
-import jokrey.utililities.swing.text_editor.Abstract_JPCTextEditor;
+import jokrey.utililities.swing.text_editor.ui.JPCTextEditor;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -8,7 +8,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 public class LoadStorePanel extends JPanel {
-    public LoadStorePanel(Abstract_JPCTextEditor editor) {
+    public LoadStorePanel(JPCTextEditor editor) {
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
         JButton loadB = new JButton("load");
@@ -16,7 +16,7 @@ public class LoadStorePanel extends JPanel {
             JFileChooser jf = new JFileChooser();
             FileNameExtensionFilter filter = new FileNameExtensionFilter("Text Files", "txt", "text");
             jf.setFileFilter(filter);
-            int result = jf.showSaveDialog(editor);
+            int result = jf.showSaveDialog(this);
             if (result == JOptionPane.OK_OPTION) {
                 File f = jf.getSelectedFile();
 
@@ -39,7 +39,7 @@ public class LoadStorePanel extends JPanel {
             JFileChooser jf = new JFileChooser();
             FileNameExtensionFilter filter = new FileNameExtensionFilter("Text Files", "txt", "text");
             jf.setFileFilter(filter);
-            int result = jf.showSaveDialog(editor);
+            int result = jf.showSaveDialog(this);
             if (result == JOptionPane.OK_OPTION) {
                 File f = jf.getSelectedFile();
                 f = new File(f.getAbsolutePath() + (f.getName().endsWith(".txt") ? "" : ".txt"));

@@ -1,4 +1,4 @@
-package jokrey.utililities.swing.text_editor.ui_util;
+package jokrey.utililities.swing.text_editor.ui.util;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicScrollBarUI;

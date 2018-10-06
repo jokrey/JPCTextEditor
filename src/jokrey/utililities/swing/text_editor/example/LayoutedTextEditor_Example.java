@@ -1,14 +1,14 @@
 package jokrey.utililities.swing.text_editor.example;
 
-import jokrey.utililities.swing.text_editor.JPCLayoutedTextEditor;
-import jokrey.utililities.swing.text_editor.JPCLayoutedWrappingTextEditor;
+import jokrey.utililities.swing.text_editor.ui.JPCLayoutedTextEditor;
+import jokrey.utililities.swing.text_editor.ui.JPCLayoutedWrappingTextEditor;
 import jokrey.utililities.swing.text_editor.text_storage.*;
+import jokrey.utililities.swing.text_editor.ui.additional.CustomEditorConnector;
+import jokrey.utililities.swing.text_editor.ui.additional.LayoutChangingPanel;
+import jokrey.utililities.swing.text_editor.ui.additional.LoadStorePanel;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.io.*;
-import java.nio.charset.StandardCharsets;
 
 /**
  * Example of a layouted text editor.

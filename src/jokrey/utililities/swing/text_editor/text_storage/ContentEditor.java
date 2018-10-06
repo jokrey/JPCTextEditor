@@ -1,6 +1,6 @@
 package jokrey.utililities.swing.text_editor.text_storage;
 
-import jokrey.utililities.swing.text_editor.JPC_Connector;
+import jokrey.utililities.swing.text_editor.ui.core.JPC_Connector;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -225,7 +225,6 @@ public abstract class ContentEditor {
         fireTextChanged(i,i,line.toString(),true);
     }
     public void addLine(int i, Line line) {
-        Thread.dumpStack();
         rawLines.add(i, line);
         fireTextChanged(i,i,line.toString(),true);
     }

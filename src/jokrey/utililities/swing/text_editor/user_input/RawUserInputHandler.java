@@ -1,6 +1,6 @@
 package jokrey.utililities.swing.text_editor.user_input;
 
-import jokrey.utililities.swing.text_editor.JPC_Connector;
+import jokrey.utililities.swing.text_editor.ui.core.JPC_Connector;
 import jokrey.utililities.swing.text_editor.text_storage.ContentEditor;
 import jokrey.utililities.swing.text_editor.text_storage.LinePart;
 import jokrey.utililities.swing.text_editor.text_storage.NeverDrawnException;

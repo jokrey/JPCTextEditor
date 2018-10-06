@@ -1,4 +1,4 @@
-package jokrey.utililities.swing.text_editor;
+package jokrey.utililities.swing.text_editor.ui.core;
 
 import java.awt.*;
 

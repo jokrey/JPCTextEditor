@@ -1,6 +1,9 @@
 package jokrey.utililities.swing.text_editor.user_input;
 
-import jokrey.utililities.swing.text_editor.*;
+import jokrey.utililities.swing.text_editor.ui.JPCTextEditor;
+import jokrey.utililities.swing.text_editor.ui.JPCWrappingTextEditor;
+import jokrey.utililities.swing.text_editor.ui.JPC_Scroller;
+import jokrey.utililities.swing.text_editor.ui.core.JPC_Connector;
 import jokrey.utililities.swing.text_editor.text_storage.Line;
 
 import javax.swing.*;

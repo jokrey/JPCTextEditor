@@ -1,15 +1,12 @@
-package jokrey.utililities.swing.text_editor;
+package jokrey.utililities.swing.text_editor.ui;
 
 import jokrey.utililities.swing.text_editor.text_storage.ContentEditor;
 import jokrey.utililities.swing.text_editor.text_storage.WrappingContentEditor;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 
-public class JPCLayoutedWrappingTextEditor extends JPCLayoutedTextEditor implements JPCWrappingTextEditor {
-    public JPCLayoutedWrappingTextEditor() {    }
+public class JPCSimpleWrappingTextEditor extends JPCSimpleTextEditor implements JPCWrappingTextEditor {
+    public JPCSimpleWrappingTextEditor() {}
 
     @Override public ContentEditor createContentEditor() {
         return new WrappingContentEditor();

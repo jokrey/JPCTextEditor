@@ -1,4 +1,4 @@
-package jokrey.utililities.swing.text_editor;
+package jokrey.utililities.swing.text_editor.ui;
 
 import jokrey.utililities.swing.text_editor.text_storage.ContentListener;
 import jokrey.utililities.swing.text_editor.text_storage.LinePart;

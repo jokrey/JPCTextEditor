@@ -1,16 +1,16 @@
-package jokrey.utililities.swing.text_editor;
+package jokrey.utililities.swing.text_editor.ui;
 
-import jokrey.utililities.swing.text_editor.example.CustomEditorConnector;
-import jokrey.utililities.swing.text_editor.example.LayoutChangingPanel;
+import jokrey.utililities.swing.text_editor.ui.additional.CustomEditorConnector;
+import jokrey.utililities.swing.text_editor.ui.additional.LayoutChangingPanel;
 import jokrey.utililities.swing.text_editor.text_storage.*;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class EditorWithLayoutHeaderPanel extends JPCLayoutedTextEditor {
+public class JPCWithLayoutHeader extends JPCLayoutedTextEditor {
     private JPanel headerPanel;
     private LayoutChangingPanel headerPanelLayout;
-    public EditorWithLayoutHeaderPanel() {
+    public JPCWithLayoutHeader() {
         setLayout(new BorderLayout());
         headerPanel = new JPanel();
         headerPanelLayout = new LayoutChangingPanel(new CustomEditorConnector() {
