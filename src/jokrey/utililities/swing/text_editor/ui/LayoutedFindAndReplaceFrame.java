@@ -1,8 +1,12 @@
 package jokrey.utililities.swing.text_editor.ui;
 
+import jokrey.utililities.swing.text_editor.JPCTextEditor;
+import jokrey.utililities.swing.text_editor.JPC_Connector;
 import jokrey.utililities.swing.text_editor.ui.additional.CustomEditorConnector;
 import jokrey.utililities.swing.text_editor.ui.additional.LayoutChangingPanel;
 import jokrey.utililities.swing.text_editor.text_storage.*;
+import jokrey.utililities.swing.text_editor.ui.core.JPC_Scroller;
+import jokrey.utililities.swing.text_editor.ui.util.Util;
 import jokrey.utililities.swing.text_editor.user_input.UserInputHandler;
 import jokrey.utililities.swing.text_editor.user_input.cursor.TextInterval;
 
@@ -24,7 +28,7 @@ public class LayoutedFindAndReplaceFrame {
     private boolean ignore_layout() {
         return !find_editor_headerPanel.isVisible();
     }
-	public LayoutedFindAndReplaceFrame(JComponent jc, JPCTextEditor editor, ContentEditor parent_content, UserInputHandler parent_input_handler, LinePart[] origFindWhat) {
+	public LayoutedFindAndReplaceFrame(JPC_Connector jpc, JPCTextEditor editor, ContentEditor parent_content, UserInputHandler parent_input_handler, LinePart[] origFindWhat) {
         this.content = parent_content;
         this.input_handler = parent_input_handler;
 
@@ -171,22 +175,23 @@ public class LayoutedFindAndReplaceFrame {
 
         JButton findAB = new JButton("Find");
         findAB.addActionListener(ae -> {
-            if (!input_handler._user_select_next_occurrence(ignore_layout(), find_editor.content.getAsLineParts()))
+            if (!input_handler._user_select_next_occurrence(ignore_layout(), find_editor.getTextAsLineParts()))
                 Toolkit.getDefaultToolkit().beep();
+            jpc.repaint();
         });
         JButton countAB = new JButton("Count");
         countAB.addActionListener(ae ->
-                JOptionPane.showMessageDialog(countAB, count(find_editor.content.getAsLineParts()) + "")
+                JOptionPane.showMessageDialog(countAB, count(find_editor.getTextAsLineParts()) + "")
         );
         JButton replaceFindAB = new JButton("Replace Sel->Find");
         replaceFindAB.addActionListener(ae -> {
-            if (!input_handler._user_replace_current_and_select_next_occurrence(ignore_layout(), find_editor.content.getAsLineParts(), replace_editor.content.getAsLineParts()))
+            if (!input_handler._user_replace_current_and_select_next_occurrence(ignore_layout(), find_editor.getTextAsLineParts(), replace_editor.getTextAsLineParts()))
                 Toolkit.getDefaultToolkit().beep();
         });
         JButton replaceAllAB = new JButton("Replace All");
         replaceAllAB.addActionListener(ae -> {
             int number_of_occurrences_replaced =
-                    input_handler._user_replace_all_occurrences(ignore_layout(), find_editor.content.getAsLineParts(), replace_editor.content.getAsLineParts());
+                    input_handler._user_replace_all_occurrences(ignore_layout(), find_editor.getTextAsLineParts(), replace_editor.getTextAsLineParts());
             if(number_of_occurrences_replaced==0)
                 Toolkit.getDefaultToolkit().beep();
             else
@@ -219,9 +224,9 @@ public class LayoutedFindAndReplaceFrame {
 		frame.setAlwaysOnTop(true);
         frame.pack();
         frame.setSize(750, frame.getHeight());
-        frame.setLocationRelativeTo(jc);//pretty much centering
+        Util.centerOnMouseScreen(frame);
         find_editor.requestFocus();
-        find_editor.user.cursor.insert(origFindWhat);
+        find_editor.setText(origFindWhat);
         find_editor.setFont(editor.getFont());
         find_editor.setBackground(editor.getBackground());
         find_editor.setForeground(editor.getForeground());

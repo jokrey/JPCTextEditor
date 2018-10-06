@@ -1,4 +1,4 @@
-package jokrey.utililities.swing.text_editor.ui;
+package jokrey.utililities.swing.text_editor;
 
 import jokrey.utililities.swing.text_editor.text_storage.ContentListener;
 import jokrey.utililities.swing.text_editor.text_storage.LinePart;
@@ -20,9 +20,11 @@ public interface JPCTextEditor {
 
 
     void setText(String text);
-    String getText();
-    String getText_with_encoded_layout();
+    void setText(LinePart[] text);
     void setText_with_encoded_layout(String text);
+    String getText();
+    LinePart[] getTextAsLineParts();
+    String getText_with_encoded_layout();
     String getTextFromVisibleLines();
 
     void setHint(LinePart hint);
@@ -37,4 +39,5 @@ public interface JPCTextEditor {
 
     void setCursorPosition(int x, int y);
     void addContentListener(ContentListener contentListener);
+
 }

@@ -1,7 +1,8 @@
 package jokrey.utililities.swing.text_editor.ui.core;
 
+import jokrey.utililities.swing.text_editor.JPCTextEditor;
+import jokrey.utililities.swing.text_editor.JPC_Connector;
 import jokrey.utililities.swing.text_editor.ui.FindAndReplaceFrame;
-import jokrey.utililities.swing.text_editor.ui.JPCTextEditor;
 import jokrey.utililities.swing.text_editor.text_storage.*;
 import jokrey.utililities.swing.text_editor.user_input.ContextFunctionalityLibrary;
 import jokrey.utililities.swing.text_editor.user_input.RawUserInputHandler;
@@ -16,7 +17,7 @@ import java.awt.event.ComponentEvent;
 
 /**
  * Abstract JPCEditor.
- * Already has all the functionality, but does only provide minimal access to content and user.
+ * Already has all the functionality, but does only provide minimal access to content and input_receiver.
  * Subclasses can extend that as they choose(the field is protected and therefore allows unlimited access)
  *
  * Functionality(most is just optional):
@@ -34,9 +35,9 @@ import java.awt.event.ComponentEvent;
  *          custom, anytime, anywhere, nested layouts(as portrayed in example.LayoutedTextEditor)
  *      - setting editablity of the text. (It can also be read only)
  *      - setting the selectable state. Would for example make it impossible to copy text out.
- *      - "hint"s. If the text editor is empty, you can display a custom text in a custom layout that can be an indication as to what the user should do now.
- *      - line prefixes. Will normally be the line number, but can be be changed by a user.
- *      - simple syntax highlighting (more complex syntax highlighting requires a little work by a potential user, but is possible by overriding recalculateDisplayLines)
+ *      - "hint"s. If the text editor is empty, you can display a custom text in a custom layout that can be an indication as to what the input_receiver should do now.
+ *      - line prefixes. Will normally be the line number, but can be be changed by a input_receiver.
+ *      - simple syntax highlighting (more complex syntax highlighting requires a little work by a potential input_receiver, but is possible by overriding recalculateDisplayLines)
  *
  *
  *
@@ -46,18 +47,16 @@ import java.awt.event.ComponentEvent;
  * TODO: Add even more keyboard shortcuts to allow vim like workflow
  */
 public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Connector, JPCTextEditor {
-    protected final ContentEditor content = createContentEditor();
-    protected final UserInputHandler user = createUserInputHandler(content);
+    protected final ContentEditor content = createContentEditor(this);
+    protected final UserInputHandler input_receiver = createUserInputHandler(content);
     public UserInputHandler getInputHandler() {
-        return user;
+        return input_receiver;
     }
 
     //Outside referenced UI Components....
 //    public final JScrollPane scrollPane;
 //    public final JPanel textPaintDisplay;
     public Abstract_JPCTextEditor() {
-        content.jpc_connector = this;
-
         setLayout(new BorderLayout());
         setForeground(Color.BLACK);
         setBackground(Color.WHITE);
@@ -70,8 +69,8 @@ public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Conne
         /*
          * Initiates Listener. For one to recalculate lines if needed, but also a transfer handler to import stuff upon drag..
          */
-        addContextAction(ContextFunctionalityLibrary.getBasicFunctionality(this, this, user));
-        new RawUserInputHandler(this, this, user, content);//on its own initiates its jpc_connector..
+        addContextAction(ContextFunctionalityLibrary.getBasicFunctionality(this, this, input_receiver));
+        new RawUserInputHandler(this, this, input_receiver, content);//on its own initiates its jpc_connector..
         UIManager.getDefaults().put("ScrollPane.ancestorInputMap",
                 new UIDefaults.LazyInputMap(new Object[] {}));  //removes arrow key scrolling
         addComponentListener(new  ComponentAdapter() {
@@ -85,7 +84,7 @@ public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Conne
     }
 
 
-    public abstract ContentEditor createContentEditor();
+    public abstract ContentEditor createContentEditor(JPC_Connector connector);
     protected abstract UserInputHandler createUserInputHandler(ContentEditor content);
 
     public LinePrefix getLinePrefix(int lineNumber, @SuppressWarnings("unused") String lineText) {
@@ -102,10 +101,10 @@ public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Conne
     }
 
     public void clearContextActions() {
-        user.clearContextActions(this);
+        input_receiver.clearContextActions(this);
     }
     public void addContextAction(Action... actions) {
-        user.addContextAction(this, actions);
+        input_receiver.addContextAction(this, actions);
     }
 
 
@@ -118,19 +117,27 @@ public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Conne
     // ContentEditor Wrapping
     public void setText(String text) {
         content.setText(text);
-        user.reset_step_manager();
-        user.cursor.selection.clear();
+        input_receiver.reset_step_manager();
+        input_receiver.cursor.selection.clear();
+    }
+    public void setText(LinePart[] text) {
+        content.setText(text);
+        input_receiver.reset_step_manager();
+        input_receiver.cursor.selection.clear();
     }
     public String getText() {
         return content.getText();
+    }
+    @Override public LinePart[] getTextAsLineParts() {
+        return content.getTextAsLineParts();
     }
     public String getText_with_encoded_layout() {
         return content.getText_with_encoded_layout();
     }
     public void setText_with_encoded_layout(String text) {
         content.setText_with_encoded_layout(text);
-        user.reset_step_manager();
-        user.cursor.selection.clear();
+        input_receiver.reset_step_manager();
+        input_receiver.cursor.selection.clear();
     }
 
     public final void setHint(LinePart hint) {
@@ -143,13 +150,13 @@ public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Conne
 
     //User Input Wrapping
     public void setEditable(boolean editable) {
-        user.setEditable(editable);
+        input_receiver.setEditable(editable);
     }
     public boolean isEditable(){
-        return user.isEditable();
+        return input_receiver.isEditable();
     }
     public void clearSelection() {
-        user.cursor.clearSelection();
+        input_receiver.cursor.clearSelection();
     }
 
     public void setAllowTabs(boolean tabs) {
@@ -164,10 +171,12 @@ public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Conne
     private ASAP_Queue runBeforePaintQueue = new ASAP_Queue();
     @Override public void recalculateDisplayLines() {
         runBeforePaintQueue.callOncePostponed(-1, content::recalculateDisplayLines);
+        repaint();
 //        content.recalculateDisplayLines();
     }
     @Override public void recalculateDisplayLine(int line) {
         runBeforePaintQueue.callOncePostponed(line, () -> content.recalculateDisplayLine(line));
+        repaint();
 //        content.recalculateDisplayLines(firstAffectedLine, lastAffectedLine);
     }
 
@@ -201,7 +210,7 @@ public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Conne
             highestXDrawPos = hint.getPixelWidth();
             LinePrefix linePrefix = getLinePrefix(1, hint.txt);
             if(g!=null)g.setFont(LinePartLayout.valid(hint.layout, content.getStandardLayout()).font);
-            if(g!=null)linePrefix.draw(g, yDrawPos_l, g.getFontMetrics().getHeight(), user.cursor.getValidInsertLayout().bg, getLineCountBoxWidth(), true);
+            if(g!=null)linePrefix.draw(g, yDrawPos_l, g.getFontMetrics().getHeight(), input_receiver.cursor.getValidInsertLayout().bg, getLineCountBoxWidth(), true);
         } else {
             //Very important that its +-getLastFontMetrics().getHeight - Otherwise a line maybe painted to late, or just painted in half - DO NOT KNOW WHY REALLY
             int visible_pixel_start = getVisibleRect().y;
@@ -223,7 +232,7 @@ public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Conne
                             LinePrefix linePrefix = getLinePrefix(wl_i+1, curRawLine.toString());
 
                             if(g!=null)g.setFont(LinePartLayout.valid(disLine.getPart(0).layout, content.getStandardLayout()).font);
-                            if(g!=null)linePrefix.draw(g, yDrawPos_l, cur_line_height, user.cursor.getValidInsertLayout().bg, getLineCountBoxWidth(), user.cursor.getY()==wl_i);
+                            if(g!=null)linePrefix.draw(g, yDrawPos_l, cur_line_height, input_receiver.cursor.getValidInsertLayout().bg, getLineCountBoxWidth(), input_receiver.cursor.getY()==wl_i);
                         }
                     }
 
@@ -242,7 +251,8 @@ public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Conne
         }
         if(g!=null)g.setColor(getForeground());
         if(g!=null && getLineCountBoxWidth()>0)g.drawLine(getLineCountBoxWidth(), 0, getLineCountBoxWidth(), getHeight());
-        if(g!=null)user.cursor.draw(g, getTextSpacingLeft(), getWidth(), getTextSpacingTop(), true, hasFocus()&&user.isEditable());
+        if(g!=null)
+            input_receiver.cursor.draw(g, getTextSpacingLeft(), getWidth(), getTextSpacingTop(), true, hasFocus()&& input_receiver.isEditable());
 
         handlePaintedSpaceRecalculation(new Dimension (getTextSpacingLeft()+highestXDrawPos+2, yDrawPos_l));
     }
@@ -268,7 +278,7 @@ public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Conne
 
 
     public void validateCursorVisibility() {
-        Rectangle r = user.cursor.getShape(getTextSpacingLeft(), getTextSpacingTop());
+        Rectangle r = input_receiver.cursor.getShape(getTextSpacingLeft(), getTextSpacingTop());
         if(r.x == getTextSpacingLeft()) r.x=0;
         if (!getVisibleRect().contains(r)) {
             scrollRectToVisible(r);
@@ -297,16 +307,17 @@ public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Conne
         return lastL==0||lastL>content.getLineCount()?content.getLineCount():lastL;
     }
     public int getLineToPoint(Point p) {
-        try {
-            TextDisplayCursor cp = new TextDisplayCursor(content);
-            cp.setPositionTo(p, getTextSpacingLeft(), getTextSpacingTop());
-            return cp.getY();
-        } catch(NeverDrawnException ex) {
-            return -1;
-        }
+        TextDisplayCursor cp = new TextDisplayCursor(content);
+        cp.setPositionTo(p, getTextSpacingLeft(), getTextSpacingTop());
+        return cp.getY();
+    }
+    public Point getPointToLine(int line) {
+        TextDisplayCursor virtualCursor = new TextDisplayCursor(content, 0, line);
+        Rectangle r = virtualCursor.getShape(getTextSpacingLeft(), getTextSpacingTop());
+        return r.getLocation();
     }
     public void start_find_replace_frame() {
-        new FindAndReplaceFrame(this, this, this, content, user, user.cursor.getSelection().getIntervalText());
+        new FindAndReplaceFrame(this, this, content, input_receiver, input_receiver.cursor.getSelection().getIntervalText());
     }
     public boolean enterPressed() {return true;}
 
@@ -315,7 +326,7 @@ public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Conne
     }
 
     @Override public void setCursorPosition(int x, int y) {
-        user.cursor.setXY(x, y);
+        input_receiver.cursor.setXY(x, y);
     }
     //Layout relays.
 
@@ -360,6 +371,6 @@ public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Conne
 //    }
 
     public LinePartLayout getCurrentLayout() {
-        return user.cursor.getValidInsertLayout();
+        return input_receiver.cursor.getValidInsertLayout();
     }
 }

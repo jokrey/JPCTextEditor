@@ -1,7 +1,7 @@
 package jokrey.utililities.swing.text_editor.example;
 
 import jokrey.utililities.swing.text_editor.ui.JPCLayoutedWrappingTextEditor;
-import jokrey.utililities.swing.text_editor.ui.JPC_Scroller;
+import jokrey.utililities.swing.text_editor.ui.core.JPC_Scroller;
 import jokrey.utililities.swing.text_editor.ui.additional.CustomEditorConnector;
 import jokrey.utililities.swing.text_editor.ui.additional.LayoutChangingPanel;
 import jokrey.utililities.swing.text_editor.ui.additional.LoadStorePanel;
@@ -12,7 +12,7 @@ import java.awt.*;
 
 /**
  * Example of a wrapping text editor, with extensive layout functionality.
- * This example is the one that allows the end-user the access to the most functionality.
+ * This example is the one that allows the end-input_receiver the access to the most functionality.
  *     Namely the functionality of self controlled nested layouts.
  */
 public class WrappingScrollingLayoutedTextEditor_Example extends JPanel {

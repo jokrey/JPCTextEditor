@@ -1,6 +1,6 @@
 package jokrey.utililities.swing.text_editor.user_input;
 
-import jokrey.utililities.swing.text_editor.ui.core.JPC_Connector;
+import jokrey.utililities.swing.text_editor.JPC_Connector;
 import jokrey.utililities.swing.text_editor.text_storage.ContentEditor;
 import jokrey.utililities.swing.text_editor.text_storage.LinePart;
 import jokrey.utililities.swing.text_editor.text_storage.NeverDrawnException;
@@ -18,7 +18,7 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 /**
- * Listens to user input and relays that input to the UserInputHandler.
+ * Listens to input_receiver input and relays that input to the UserInputHandler.
  * Should and can largely not be touched.
  */
 public class RawUserInputHandler extends MouseAdapter implements KeyListener, FocusListener/*, DragGestureListener*/ {

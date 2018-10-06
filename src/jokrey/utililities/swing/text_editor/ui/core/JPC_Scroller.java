@@ -1,4 +1,4 @@
-package jokrey.utililities.swing.text_editor.ui;
+package jokrey.utililities.swing.text_editor.ui.core;
 
 import jokrey.utililities.swing.text_editor.ui.core.Abstract_JPCTextEditor;
 import jokrey.utililities.swing.text_editor.ui.util.NicerScrollBarUI;
@@ -29,11 +29,9 @@ public class JPC_Scroller extends JScrollPane {
 
         addComponentListener(new  ComponentAdapter() {
             @Override public void componentResized(ComponentEvent arg0) {
-//                jpc_editor.recalculateSize();//needed?  -> does not seem like it
                 jpc_editor.recalculateDisplayLines();
             }
             @Override public void componentShown(ComponentEvent e) {
-//                jpc_editor.recalculateSize();//needed?  -> does not seem like it
                 jpc_editor.recalculateDisplayLines();
             }
         });
@@ -43,31 +41,12 @@ public class JPC_Scroller extends JScrollPane {
 
 
     public void scrollToLine_asap(int y) {
-//        if(! jpc_editor.asap_queue.callAsap(() -> {
-            TextDisplayCursor virtualCursor = new TextDisplayCursor(jpc_editor.content, 0, y);
-            Rectangle r = virtualCursor.getShape(jpc_editor.getTextSpacingLeft(), jpc_editor.getTextSpacingTop());
-//            if (!getVisibleRect().contains(r))
-//                scrollRectToVisible(r);
-            getViewport().setViewPosition(r.getLocation());
-//        })) { repaint(); }
+        getViewport().setViewPosition(jpc_editor.getPointToLine(y));
     }
     public void setFirstVisibleLine_asap(int line) {
-//        if(! jpc_editor.asap_queue.callAsap(() -> {
-            TextDisplayCursor virtualCursor = new TextDisplayCursor(jpc_editor.content, 0, line);
-            Rectangle r = virtualCursor.getShape(jpc_editor.getTextSpacingLeft(), jpc_editor.getTextSpacingTop());
-//            scrollRectToVisible(r);
-            System.out.println("line: "+line);
-            System.out.println("getViewport().getViewPosition bef: "+getViewport().getViewPosition());
-            System.out.println("r: "+r);
-            getViewport().setViewPosition(r.getLocation());
-            System.out.println("getViewport().getViewPosition aft: "+getViewport().getViewPosition());
-//        })) { repaint(); }
+        getViewport().setViewPosition(jpc_editor.getPointToLine(line));
     }
     public void scrollPlusLines_asap(int plus) {
-//        if(! jpc_editor.asap_queue.callAsap(() -> {
-            TextDisplayCursor temp = new TextDisplayCursor(jpc_editor.content, 0, jpc_editor.user.cursor.getY() + plus);
-//            scrollRectToVisible(temp.getShape(getTextSpacingLeft(), getTextSpacingTop()));
-            getViewport().setViewPosition(temp.getShape(jpc_editor.getTextSpacingLeft(), jpc_editor.getTextSpacingTop()).getLocation());
-//        })) { repaint(); }
+        getViewport().setViewPosition(jpc_editor.getPointToLine(jpc_editor.input_receiver.cursor.getY() + plus));
     }
 }

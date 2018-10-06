@@ -1,5 +1,6 @@
 package jokrey.utililities.swing.text_editor.text_storage;
 
+import jokrey.utililities.swing.text_editor.JPC_Connector;
 import jokrey.utilities.timediffmarker.CallCountMarker;
 
 import java.util.ArrayList;
@@ -9,6 +10,10 @@ import java.util.ArrayList;
  */
 public class WrappingContentEditor extends StandardContentEditor {
     private ArrayList<Line[]> displayLines = new ArrayList<>();
+
+    public WrappingContentEditor(JPC_Connector con) {
+        super(con);
+    }
 
     @Override public Line[] getDisplayLine(int line_number) {
         if (isLineWrapEnabled() && line_number < displayLines.size()) {
@@ -128,48 +133,6 @@ public class WrappingContentEditor extends StandardContentEditor {
         return -1;
     }
 
-
-////    old optimized
-//    private int getNextLineWrap_butgobacktolastspace(Line remaining, int remaining_space) throws NeverDrawnException {
-//        CallCountMarker.mark_call_print("old");
-//        int elapsedPixels = 0;
-//        int elapsedChars = 0;
-//        LinePart[] parts = remaining.getCopyOfInternalParts();
-//        for(int i=0;i<parts.length;i++) {
-//            int part_pixel_width = parts[i].getPixelWidth();
-//            if(elapsedPixels+part_pixel_width > remaining_space) {  //if this is greater, then we have found the part in which the wrapping occurs
-//                //now we know that the wrap point is somewhere in part[i].
-//
-//                //Optimization through jumping.
-//                //Idea: Too minimize the slow calls to parts[i].getPixelWidth(0, pi), they are minimized by "pre-searching".
-//                //After the significantly smaller area has been found we search like we would usually.
-//                //to do (should performance problems in a real case arise) nested search area's until a size of say 10 is reached.
-//                int part_length = parts[i].length();
-//                int jump_step_size = Math.max(Math.min(part_length/10, 40), 6);//10, 40, 5 are experimental values obtained through deduction and testing.
-//                for(int pi=part_length-1;pi>=0;pi-=jump_step_size) {
-//                    if(pi<jump_step_size || elapsedPixels + parts[i].getPixelWidth(0, pi)  <= remaining_space) {
-//                        pi=Math.min(part_length-1, pi+jump_step_size); //restore position before last jump
-//
-//                        for(;pi>=0;pi--) {
-//                            if(elapsedPixels + parts[i].getPixelWidth(0, pi)  <= remaining_space) {
-//                                if(pi==0) return 1; //because we still want to wrap, but the last char will be split in half..
-//                                int last_space_index = parts[i].txt.lastIndexOf(" ", pi-1);
-//                                if(last_space_index != -1)
-//                                    return elapsedChars + last_space_index + 1;  //+1 to split after the space forcing it to remain in the prior line
-//                                return elapsedChars + pi;
-//                            }
-//                        }
-//
-//                    }
-//                }
-//                return elapsedPixels;//technically this should not happen, but if it does we have already asserted that elapsedPixels are definitely fitting.
-//            } else {
-//                elapsedPixels+=part_pixel_width;
-//                elapsedChars+=parts[i].length();
-//            }
-//        }
-//        return -1;
-//    }
 
 
 

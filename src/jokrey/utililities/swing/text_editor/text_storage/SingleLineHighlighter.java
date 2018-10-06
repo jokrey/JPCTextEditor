@@ -1,5 +1,6 @@
 package jokrey.utililities.swing.text_editor.text_storage;
 
+import jokrey.utililities.swing.text_editor.JPC_Connector;
 import jokrey.utililities.swing.text_editor.text_storage.*;
 
 import java.util.ArrayList;
@@ -11,7 +12,8 @@ import java.util.Arrays;
  */
 public class SingleLineHighlighter extends StandardContentEditor {
     private final ArrayList<SyntaxRule> rules;
-    public SingleLineHighlighter(SyntaxRule... rules) {
+    public SingleLineHighlighter(JPC_Connector c, SyntaxRule... rules) {
+        super(c);
         this.rules = new ArrayList<>(Arrays.asList(rules));
     }
     public void addWordMatchRule(LinePartLayout highlight, String word) {

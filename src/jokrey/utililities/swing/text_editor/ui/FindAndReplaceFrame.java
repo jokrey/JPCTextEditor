@@ -1,7 +1,10 @@
 package jokrey.utililities.swing.text_editor.ui;
 
-import jokrey.utililities.swing.text_editor.ui.core.JPC_Connector;
+import jokrey.utililities.swing.text_editor.JPCTextEditor;
+import jokrey.utililities.swing.text_editor.JPC_Connector;
 import jokrey.utililities.swing.text_editor.text_storage.ContentEditor;
+import jokrey.utililities.swing.text_editor.ui.core.JPC_Scroller;
+import jokrey.utililities.swing.text_editor.ui.util.Util;
 import jokrey.utililities.swing.text_editor.user_input.UserInputHandler;
 import javax.swing.*;
 import java.awt.*;
@@ -10,14 +13,12 @@ import java.awt.*;
  * Adds the functionality of finding and replacing simple text in a text editor.
  */
 public class FindAndReplaceFrame {
-    private JPC_Connector jpc;
     private ContentEditor content;
     private UserInputHandler input_handler;
 
     private JPCSimpleTextEditor find_editor;
     private JPCSimpleTextEditor replace_editor;
-	public FindAndReplaceFrame(JComponent jc, JPC_Connector parent_jpc, JPCTextEditor editor, ContentEditor parent_content, UserInputHandler parent_input_handler, String orig_find) {
-	    this.jpc=parent_jpc;
+	public FindAndReplaceFrame(JPC_Connector jpc, JPCTextEditor editor, ContentEditor parent_content, UserInputHandler parent_input_handler, String orig_find) {
 	    this.content=parent_content;
 	    this.input_handler=parent_input_handler;
 
@@ -60,22 +61,23 @@ public class FindAndReplaceFrame {
 
         JButton findAB = new JButton("Find");
         findAB.addActionListener(ae -> {
-            if (!input_handler._user_select_next_occurrence(true, find_editor.content.getAsLineParts()))
+            if (!input_handler._user_select_next_occurrence(true, find_editor.getTextAsLineParts()))
                 Toolkit.getDefaultToolkit().beep();
+            jpc.repaint();
         });
         JButton countAB = new JButton("Count");
         countAB.addActionListener(ae ->
-                JOptionPane.showMessageDialog(countAB, count(find_editor.content.getText()) + "")
+                JOptionPane.showMessageDialog(countAB, count(find_editor.getText()) + "")
         );
         JButton replaceFindAB = new JButton("Replace+Find");
         replaceFindAB.addActionListener(ae -> {
-            if (!input_handler._user_replace_current_and_select_next_occurrence(true, find_editor.content.getAsLineParts(), replace_editor.content.getAsLineParts()))
+            if (!input_handler._user_replace_current_and_select_next_occurrence(true, find_editor.getTextAsLineParts(), replace_editor.getTextAsLineParts()))
                 Toolkit.getDefaultToolkit().beep();
         });
         JButton replaceAllAB = new JButton("Replace All");
         replaceAllAB.addActionListener(ae -> {
             int number_of_occurrences_replaced =
-                    input_handler._user_replace_all_occurrences(true, find_editor.content.getAsLineParts(), replace_editor.content.getAsLineParts());
+                    input_handler._user_replace_all_occurrences(true, find_editor.getTextAsLineParts(), replace_editor.getTextAsLineParts());
             if(number_of_occurrences_replaced==0)
                 Toolkit.getDefaultToolkit().beep();
             else
@@ -112,7 +114,7 @@ public class FindAndReplaceFrame {
 		frame.setAlwaysOnTop(true);
         frame.pack();
         frame.setSize(555, frame.getHeight());
-        frame.setLocationRelativeTo(jc);//pretty much centering
+        Util.centerOnMouseScreen(frame);
         find_editor.requestFocus();
         find_editor.setText(orig_find);
         find_editor.setFont(editor.getFont());

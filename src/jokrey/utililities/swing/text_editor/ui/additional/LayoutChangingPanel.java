@@ -155,7 +155,7 @@ public class LayoutChangingPanel extends JPanel {
                     Color fg = JColorChooser.showDialog(LayoutChangingPanel.this,  "Choose Foreground Color", cur_fg);
                     fgOptionsPanelLabel.setBackground(fg);
                     editorCon.fg_changed(fg);//               } else if(SwingUtilities.isRightMouseButton(e)) {
-//                    textDisplay.setCurrentInsertLayout(textDisplay.user.cursor.getInsertLayout().copy_ChangeFG(COLOR_UTIL.getComplimentColor(cur_fg)));
+//                    textDisplay.setCurrentInsertLayout(textDisplay.input_receiver.cursor.getInsertLayout().copy_ChangeFG(COLOR_UTIL.getComplimentColor(cur_fg)));
                 } else if(SwingUtilities.isMiddleMouseButton(e))
                     editorCon.fg_changed(null);
             }
@@ -172,7 +172,7 @@ public class LayoutChangingPanel extends JPanel {
                     bgOptionsPanelLabel.setBackground(bg);
                     editorCon.bg_changed(bg);
 //               } else if(SwingUtilities.isRightMouseButton(e)) {
-//                    textDisplay.setCurrentInsertLayout(textDisplay.user.cursor.getInsertLayout().copy_ChangeFG(COLOR_UTIL.getComplimentColor(cur_fg)));
+//                    textDisplay.setCurrentInsertLayout(textDisplay.input_receiver.cursor.getInsertLayout().copy_ChangeFG(COLOR_UTIL.getComplimentColor(cur_fg)));
                 } else if(SwingUtilities.isMiddleMouseButton(e))
                     editorCon.bg_changed(null);
             }

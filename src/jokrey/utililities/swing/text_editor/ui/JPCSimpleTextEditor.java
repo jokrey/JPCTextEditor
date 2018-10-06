@@ -1,5 +1,6 @@
 package jokrey.utililities.swing.text_editor.ui;
 
+import jokrey.utililities.swing.text_editor.JPC_Connector;
 import jokrey.utililities.swing.text_editor.ui.core.Abstract_JPCTextEditor;
 import jokrey.utililities.swing.text_editor.text_storage.ContentEditor;
 import jokrey.utililities.swing.text_editor.text_storage.StandardContentEditor;
@@ -17,8 +18,8 @@ public class JPCSimpleTextEditor extends Abstract_JPCTextEditor {
         setFont(content.getStandardLayout().font);
     }
 
-    @Override public ContentEditor createContentEditor() {
-        return new StandardContentEditor();
+    @Override public ContentEditor createContentEditor(JPC_Connector c) {
+        return new StandardContentEditor(c);
     }
     @Override protected UserInputHandler createUserInputHandler(ContentEditor content) {
         return new UserInputHandler(content);

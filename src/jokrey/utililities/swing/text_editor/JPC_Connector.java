@@ -1,4 +1,4 @@
-package jokrey.utililities.swing.text_editor.ui.core;
+package jokrey.utililities.swing.text_editor;
 
 
 /**
@@ -12,10 +12,6 @@ public interface JPC_Connector extends FontMetricsSupplier {
     void repaint();
     void recalculateSize();
     void validateCursorVisibility();
-//    void recalculateDisplayLines_asap();
-//    void recalculateDisplayLines_postponed();
-//    void recalculateDisplayLines_asap(int firstAffectedLine, int lastAffectedLine);
-//    void recalculateDisplayLines_postponed(int firstAffectedLine, int lastAffectedLine);
 
     int getFirstVisibleLine();
     int getLastVisibleLine();

@@ -1,5 +1,6 @@
 package jokrey.utililities.swing.text_editor.ui;
 
+import jokrey.utililities.swing.text_editor.JPC_Connector;
 import jokrey.utililities.swing.text_editor.ui.core.Abstract_JPCTextEditor;
 import jokrey.utililities.swing.text_editor.text_storage.ContentEditor;
 import jokrey.utililities.swing.text_editor.text_storage.LinePrefix;
@@ -13,8 +14,8 @@ public class JPCTextField extends Abstract_JPCTextEditor {
     	setAllowTabs(false);
 	}
 
-    @Override public ContentEditor createContentEditor() {
-        return new StandardContentEditor() {
+    @Override public ContentEditor createContentEditor(JPC_Connector c) {
+        return new StandardContentEditor(c) {
             @Override public int getMaxLineCount() {
                 return 1;
             }
@@ -24,8 +25,8 @@ public class JPCTextField extends Abstract_JPCTextEditor {
     public String getInput(){return content.getLineText(0);}
 	public void setInput(String string) {
 		if(content.allowInsertion(string)) {
-			content.setLineText(0, string, user.cursor.getValidInsertLayout());
-			user.cursor.setFromDistance(Integer.MAX_VALUE);
+			content.setLineText(0, string, input_receiver.cursor.getValidInsertLayout());
+			input_receiver.cursor.setFromDistance(Integer.MAX_VALUE);
 		}
 	}
 
@@ -34,7 +35,7 @@ public class JPCTextField extends Abstract_JPCTextEditor {
 	}
 
 	public void clearInput() {
-		content.setLineText(0, "", user.cursor.getValidInsertLayout());
+		content.setLineText(0, "", input_receiver.cursor.getValidInsertLayout());
 	}
 
 	@Override public int getTextSpacingLeft() {return 0;}

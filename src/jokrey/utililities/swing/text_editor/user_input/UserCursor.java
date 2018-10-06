@@ -7,7 +7,7 @@ import jokrey.utililities.swing.text_editor.user_input.cursor.TextInterval;
 import java.awt.*;
 
 /**
- * THE user cursor. Should not be instantiated from the outside and only be used by UserInputHandler.
+ * THE input_receiver cursor. Should not be instantiated from the outside and only be used by UserInputHandler.
  */
 public class UserCursor extends TextDisplayCursor {
 	private LinePartLayout insert_layout = null; //null means some standard layout
@@ -36,6 +36,9 @@ public class UserCursor extends TextDisplayCursor {
         this.content = content;
 		selection = new TextInterval(content);
 	}
+    public void validateCursorVisibility() {
+        content.validateCursorVisibility();
+    }
 
 	@Override public void setXY(int... xy) {
 		int[] old = getXY();
@@ -97,7 +100,6 @@ public class UserCursor extends TextDisplayCursor {
 				String cleanStr = str.replaceAll("[^\\P{Cc}\t]", "");// \\p{C}
 
 				content.setLine(getY(), content.getLine(getY()).insert(getX(), cleanStr, layoutForInsert));
-//				content.getLine(getY()).insert(getX(), cleanStr, layoutForInsert);
 				x_plus(cleanStr.length());
 			}
 		}

@@ -1,5 +1,7 @@
 package jokrey.utililities.swing.text_editor.ui;
 
+import jokrey.utililities.swing.text_editor.JPCWrappingTextEditor;
+import jokrey.utililities.swing.text_editor.JPC_Connector;
 import jokrey.utililities.swing.text_editor.text_storage.ContentEditor;
 import jokrey.utililities.swing.text_editor.text_storage.WrappingContentEditor;
 
@@ -8,8 +10,8 @@ import java.awt.*;
 public class JPCLayoutedWrappingTextEditor extends JPCLayoutedTextEditor implements JPCWrappingTextEditor {
     public JPCLayoutedWrappingTextEditor() {    }
 
-    @Override public ContentEditor createContentEditor() {
-        return new WrappingContentEditor();
+    @Override public ContentEditor createContentEditor(JPC_Connector c) {
+        return new WrappingContentEditor(c);
     }
 
     public void setLineWrap(boolean wrap_lines) {

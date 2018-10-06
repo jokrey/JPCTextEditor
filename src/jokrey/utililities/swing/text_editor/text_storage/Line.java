@@ -1,6 +1,6 @@
 package jokrey.utililities.swing.text_editor.text_storage;
 
-import jokrey.utililities.swing.text_editor.ui.core.FontMetricsSupplier;
+import jokrey.utililities.swing.text_editor.FontMetricsSupplier;
 
 import java.util.Arrays;
 
@@ -184,6 +184,10 @@ public class Line {
         int inserted_i = 0;
         System.arraycopy(insert_between[0].parts, 0, inserted, inserted_i, before_length);//before
         inserted_i+=before_length;
+        System.out.println("toinsert: "+ Arrays.toString(toinsert));
+        System.out.println("toinsert: "+ Arrays.toString(inserted));
+        System.out.println("inserted_i: "+ inserted_i);
+        System.out.println("toinsert.length: "+ toinsert.length);
         System.arraycopy(toinsert, 0, inserted, inserted_i, toinsert.length);//to insert
         inserted_i+=toinsert.length;
         System.arraycopy(insert_between[1].parts, 0, inserted, inserted_i, after_length);//after

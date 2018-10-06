@@ -1,7 +1,8 @@
 package jokrey.utililities.swing.text_editor.example;
 
+import jokrey.utililities.swing.text_editor.JPC_Connector;
 import jokrey.utililities.swing.text_editor.ui.JPCSimpleTextEditor;
-import jokrey.utililities.swing.text_editor.ui.JPC_Scroller;
+import jokrey.utililities.swing.text_editor.ui.core.JPC_Scroller;
 import jokrey.utililities.swing.text_editor.text_storage.SingleLineHighlighter;
 import jokrey.utililities.swing.text_editor.text_storage.ContentEditor;
 import jokrey.utililities.swing.text_editor.text_storage.LinePartLayout;
@@ -12,14 +13,14 @@ import java.awt.*;
 public class SimpleSyntaxHighlightedScrolledTextEditor_Example {
     public static void main(String[] args) {
         JPCSimpleTextEditor textDisplay = new JPCSimpleTextEditor() {
-            @Override public ContentEditor createContentEditor() {
+            @Override public ContentEditor createContentEditor(JPC_Connector c) {
                 //for java.
                 //what doesn't work::
                 //    1 this for example:: if(s.contains("/*")                            // /* itself will be grey
                 //    2 this for example:: if(s.contains("/*") && bs.contains("*/")) {}   ////everything between /* and */ will be greyed out
                 //    ((3 multi line comments(not really supposed to work either).
                 //    ((4 braces highlighting ((that actually doesn't even work with this idea, since recalculateDisplayLines isn't called for that
-                SingleLineHighlighter lighter = new SingleLineHighlighter();
+                SingleLineHighlighter lighter = new SingleLineHighlighter(c);
                 lighter.addWordBeforeMatchRule(new LinePartLayout.UnInstantiated(Color.MAGENTA.darker().darker(), null, null), "(");
                 lighter.addWordMatchRules(new LinePartLayout.UnInstantiated(Color.blue, null, null),
                         "assert", "boolean", "break", "byte", "case", "catch", "char", "class", "const", "continue", "default", "do", "double",

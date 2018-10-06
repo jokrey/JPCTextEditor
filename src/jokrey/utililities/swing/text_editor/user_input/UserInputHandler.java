@@ -17,8 +17,8 @@ import java.util.Arrays;
 import java.util.LinkedList;
 
 /**
- * THE logical user input handling class.
- * Anything the user does should be tunneled through this class.
+ * THE logical input_receiver input handling class.
+ * Anything the input_receiver does should be tunneled through this class.
  * It will make the action undoable and redo-able and provide additional features as they become available.
  */
 public class UserInputHandler {
@@ -51,7 +51,7 @@ public class UserInputHandler {
 
         step_manager.userPerformedOperation_remove(removed, cursor);
 
-        cursor.getContentEditor().jpc_connector.validateCursorVisibility();
+        cursor.validateCursorVisibility();
 
         int removedCharCount = 0;
         for(LinePart part:removed) removedCharCount+=part.length();
@@ -77,7 +77,7 @@ public class UserInputHandler {
             for (LinePart lp : insertData)
                 cursor.insert(lp.txt, lp.layout);
         }
-        cursor.getContentEditor().jpc_connector.validateCursorVisibility();
+        cursor.validateCursorVisibility();
     }
 
     public void _user_copy() {
@@ -126,11 +126,11 @@ public class UserInputHandler {
 
     public void _user_undo() {
         step_manager.undo(cursor);
-        cursor.getContentEditor().jpc_connector.validateCursorVisibility();
+        cursor.validateCursorVisibility();
     }
     public void _user_redo() {
         step_manager.redo(cursor);
-        cursor.getContentEditor().jpc_connector.validateCursorVisibility();
+        cursor.validateCursorVisibility();
     }
     public void reset_step_manager() {
         step_manager.reset();
@@ -232,8 +232,9 @@ public class UserInputHandler {
             else {
                 cursor.selection.setFromDistance(find_index, find_index + find_as_str.length());
                 cursor.setXY(cursor.selection.get2XY());
-                cursor.getContentEditor().jpc_connector.validateCursorVisibility();
-                cursor.getContentEditor().jpc_connector.repaint();
+                cursor.validateCursorVisibility();
+                if(cursor.getDistanceFrom00()==from && from!=0)
+                    cursor.setFromDistance(0);
             }
             return true;
         } else {
@@ -244,8 +245,7 @@ public class UserInputHandler {
                 if(Arrays.equals(virtual_interval.getIntervalSequences(), find)) {
                     cursor.selection.setFromDistance(find_index, find_index + find_as_str.length());
                     cursor.setXY(cursor.selection.get2XY());
-                    cursor.getContentEditor().jpc_connector.validateCursorVisibility();
-                    cursor.getContentEditor().jpc_connector.repaint();
+                    cursor.validateCursorVisibility();
                     return true;
                 }
             }

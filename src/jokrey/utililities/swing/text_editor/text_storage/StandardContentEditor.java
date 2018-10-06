@@ -1,9 +1,15 @@
 package jokrey.utililities.swing.text_editor.text_storage;
 
+import jokrey.utililities.swing.text_editor.JPC_Connector;
+
 /**
  * An implementation of the ContentEditor that implements it's abstract methods in the least invasive way possible.
  */
 public class StandardContentEditor extends ContentEditor {
+    public StandardContentEditor(JPC_Connector con) {
+        super(con);
+    }
+
     @Override public int getMaxLineCount() {
         return -1;
     }

@@ -1,6 +1,6 @@
 package jokrey.utililities.swing.text_editor.ui.additional;
 
-import jokrey.utililities.swing.text_editor.ui.JPCTextEditor;
+import jokrey.utililities.swing.text_editor.JPCTextEditor;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;

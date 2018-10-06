@@ -1,7 +1,7 @@
 package jokrey.utililities.swing.text_editor.ui;
 
+import jokrey.utililities.swing.text_editor.JPC_Connector;
 import jokrey.utililities.swing.text_editor.ui.core.Abstract_JPCTextEditor;
-import jokrey.utililities.swing.text_editor.ui.LayoutedFindAndReplaceFrame;
 import jokrey.utililities.swing.text_editor.text_storage.*;
 import jokrey.utililities.swing.text_editor.user_input.UserInputHandler;
 
@@ -10,15 +10,15 @@ import java.awt.datatransfer.DataFlavor;
 import java.net.MalformedURLException;
 
 /**
- * "Removes" the standard layouting option in ContentEditor and allows access to the user cursors layouting.
+ * "Removes" the standard layouting option in ContentEditor and allows access to the input_receiver cursors layouting.
  */
 public class JPCLayoutedTextEditor extends Abstract_JPCTextEditor {
     public JPCLayoutedTextEditor() {
-        user.cursor.setInsertLayout(content.getStandardLayout());
+        input_receiver.cursor.setInsertLayout(content.getStandardLayout());
     }
 
-    @Override public ContentEditor createContentEditor() {
-        return new StandardContentEditor() {
+    @Override public ContentEditor createContentEditor(JPC_Connector con) {
+        return new StandardContentEditor(con) {
             @Override public int getMaxLineCount() {
                 return -1;//endless
             }
@@ -48,7 +48,7 @@ public class JPCLayoutedTextEditor extends Abstract_JPCTextEditor {
     @Override public void setForeground(Color fg) {
         if(content==null||fg==null)return;
         super.setForeground(fg);
-        user._user_change_insert_layout(user.cursor.getValidInsertLayout().copy_ChangeFG(fg), true);
+        input_receiver._user_change_insert_layout(input_receiver.cursor.getValidInsertLayout().copy_ChangeFG(fg), true);
     }
 
     @Override public void setBackground(Color bg) {
@@ -57,16 +57,16 @@ public class JPCLayoutedTextEditor extends Abstract_JPCTextEditor {
         setCursorBackground(bg);
     }
     public void setCursorBackground(Color bg) {
-        user._user_change_insert_layout(user.cursor.getValidInsertLayout().copy_ChangeBG(bg), true);
+        input_receiver._user_change_insert_layout(input_receiver.cursor.getValidInsertLayout().copy_ChangeBG(bg), true);
     }
 
     @Override public void setFont(Font font) {
         if(content==null||font==null)return;
         super.setFont(font);
-        user._user_change_insert_layout(user.cursor.getValidInsertLayout().copy_ChangeFont(font), true);
+        input_receiver._user_change_insert_layout(input_receiver.cursor.getValidInsertLayout().copy_ChangeFont(font), true);
     }
 
     @Override public void start_find_replace_frame() {
-        new LayoutedFindAndReplaceFrame(this, this, content, user, user.cursor.getSelection().getIntervalSequences());
+        new LayoutedFindAndReplaceFrame(this, this, content, input_receiver, input_receiver.cursor.getSelection().getIntervalSequences());
     }
 }

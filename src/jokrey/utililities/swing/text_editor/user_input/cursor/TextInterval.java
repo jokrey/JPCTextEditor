@@ -156,13 +156,11 @@ public class TextInterval {
 		return new LinePart[0];
 	}
 	public void removeIntervalText(TextDisplayCursor parentCursor) {
-//		String interval = getIntervalText();
 		if(!isClear()) {
 			if(p1.getY()==p2.getY()) {
 				content.setLine(p1.getY(), content.getLine(p1.getY()).removeInterval(p1.getX(), p2.getX()));
 				parentCursor.setXY(p1.getXY());
 				clear();
-//				return interval;
 			} else {
 				content.setLine(p1.getY(), content.getLine(p1.getY()).removeTextFrom(p1.getX()));//, new Line(UTIL.getList(new CharSequence(.getXY(p1.getY()).toString().substring(0, p1.getX())))));
                 content.setLine(p2.getY(), content.getLine(p2.getY()).removeTextUpTo(p2.getX()));//, new Line(UTIL.getList(new CharSequence(.getXY(p2.getY()).toString().substring(p2.getX().getXY(p2.getY()).length())))));
@@ -212,13 +210,13 @@ public class TextInterval {
             rects.add(mid);
         } else {
             Rectangle start = new Rectangle(r1.x, r1.y, width - r1.x, r1.height);
-            Rectangle end = new Rectangle(text_spacing_left, r2.y, r2.x-text_spacing_left, r2.height);
-            Rectangle mid = new Rectangle(text_spacing_left, r1.y+r1.height, width-text_spacing_left, r2.y - (r1.y+r1.height));
+            Rectangle end = new Rectangle(text_spacing_left, r2.y, r2.x-(text_spacing_left-2), r2.height);
+            Rectangle mid = new Rectangle(text_spacing_left, r1.y+r1.height, width-(text_spacing_left-2), r2.y - (r1.y+r1.height));
             rects.add(start);
             rects.add(end);
             rects.add(mid);
         }
 
-        return rects.toArray(new Rectangle[rects.size()]);
+        return rects.toArray(new Rectangle[0]);
     }
 }

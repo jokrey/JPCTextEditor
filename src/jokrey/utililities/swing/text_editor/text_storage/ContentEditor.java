@@ -1,6 +1,7 @@
 package jokrey.utililities.swing.text_editor.text_storage;
 
-import jokrey.utililities.swing.text_editor.ui.core.JPC_Connector;
+import jokrey.utililities.swing.text_editor.JPC_Connector;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,8 +14,9 @@ import java.util.List;
  */
 public abstract class ContentEditor {
     private final List<Line> rawLines = new ArrayList<>();
-    public JPC_Connector jpc_connector;
-    public ContentEditor() {
+    protected final JPC_Connector jpc_connector;
+    public ContentEditor(JPC_Connector con) {
+        jpc_connector=con;
         rawLines.add(new Line(""));
         addContentListener(new ContentListener() {
             @Override public void textChanged(int firstAffectedLine, int lastAffectedLine, String text, boolean insert) {
@@ -91,7 +93,7 @@ public abstract class ContentEditor {
      */
     public abstract boolean isDragAndDropEnabled();
     /**
-     * @return whether or not the user is allowed to insert the str
+     * @return whether or not the input_receiver is allowed to insert the str
      */
     public abstract boolean allowInsertion(String str);
 
@@ -131,18 +133,42 @@ public abstract class ContentEditor {
 
 
     public void setText(String text) {
-        rawLines.clear();
-        for(String line:text.split("\n"))
-            rawLines.add(new Line(new LinePart(line)));
-        if(rawLines.isEmpty())
-            rawLines.add(new Line(getStandardLayout()));
-        fireEntireTextChanged();
+        setText(new LinePart(text, null));
     }
     public String getText() {
         StringBuilder text = new StringBuilder();
         for(Line unlayoutedLine:rawLines)
             text.append(unlayoutedLine.toString()).append("\n");
         return rawLines.get(rawLines.size()-1).isEmpty()?text.toString():text.deleteCharAt(text.length()-1).toString();//deleting last \n...
+    }
+    public void setText(LinePart... text) {
+        rawLines.clear();
+        List<LinePart> parts_in_current_line = new LinkedList<>();
+        for(LinePart part:text) {
+            if(part.txt.contains("\n")) {
+                String[] lines_in_part = part.txt.split("\n", -1);
+                parts_in_current_line.add(new LinePart(lines_in_part[0], part.layout));
+                rawLines.add(new Line(parts_in_current_line.toArray(new LinePart[0])));
+                for (int i = 1; i < lines_in_part.length - 1; i++)
+                    rawLines.add(new Line(new LinePart(lines_in_part[i], part.layout)));
+                parts_in_current_line.clear();
+                parts_in_current_line.add(new LinePart(lines_in_part[lines_in_part.length - 1], part.layout));
+            } else {
+                parts_in_current_line.add(part);
+            }
+        }
+        rawLines.add(new Line(parts_in_current_line.toArray(new LinePart[0])));
+        fireEntireTextChanged();
+    }
+    public LinePart[] getTextAsLineParts() {
+        LinkedList<LinePart> list = new LinkedList<>();
+        for(int i=0;i<rawLines.size();i++) {
+            for(int ii=0;ii<rawLines.get(i).partCount();ii++)
+                list.add(rawLines.get(i).getPart(ii));
+            if(i<rawLines.size()-1)
+                list.add(new LinePart("\n"));
+        }
+        return list.toArray(new LinePart[0]);
     }
     public String getTextFromLines(int... lines) {
         StringBuilder text = new StringBuilder();
@@ -235,20 +261,9 @@ public abstract class ContentEditor {
             this.hint=hint;
     }
     public final LinePart getHint() {return hint;}
-    public Line[] getLines() {
-        return rawLines.toArray(new Line[0]);
-    }
 
-    public LinePart[] getAsLineParts() {
-        LinkedList<LinePart> list = new LinkedList<>();
-        for(int i=0;i<rawLines.size();i++) {
-            for(int ii=0;ii<rawLines.get(i).partCount();ii++)
-                list.add(rawLines.get(i).getPart(ii));
-            if(i<rawLines.size()-1)
-                list.add(new LinePart("\n"));
-        }
-        return list.toArray(new LinePart[0]);
+    public void validateCursorVisibility() {
+        jpc_connector.validateCursorVisibility();
     }
-
 }
 

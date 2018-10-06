@@ -1,9 +1,9 @@
 package jokrey.utililities.swing.text_editor.user_input;
 
-import jokrey.utililities.swing.text_editor.ui.JPCTextEditor;
-import jokrey.utililities.swing.text_editor.ui.JPCWrappingTextEditor;
-import jokrey.utililities.swing.text_editor.ui.JPC_Scroller;
-import jokrey.utililities.swing.text_editor.ui.core.JPC_Connector;
+import jokrey.utililities.swing.text_editor.JPCTextEditor;
+import jokrey.utililities.swing.text_editor.JPCWrappingTextEditor;
+import jokrey.utililities.swing.text_editor.JPC_Connector;
+import jokrey.utililities.swing.text_editor.ui.core.JPC_Scroller;
 import jokrey.utililities.swing.text_editor.text_storage.Line;
 
 import javax.swing.*;
@@ -193,16 +193,6 @@ public class ContextFunctionalityLibrary {
 
     //WRAPPING EDITOR ONLY
 
-//    public static Action getFunctionality_TOGGLE_WRAPPING(JPC_Connector jpc_connector, WrappingContentEditor content) {
-//        return new AbstractAction("toggle wrapping") {
-//            {putValue("shortcut", KeyStroke.getKeyStroke(KeyEvent.VK_W, InputEvent.CTRL_MASK));
-//                putValue("shortcut_name", "ctrl+w");}
-//            @Override public void actionPerformed(ActionEvent e) {
-//                content.setLineWrap(!content.isLineWrapEnabled());
-//                jpc_connector.repaint();
-//            }
-//        };
-//    }
     public static Action getFunctionality_TOGGLE_WRAPPING(JPCWrappingTextEditor editor) {
         return new AbstractAction("toggle wrapping") {
             {putValue("shortcut", KeyStroke.getKeyStroke(KeyEvent.VK_W, InputEvent.CTRL_MASK));
@@ -302,7 +292,7 @@ public class ContextFunctionalityLibrary {
 
     //helper
 
-    public static Color getNextColor(Color clr) {
+    private static Color getNextColor(Color clr) {
         if(clr == null || clr.equals(new Color(238, 238, 238))) 										return Color.BLACK;
         else if(clr.equals(Color.BLACK)) 			return Color.BLUE;
         else if(clr.equals(Color.BLUE)) 			return Color.CYAN;
