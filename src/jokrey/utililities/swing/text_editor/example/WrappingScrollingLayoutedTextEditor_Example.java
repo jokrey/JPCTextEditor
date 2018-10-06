@@ -12,7 +12,7 @@ import java.awt.*;
 
 /**
  * Example of a wrapping text editor, with extensive layout functionality.
- * This example is the one that allows the end-input_receiver the access to the most functionality.
+ * This example is the one that allows the end-user the access to the most functionality.
  *     Namely the functionality of self controlled nested layouts.
  */
 public class WrappingScrollingLayoutedTextEditor_Example extends JPanel {

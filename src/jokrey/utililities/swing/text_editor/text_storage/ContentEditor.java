@@ -93,7 +93,7 @@ public abstract class ContentEditor {
      */
     public abstract boolean isDragAndDropEnabled();
     /**
-     * @return whether or not the input_receiver is allowed to insert the str
+     * @return whether or not the user is allowed to insert the str
      */
     public abstract boolean allowInsertion(String str);
 

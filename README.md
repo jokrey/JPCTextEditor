@@ -6,6 +6,7 @@ It allows most common text editor functionality in an easy to use fashion.
 ### Installing
 
 Clone the repository with the 'git clone' command
+Additionally there are a number of dependencies on the java-utility-algorithms repository.
 
 ## Features
 

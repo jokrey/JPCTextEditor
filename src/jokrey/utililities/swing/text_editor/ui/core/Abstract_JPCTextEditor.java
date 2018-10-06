@@ -17,7 +17,7 @@ import java.awt.event.ComponentEvent;
 
 /**
  * Abstract JPCEditor.
- * Already has all the functionality, but does only provide minimal access to content and input_receiver.
+ * Already has all the functionality, but does only provide minimal access to content and user.
  * Subclasses can extend that as they choose(the field is protected and therefore allows unlimited access)
  *
  * Functionality(most is just optional):
@@ -35,9 +35,9 @@ import java.awt.event.ComponentEvent;
  *          custom, anytime, anywhere, nested layouts(as portrayed in example.LayoutedTextEditor)
  *      - setting editablity of the text. (It can also be read only)
  *      - setting the selectable state. Would for example make it impossible to copy text out.
- *      - "hint"s. If the text editor is empty, you can display a custom text in a custom layout that can be an indication as to what the input_receiver should do now.
- *      - line prefixes. Will normally be the line number, but can be be changed by a input_receiver.
- *      - simple syntax highlighting (more complex syntax highlighting requires a little work by a potential input_receiver, but is possible by overriding recalculateDisplayLines)
+ *      - "hint"s. If the text editor is empty, you can display a custom text in a custom layout that can be an indication as to what the user should do now.
+ *      - line prefixes. Will normally be the line number, but can be be changed by a user.
+ *      - simple syntax highlighting (more complex syntax highlighting requires a little work by a potential user, but is possible by overriding recalculateDisplayLines)
  *
  *
  *
@@ -54,8 +54,6 @@ public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Conne
     }
 
     //Outside referenced UI Components....
-//    public final JScrollPane scrollPane;
-//    public final JPanel textPaintDisplay;
     public Abstract_JPCTextEditor() {
         setLayout(new BorderLayout());
         setForeground(Color.BLACK);

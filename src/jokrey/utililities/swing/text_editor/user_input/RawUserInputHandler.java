@@ -18,7 +18,7 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 /**
- * Listens to input_receiver input and relays that input to the UserInputHandler.
+ * Listens to user input and relays that input to the UserInputHandler.
  * Should and can largely not be touched.
  */
 public class RawUserInputHandler extends MouseAdapter implements KeyListener, FocusListener/*, DragGestureListener*/ {

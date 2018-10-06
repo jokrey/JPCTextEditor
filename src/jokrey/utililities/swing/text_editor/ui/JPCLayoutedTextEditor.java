@@ -10,7 +10,7 @@ import java.awt.datatransfer.DataFlavor;
 import java.net.MalformedURLException;
 
 /**
- * "Removes" the standard layouting option in ContentEditor and allows access to the input_receiver cursors layouting.
+ * "Removes" the standard layouting option in ContentEditor and allows access to the user cursors layouting.
  */
 public class JPCLayoutedTextEditor extends Abstract_JPCTextEditor {
     public JPCLayoutedTextEditor() {

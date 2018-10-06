@@ -17,8 +17,8 @@ import java.util.Arrays;
 import java.util.LinkedList;
 
 /**
- * THE logical input_receiver input handling class.
- * Anything the input_receiver does should be tunneled through this class.
+ * THE logical user input handling class.
+ * Anything the user does should be tunneled through this class.
  * It will make the action undoable and redo-able and provide additional features as they become available.
  */
 public class UserInputHandler {

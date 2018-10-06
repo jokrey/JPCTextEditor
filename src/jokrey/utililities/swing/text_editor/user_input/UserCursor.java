@@ -7,7 +7,7 @@ import jokrey.utililities.swing.text_editor.user_input.cursor.TextInterval;
 import java.awt.*;
 
 /**
- * THE input_receiver cursor. Should not be instantiated from the outside and only be used by UserInputHandler.
+ * THE user cursor. Should not be instantiated from the outside and only be used by UserInputHandler.
  */
 public class UserCursor extends TextDisplayCursor {
 	private LinePartLayout insert_layout = null; //null means some standard layout
