@@ -13,6 +13,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.event.*;
 import java.io.File;
 import java.io.Reader;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -51,7 +52,7 @@ public class RawUserInputHandler extends MouseAdapter implements KeyListener, Fo
 
 	
 
-//double click selection
+
 
 //INSERTION AND KEYBOARD INPUT============================================================
 	@Override public void keyTyped(KeyEvent e) {
@@ -68,10 +69,11 @@ public class RawUserInputHandler extends MouseAdapter implements KeyListener, Fo
         } else if(!ctrlPressed || altPressed) {//any other character. Also, to savely allow Keyboard shortcuts, ignore if ctrl is pressed
         	String toInsert = Character.toString(e.getKeyChar());
             user_input_handler._user_insert(toInsert);
-        } else if(ctrlPressed) {
-//        	ctrlPressed=false;  //why was this ever here? -> sometimes on focus lost this wasn't updated, now it is.
-        	return;
         }
+        //else if(ctrlPressed) {
+//        	ctrlPressed=false;  //why was this ever here? -> sometimes on focus lost this wasn't updated, now it is.
+        //	return;
+        //}
 	}
 
 	@Override public void keyReleased(KeyEvent e) {
@@ -104,38 +106,50 @@ public class RawUserInputHandler extends MouseAdapter implements KeyListener, Fo
 					shiftPressed = true;
 				return;
 			case KeyEvent.VK_LEFT:
-				user_input_handler.cursor.x_minus(1);
-				calcNewCursorPosAndNewSelection(user_input_handler.cursor.getXY());
+                if(!user_input_handler.cursor.isSelectionClear() && !shiftPressed) {
+                    user_input_handler.cursor.setXY(user_input_handler.cursor.selection.get1XY());
+                } else {
+                    user_input_handler.cursor.x_minus(1);
+                }
+                calcNewCursorPosAndNewSelection(user_input_handler.cursor.getXY());
 				return;
 			case KeyEvent.VK_RIGHT:
-				user_input_handler.cursor.x_plus(1);
-				calcNewCursorPosAndNewSelection(user_input_handler.cursor.getXY());
+			    if(!user_input_handler.cursor.isSelectionClear() && !shiftPressed) {
+                    user_input_handler.cursor.setXY(user_input_handler.cursor.selection.get2XY());
+                } else {
+                    user_input_handler.cursor.x_plus(1);
+                }
+                calcNewCursorPosAndNewSelection(user_input_handler.cursor.getXY());
 				return;
+            case KeyEvent.VK_UP:
+                if(!user_input_handler.cursor.isSelectionClear() && !shiftPressed) {
+                    user_input_handler.cursor.setXY(user_input_handler.cursor.selection.get1XY());
+                } else {
+                    Point oldCursorLoc_up = user_input_handler.cursor.getLocation(jpc.getTextSpacingLeft(), jpc.getTextSpacingTop());
+                    Point newLoc_up;
+                    for (int y_counter = 1; (newLoc_up = user_input_handler.cursor.getLocation(jpc.getTextSpacingLeft(), jpc.getTextSpacingTop())).equals(oldCursorLoc_up); y_counter++) {
+                        user_input_handler.cursor.setPositionTo(new Point(newLoc_up.x, newLoc_up.y - y_counter), jpc.getTextSpacingLeft(), jpc.getTextSpacingTop());
+                        if (user_input_handler.cursor.getY() == 0 && user_input_handler.cursor.getX() == 0)
+                            break;
+                    }
+                }
+                calcNewCursorPosAndNewSelection(user_input_handler.cursor.getXY());
+                return;
+            case KeyEvent.VK_DOWN:
+                if(!user_input_handler.cursor.isSelectionClear() && !shiftPressed) {
+                    user_input_handler.cursor.setXY(user_input_handler.cursor.selection.get2XY());
+                } else {
+                    Point oldCursorLoc_down = user_input_handler.cursor.getLocation(jpc.getTextSpacingLeft(), jpc.getTextSpacingTop());
+                    Point newLoc_down;
+                    for (int y_counter = 1; (newLoc_down = user_input_handler.cursor.getLocation(jpc.getTextSpacingLeft(), jpc.getTextSpacingTop())).equals(oldCursorLoc_down); y_counter++) {
+                        user_input_handler.cursor.setPositionTo(new Point(newLoc_down.x, newLoc_down.y + y_counter), jpc.getTextSpacingLeft(), jpc.getTextSpacingTop());
+                        if (user_input_handler.cursor.getY() == content.getLineCount() - 1 && user_input_handler.cursor.getX() == content.getLineLength(user_input_handler.cursor.getY()))
+                            break;
+                    }
+                }
+                calcNewCursorPosAndNewSelection(user_input_handler.cursor.getXY());
+                return;
 		}
-
-        try {
-            if (e.getKeyCode() == KeyEvent.VK_UP) {
-                Point oldLoc = user_input_handler.cursor.getLocation(jpc.getTextSpacingLeft(), jpc.getTextSpacingTop());
-                Point newLoc;
-                for (int y_counter = 1; (newLoc = user_input_handler.cursor.getLocation(jpc.getTextSpacingLeft(), jpc.getTextSpacingTop())).equals(oldLoc); y_counter++) {
-                    user_input_handler.cursor.setPositionTo(new Point(newLoc.x, newLoc.y - y_counter), jpc.getTextSpacingLeft(), jpc.getTextSpacingTop());
-                    if (user_input_handler.cursor.getY() == 0 && user_input_handler.cursor.getX() == 0)
-                        break;
-                }
-                calcNewCursorPosAndNewSelection(user_input_handler.cursor.getXY());
-            } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-                Point oldLoc = user_input_handler.cursor.getLocation(jpc.getTextSpacingLeft(), jpc.getTextSpacingTop());
-                Point newLoc;
-                for (int y_counter = 1; (newLoc = user_input_handler.cursor.getLocation(jpc.getTextSpacingLeft(), jpc.getTextSpacingTop())).equals(oldLoc); y_counter++) {
-                    user_input_handler.cursor.setPositionTo(new Point(newLoc.x, newLoc.y + y_counter), jpc.getTextSpacingLeft(), jpc.getTextSpacingTop());
-                    if (user_input_handler.cursor.getY() == content.getLineCount() - 1 && user_input_handler.cursor.getX() == content.getLineLength(user_input_handler.cursor.getY()))
-                        break;
-                }
-                calcNewCursorPosAndNewSelection(user_input_handler.cursor.getXY());
-            }
-        } catch(NeverDrawnException ex) {//basically guaranteed that it was drawn at this time.
-		    ex.printStackTrace();
-        }
 	}
 	private void addTransferHandler(JComponent display) {
         display.setTransferHandler(new TransferHandler() {
@@ -395,11 +409,7 @@ public class RawUserInputHandler extends MouseAdapter implements KeyListener, Fo
         jpc.repaint();
 	}
 	void calcNewCursorPosAndNewSelection(Point mousePos) {
-        try {
-            calcNewCursorPosAndNewSelection(new TextDisplayCursor(content, mousePos, jpc.getTextSpacingLeft(), jpc.getTextSpacingTop()).getXY());
-        } catch (NeverDrawnException e) {//if called with a mousePos, it is basically guaranteed that it has been drawn
-            e.printStackTrace();
-        }
+	    calcNewCursorPosAndNewSelection(new TextDisplayCursor(content, mousePos, jpc.getTextSpacingLeft(), jpc.getTextSpacingTop()).getXY());
     }
 	void calcNewCursorPosAndNewSelection(int... cursor_xy) {
 		if(shiftPressed||leftMousePressed) {
@@ -410,8 +420,8 @@ public class RawUserInputHandler extends MouseAdapter implements KeyListener, Fo
 		} else if(!export_dragging) {
 			user_input_handler.cursor.clearSelection();
 		}
-        if(!content.isSelectionEnabled()) {
-			user_input_handler.cursor.selection.clear();
+        if(!content.isSelectionEnabled()) { //not else
+			user_input_handler.cursor.clearSelection();
 		}
 
 		jpc.validateCursorVisibility();
