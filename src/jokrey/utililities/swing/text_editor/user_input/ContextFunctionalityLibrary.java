@@ -170,8 +170,6 @@ public class ContextFunctionalityLibrary {
             {putValue("shortcut", KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
             putValue("shortcut_name", "ctrl+o");}
             @Override public void actionPerformed(ActionEvent e) {
-                System.out.println("up first line: "+jpc_connector.getFirstVisibleLine());
-                System.out.println("up last line: "+jpc_connector.getLastVisibleLine());
                 scroller.setFirstVisibleLine_asap(jpc_connector.getFirstVisibleLine()-(jpc_connector.getLastVisibleLine()-jpc_connector.getFirstVisibleLine()));
                 jpc_connector.repaint();
             }
@@ -182,7 +180,6 @@ public class ContextFunctionalityLibrary {
             {putValue("shortcut", KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.CTRL_MASK));
             putValue("shortcut_name", "ctrl+l");}
             @Override public void actionPerformed(ActionEvent e) {
-                System.out.println("down last line: "+jpc_connector.getLastVisibleLine());
                 scroller.setFirstVisibleLine_asap(jpc_connector.getLastVisibleLine());
                 jpc_connector.repaint();
             }
