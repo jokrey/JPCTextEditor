@@ -147,7 +147,4 @@ public class LinePart {
     public void updateFontMetrics(FontMetricsSupplier display, LinePartLayout.Instantiated fallback) {
         fm=display.getFontMetrics(LinePartLayout.valid(layout, fallback).font);
     }
-    public void invalidatePixelCache() {
-        fm=null;
-    }
 }
