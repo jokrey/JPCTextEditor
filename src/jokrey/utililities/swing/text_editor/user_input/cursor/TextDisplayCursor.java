@@ -212,7 +212,7 @@ public class TextDisplayCursor {
 	}
 
 	@Override public String toString() {
-		return getX()+", "+getY();
+		return "["+getClass().getSimpleName()+": "+getX()+", "+getY()+"]";
 	}
 	@Override public boolean equals(Object obj) {
 		try {
