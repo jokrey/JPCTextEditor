@@ -1,9 +1,8 @@
 package jokrey.utililities.swing.text_editor.user_input.cursor;
 
-import jokrey.utililities.swing.text_editor.text_storage.LinePart;
-import jokrey.utililities.swing.text_editor.text_storage.Line;
 import jokrey.utililities.swing.text_editor.text_storage.ContentEditor;
-import jokrey.utililities.swing.text_editor.text_storage.NeverDrawnException;
+import jokrey.utililities.swing.text_editor.text_storage.Line;
+import jokrey.utililities.swing.text_editor.text_storage.LinePart;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -86,7 +85,7 @@ public class TextInterval {
     public boolean isOnSelection(TextDisplayCursor cursor) {
 		return p1.getDistanceFrom00() <= cursor.getDistanceFrom00() && cursor.getDistanceFrom00() <= p2.getDistanceFrom00();
 	}
-	public boolean isOnSelection(Point point, int text_spacing_left, int width, int text_spacing_top) throws NeverDrawnException {
+	public boolean isOnSelection(Point point, int text_spacing_left, int width, int text_spacing_top) {
 		Rectangle[] rects = getSelectionBounds(text_spacing_left, width, text_spacing_top);
 		for(Rectangle rect:rects)
 			if(rect.contains(point))
@@ -186,7 +185,7 @@ public class TextInterval {
 
 	///DRAWING DRAWING
 
-    public void draw(Graphics2D g, Color c, int text_spacing_left, int width, int text_spacing_top) throws NeverDrawnException {
+    public void draw(Graphics2D g, Color c, int text_spacing_left, int width, int text_spacing_top) {
         if(!content.isSelectionEnabled() || isClear())return;
         Composite oldC = g.getComposite();
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.35f));
@@ -197,7 +196,7 @@ public class TextInterval {
         }
         g.setComposite(oldC);
     }
-    private Rectangle[] getSelectionBounds(int text_spacing_left, int width, int text_spacing_top) throws NeverDrawnException {
+    private Rectangle[] getSelectionBounds(int text_spacing_left, int width, int text_spacing_top) {
         ArrayList<Rectangle> rects = new ArrayList<>();
 
         validateP1SmallerP2();

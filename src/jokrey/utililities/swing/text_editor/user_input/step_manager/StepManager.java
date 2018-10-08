@@ -2,11 +2,11 @@ package jokrey.utililities.swing.text_editor.user_input.step_manager;
 
 import jokrey.utililities.swing.text_editor.text_storage.LinePart;
 import jokrey.utililities.swing.text_editor.user_input.UserCursor;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.regex.Pattern;
 
 /**

@@ -23,12 +23,12 @@ public class WrappingContentEditor extends StandardContentEditor {
         }
     }
 
-    @Override public void recalculateDisplayLines() throws NeverDrawnException {
+    @Override public void recalculateDisplayLines() {
         displayLines.clear();
         recalculateDisplayLine(-1);//will run into else branch and recalculate all
     }
 
-    @Override public void recalculateDisplayLine(int line) throws NeverDrawnException {
+    @Override public void recalculateDisplayLine(int line) {
         CallCountMarker.mark_call_print("recalculateDisplayLines");
         if (isLineWrapEnabled()) {
             if(displayLines.size()==getLineCount() && line>=0 && line<getLineCount()) {
@@ -61,11 +61,7 @@ public class WrappingContentEditor extends StandardContentEditor {
 
 
 
-    /**
-     * @throws NeverDrawnException if the specified lines size cannot be calculated.
-     * Should not happen if recalculateDisplayLines was called using the asap queue.
-     */
-    private int[] getAutomaticLineWrapsFor(Line rawLine, int text_spacing_left, int width) throws NeverDrawnException {
+    private int[] getAutomaticLineWrapsFor(Line rawLine, int text_spacing_left, int width) {
         rawLine.updatePixelKnowledge(jpc_connector, getStandardLayout());
         int horizontal_space = width - text_spacing_left;
         if(rawLine.getPixelWidth() <= horizontal_space) {
@@ -93,7 +89,7 @@ public class WrappingContentEditor extends StandardContentEditor {
 
 
 
-    private int getNextLineWrap_butgobacktolastspace(Line remaining, int remaining_space) throws NeverDrawnException {
+    private int getNextLineWrap_butgobacktolastspace(Line remaining, int remaining_space) {
         int elapsedPixels = 0;
         int elapsedChars = 0;
         LinePart[] parts = remaining.getCopyOfInternalParts();

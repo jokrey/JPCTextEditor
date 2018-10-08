@@ -1,6 +1,9 @@
 package jokrey.utililities.swing.text_editor.user_input;
 
-import jokrey.utililities.swing.text_editor.text_storage.*;
+import jokrey.utililities.swing.text_editor.text_storage.ContentEditor;
+import jokrey.utililities.swing.text_editor.text_storage.Line;
+import jokrey.utililities.swing.text_editor.text_storage.LinePart;
+import jokrey.utililities.swing.text_editor.text_storage.LinePartLayout;
 import jokrey.utililities.swing.text_editor.user_input.cursor.TextDisplayCursor;
 import jokrey.utililities.swing.text_editor.user_input.cursor.TextInterval;
 
@@ -50,7 +53,7 @@ public class UserCursor extends TextDisplayCursor {
     		content.fireUserCursorPosChanged(xy[0], xy[1]);
 	}
 
-	public void draw(Graphics2D g, int text_spacing_left, int width, int text_spacing_top, boolean drawSelection, boolean drawCursor) throws NeverDrawnException {
+	public void draw(Graphics2D g, int text_spacing_left, int width, int text_spacing_top, boolean drawSelection, boolean drawCursor) {
 	    if(drawSelection)
         	selection.draw(g, Color.BLUE.brighter(), text_spacing_left, width, text_spacing_top);
 	    if(drawCursor) {

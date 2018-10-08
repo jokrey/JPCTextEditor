@@ -1,7 +1,6 @@
 package jokrey.utililities.swing.text_editor.text_storage;
 
 import jokrey.utililities.swing.text_editor.JPC_Connector;
-import jokrey.utililities.swing.text_editor.text_storage.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,12 +47,12 @@ public class SingleLineHighlighter extends StandardContentEditor {
             return new Line[]{getLine(line_number)};
     }
 
-    @Override public void recalculateDisplayLines() throws NeverDrawnException {
+    @Override public void recalculateDisplayLines()  {
         displayLines.clear();
         recalculateDisplayLine(-1);//will run into else branch and recalculate all
     }
 
-    @Override public void recalculateDisplayLine(int line) throws NeverDrawnException {
+    @Override public void recalculateDisplayLine(int line)  {
 //        if (block_recalculateDisplayLines) return;
         if(displayLines.size()==getLineCount()) {
 //            for (int i = firstAffectedLine; i <= lastAffectedLine; i++) {

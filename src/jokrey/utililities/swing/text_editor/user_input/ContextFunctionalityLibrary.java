@@ -3,8 +3,8 @@ package jokrey.utililities.swing.text_editor.user_input;
 import jokrey.utililities.swing.text_editor.JPCTextEditor;
 import jokrey.utililities.swing.text_editor.JPCWrappingTextEditor;
 import jokrey.utililities.swing.text_editor.JPC_Connector;
-import jokrey.utililities.swing.text_editor.ui.core.JPC_Scroller;
 import jokrey.utililities.swing.text_editor.text_storage.Line;
+import jokrey.utililities.swing.text_editor.ui.core.JPC_Scroller;
 
 import javax.swing.*;
 import java.awt.*;

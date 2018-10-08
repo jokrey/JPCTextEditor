@@ -1,7 +1,7 @@
 package jokrey.utililities.swing.text_editor.text_storage;
 
-import jokrey.utilities.encoder.string.UniversalStringEncoder;
 import jokrey.utilities.encoder.string.LIse;
+import jokrey.utilities.encoder.string.UniversalStringEncoder;
 
 import java.awt.*;
 import java.util.List;

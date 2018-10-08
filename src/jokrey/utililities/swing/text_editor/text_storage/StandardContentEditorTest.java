@@ -2,7 +2,7 @@ package jokrey.utililities.swing.text_editor.text_storage;
 
 import jokrey.utililities.swing.text_editor.ui.JPCTextField;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class StandardContentEditorTest {
     @org.junit.Test

@@ -4,6 +4,7 @@ import jokrey.utililities.swing.text_editor.JPCWrappingTextEditor;
 import jokrey.utililities.swing.text_editor.JPC_Connector;
 import jokrey.utililities.swing.text_editor.text_storage.ContentEditor;
 import jokrey.utililities.swing.text_editor.text_storage.WrappingContentEditor;
+
 import java.awt.*;
 
 public class JPCSimpleWrappingTextEditor extends JPCSimpleTextEditor implements JPCWrappingTextEditor {

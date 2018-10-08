@@ -25,5 +25,5 @@ public class StandardContentEditor extends ContentEditor {
     @Override public Line[] getDisplayLine(int line_number) {
         return new Line[]{getLine(line_number)};
     }
-    @Override public void recalculateDisplayLine(int line) throws NeverDrawnException { }
+    @Override public void recalculateDisplayLine(int line)  { }
 }

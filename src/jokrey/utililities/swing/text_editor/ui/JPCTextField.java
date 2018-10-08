@@ -1,13 +1,13 @@
 package jokrey.utililities.swing.text_editor.ui;
 
 import jokrey.utililities.swing.text_editor.JPC_Connector;
-import jokrey.utililities.swing.text_editor.ui.core.Abstract_JPCTextEditor;
 import jokrey.utililities.swing.text_editor.text_storage.ContentEditor;
 import jokrey.utililities.swing.text_editor.text_storage.LinePrefix;
 import jokrey.utililities.swing.text_editor.text_storage.StandardContentEditor;
+import jokrey.utililities.swing.text_editor.ui.core.Abstract_JPCTextEditor;
 import jokrey.utililities.swing.text_editor.user_input.UserInputHandler;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class JPCTextField extends Abstract_JPCTextEditor {
     public JPCTextField() {

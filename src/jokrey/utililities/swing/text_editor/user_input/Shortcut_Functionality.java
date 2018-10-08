@@ -1,7 +1,6 @@
 package jokrey.utililities.swing.text_editor.user_input;
 
 import javax.swing.*;
-import java.awt.*;
 
 /**
  * Allows to add all kinds of keyboard shortcut actions to the text editor.

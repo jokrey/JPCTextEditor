@@ -1,11 +1,11 @@
 package jokrey.utililities.swing.text_editor.example;
 
 import jokrey.utililities.swing.text_editor.JPC_Connector;
-import jokrey.utililities.swing.text_editor.ui.JPCSimpleTextEditor;
-import jokrey.utililities.swing.text_editor.ui.core.JPC_Scroller;
-import jokrey.utililities.swing.text_editor.text_storage.SingleLineHighlighter;
 import jokrey.utililities.swing.text_editor.text_storage.ContentEditor;
 import jokrey.utililities.swing.text_editor.text_storage.LinePartLayout;
+import jokrey.utililities.swing.text_editor.text_storage.SingleLineHighlighter;
+import jokrey.utililities.swing.text_editor.ui.JPCSimpleTextEditor;
+import jokrey.utililities.swing.text_editor.ui.core.JPC_Scroller;
 import jokrey.utililities.swing.text_editor.user_input.ContextFunctionalityLibrary;
 
 import java.awt.*;

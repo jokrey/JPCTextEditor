@@ -1,12 +1,12 @@
 package jokrey.utililities.swing.text_editor.user_input;
 
+import jokrey.utililities.swing.text_editor.text_storage.ContentEditor;
 import jokrey.utililities.swing.text_editor.text_storage.Line;
+import jokrey.utililities.swing.text_editor.text_storage.LinePart;
 import jokrey.utililities.swing.text_editor.text_storage.LinePartLayout;
 import jokrey.utililities.swing.text_editor.user_input.cursor.TextInterval;
 import jokrey.utililities.swing.text_editor.user_input.step_manager.Step;
 import jokrey.utililities.swing.text_editor.user_input.step_manager.StepManager;
-import jokrey.utililities.swing.text_editor.text_storage.ContentEditor;
-import jokrey.utililities.swing.text_editor.text_storage.LinePart;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,9 +1,10 @@
 package jokrey.utililities.swing.text_editor.user_input.cursor;
 
-import jokrey.utililities.swing.text_editor.text_storage.*;
+import jokrey.utililities.swing.text_editor.text_storage.ContentEditor;
+import jokrey.utililities.swing.text_editor.text_storage.Line;
+import jokrey.utililities.swing.text_editor.text_storage.LinePart;
 
 import java.awt.*;
-import java.util.Arrays;
 
 /**
  * A cursor position in the provided ContentEditor.
@@ -22,7 +23,7 @@ public class TextDisplayCursor {
     	this(content);
     	setXY(x, y);
 	}
-	public TextDisplayCursor(ContentEditor content, Point pos, int text_spacing_left, int text_spacing_top) throws NeverDrawnException {
+	public TextDisplayCursor(ContentEditor content, Point pos, int text_spacing_left, int text_spacing_top) {
 		this(content);
 		setPositionTo(pos, text_spacing_left, text_spacing_top);
 	}
@@ -31,7 +32,7 @@ public class TextDisplayCursor {
      * Returns the shape of the cursor at it's currently position
      * Works in regard to the display height at that position.
      */
-    public Rectangle getShape(int text_spacing_left, int text_spacing_top) throws NeverDrawnException {
+    public Rectangle getShape(int text_spacing_left, int text_spacing_top) {
         int elapsedYPixels = text_spacing_top;
         for (int i = 0; i < content.getLineCount(); i++) {
             int elapsedChars_counter = 0;
@@ -73,14 +74,14 @@ public class TextDisplayCursor {
     /**
      * Extracts the position from the cursor shape.
      */
-    public Point getLocation(int text_spacing_left, int text_spacing_top) throws NeverDrawnException {
+    public Point getLocation(int text_spacing_left, int text_spacing_top) {
         return getShape(text_spacing_left, text_spacing_top).getLocation();
 	}
 
     /**
      * Sets the cursors x and y position to the closest match to the provided Point p.
      */
-	public void setPositionTo(Point p, int text_spacing_left, int text_spacing_top) throws NeverDrawnException {
+	public void setPositionTo(Point p, int text_spacing_left, int text_spacing_top) {
         if(p.y < 0) {
             setXY(0, 0);
             return;

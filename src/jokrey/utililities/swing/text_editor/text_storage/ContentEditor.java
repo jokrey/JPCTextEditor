@@ -54,10 +54,8 @@ public abstract class ContentEditor {
      * Called if something substantial changed.
      * Used for example by the wrapping ContentEditor.
      * Recalculate all display lines
-     *
-     * @throws NeverDrawnException, because this caluclation might require the display to be fully drawn.
      */
-    public void recalculateDisplayLines() throws NeverDrawnException {
+    public void recalculateDisplayLines() {
 //        if(block_recalculateDisplayLines)return;
         recalculateDisplayLines(0, getLineCount()-1);
     }
@@ -67,9 +65,8 @@ public abstract class ContentEditor {
      *
      * @param firstAffectedLine first line to recalculate
      * @param lastAffectedLine last line to recalculate
-     * @throws NeverDrawnException, because this caluclation might require the display to be fully drawn.
      */
-    public void recalculateDisplayLines(int firstAffectedLine, int lastAffectedLine) throws NeverDrawnException {
+    public void recalculateDisplayLines(int firstAffectedLine, int lastAffectedLine) {
         for (int i = firstAffectedLine; i <= lastAffectedLine; i++)
             recalculateDisplayLine(i);
     }
@@ -226,14 +223,14 @@ public abstract class ContentEditor {
             return 0;
         return rawLines.get(line_number).length();
     }
-    public int getLinePixelWidth(int line_number) throws NeverDrawnException {
+    public int getLinePixelWidth(int line_number) {
         return getLine(line_number).getPixelWidth();
     }
-    public int getLinePixelWidth(int line_number, int start, int end) throws NeverDrawnException {
+    public int getLinePixelWidth(int line_number, int start, int end) {
         Line line = getLine(line_number);
         return line.getPixelWidth(start, Math.min(end, line.length()));
     }
-    public int getLinePixelHeight(int line_number) throws NeverDrawnException {
+    public int getLinePixelHeight(int line_number) {
         return getLine(line_number).getPixelHeight();
     }
 

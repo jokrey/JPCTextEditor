@@ -234,7 +234,7 @@ public class Line {
 
     //Pixel information for drawing..
 
-    public int getPixelWidth() throws NeverDrawnException {
+    public int getPixelWidth()  {
         int counter = 0;
 //        StringBuilder elapsedChars = new StringBuilder();
         for(int i=0;i<partCount();i++) {
@@ -244,7 +244,7 @@ public class Line {
         }
         return counter;
     }
-    public int getPixelWidth(int x1, int x2) throws NeverDrawnException {
+    public int getPixelWidth(int x1, int x2)  {
         int counter = 0;
 //        StringBuilder elapsedChars = new StringBuilder();
         LinePart[] subsequs = getSubSequences(x1, x2);
@@ -254,7 +254,7 @@ public class Line {
         }
         return counter;
     }
-    public int getPixelHeight() throws NeverDrawnException {
+    public int getPixelHeight()  {
         int highest = Integer.MIN_VALUE;
         for(int i=0;i<partCount();i++) {
             LinePart lp = getPart(i);

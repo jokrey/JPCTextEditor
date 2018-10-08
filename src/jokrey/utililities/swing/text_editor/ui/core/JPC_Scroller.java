@@ -1,8 +1,6 @@
 package jokrey.utililities.swing.text_editor.ui.core;
 
-import jokrey.utililities.swing.text_editor.ui.core.Abstract_JPCTextEditor;
 import jokrey.utililities.swing.text_editor.ui.util.NicerScrollBarUI;
-import jokrey.utililities.swing.text_editor.user_input.cursor.TextDisplayCursor;
 
 import javax.swing.*;
 import java.awt.*;

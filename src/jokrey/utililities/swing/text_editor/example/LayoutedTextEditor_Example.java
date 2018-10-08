@@ -1,8 +1,9 @@
 package jokrey.utililities.swing.text_editor.example;
 
+import jokrey.utililities.swing.text_editor.text_storage.ContentListener;
+import jokrey.utililities.swing.text_editor.text_storage.LinePartLayout;
 import jokrey.utililities.swing.text_editor.ui.JPCLayoutedTextEditor;
 import jokrey.utililities.swing.text_editor.ui.JPCLayoutedWrappingTextEditor;
-import jokrey.utililities.swing.text_editor.text_storage.*;
 import jokrey.utililities.swing.text_editor.ui.additional.CustomEditorConnector;
 import jokrey.utililities.swing.text_editor.ui.additional.LayoutChangingPanel;
 import jokrey.utililities.swing.text_editor.ui.additional.LoadStorePanel;
