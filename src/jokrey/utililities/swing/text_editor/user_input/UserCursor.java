@@ -27,6 +27,9 @@ public class UserCursor extends TextDisplayCursor {
 	public final TextInterval selection;
 		public TextInterval getSelection(){return selection;}
 		public void clearSelection() {selection.clear();}
+		public boolean isSelectionClear() {
+			return selection.isClear();
+		}
 	private final ContentEditor content;
 		ContentEditor getContentEditor() {
 		    return content;
