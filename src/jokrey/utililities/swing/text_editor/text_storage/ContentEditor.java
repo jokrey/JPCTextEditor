@@ -137,9 +137,9 @@ public abstract class ContentEditor {
     }
     public String getText() {
         StringBuilder text = new StringBuilder();
-        for(Line unlayoutedLine:rawLines)
-            text.append(unlayoutedLine.toString()).append("\n");
-        return rawLines.get(rawLines.size()-1).isEmpty()?text.toString():text.deleteCharAt(text.length()-1).toString();//deleting last \n...
+        for(Line line:rawLines)
+            text.append(line.toString()).append("\n");
+        return text.deleteCharAt(text.length()-1).toString();//deleting last \n...
     }
     public void setText(LinePart... text) {
         rawLines.clear();
