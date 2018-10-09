@@ -184,10 +184,10 @@ public class SingleLineHighlighter extends StandardContentEditor {
             int index_of_match = -1;
             while ((index_of_match = s.indexOf(match, index_of_match+1)) != -1) {
                 int index_of_word = index_of_match;
-                while(index_of_word>=0 && !Character.toString(s.charAt(index_of_word)).matches("[A-Za-z0-9_]+"))
+                while(index_of_word>=0 && !Character.toString(s.charAt(index_of_word)).matches(getWordMatcher()))
                     index_of_word--;
                 int end_index_of_word = index_of_word;
-                while(index_of_word>=0 && Character.toString(s.charAt(index_of_word)).matches("[A-Za-z0-9_]+"))
+                while(index_of_word>=0 && Character.toString(s.charAt(index_of_word)).matches(getWordMatcher()))
                     index_of_word--;
                 int start_index_of_word = index_of_word;
                 if(start_index_of_word>=0&&end_index_of_word>0&&start_index_of_word!=end_index_of_word)
