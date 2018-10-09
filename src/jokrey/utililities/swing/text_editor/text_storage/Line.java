@@ -142,9 +142,9 @@ public class Line {
      */
     public Line getSubLine(int start, int end) {
         if(start>length() || start<0)
-            throw new ArrayIndexOutOfBoundsException("start="+start);
+            throw new ArrayIndexOutOfBoundsException("start="+start+", l="+length());
         if(end>length() || end<0)
-            throw new ArrayIndexOutOfBoundsException("end="+end);
+            throw new ArrayIndexOutOfBoundsException("end="+end+", l="+length());
 
         Line[] split = splitAt(start);
         split = split[1].splitAt(end-start);
