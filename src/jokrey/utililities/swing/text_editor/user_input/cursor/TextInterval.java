@@ -14,8 +14,8 @@ import java.util.Collections;
  * This class handles the complexities that come with that.
  */
 public class TextInterval {
-	private final TextDisplayCursor p1;
-    private final TextDisplayCursor p2;
+	public final TextDisplayCursor p1;
+    public final TextDisplayCursor p2;
 	@Override public String toString() {
 		return p1+" to "+p2;
 	}
@@ -36,7 +36,7 @@ public class TextInterval {
 
 
     /**
-     * Resets the internal cursors.
+     * Equalizes the internal cursors.
      */
     public void clear() {
         p1.reset();
@@ -77,7 +77,19 @@ public class TextInterval {
     public int[] get2XY() {
         return p2.getXY();
     }
+    public int[] getXYs() {
+        return new int[] {p1.getX(), p1.getY(), p2.getX(), p2.getY()};
+    }
 
+    //setting/getting both at the same time
+    public void setFromDistance(int distance) {
+    	p1.setFromDistance(distance);
+    	p2.setXY(p1.getXY()); //faster
+	}
+	public void setXY(int... xy) {
+    	p1.setXY(xy);
+    	p2.setXY(xy);
+	}
 
 
 
