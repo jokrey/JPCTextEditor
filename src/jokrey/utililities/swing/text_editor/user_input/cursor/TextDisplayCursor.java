@@ -19,9 +19,9 @@ public class TextDisplayCursor {
     public TextDisplayCursor(ContentEditor content) {
     	this.content=content;
 	}
-    public TextDisplayCursor(ContentEditor content, int x, int y) {
+    public TextDisplayCursor(ContentEditor content, int... xy) {
     	this(content);
-    	setXY(x, y);
+    	setXY(xy);
 	}
 	public TextDisplayCursor(ContentEditor content, Point pos, int text_spacing_left, int text_spacing_top) {
 		this(content);
@@ -157,6 +157,13 @@ public class TextDisplayCursor {
             setXY(v_x, getY());
 	}
 
+    public void y_minus(int hm) {
+        setXY(getX(), getY()-hm);
+    }
+    public void y_plus(int hm) {
+        setXY(getX(), getY()+hm);
+    }
+
     /**
      * sets x and y and checks if the are valid, validating them to the next best fit if they are not.
      * Array is required to have 2 cells. More won't be a problem, but will be disregarded
@@ -216,8 +223,8 @@ public class TextDisplayCursor {
 		return "["+getClass().getSimpleName()+": "+getX()+", "+getY()+"]";
 	}
 	@Override public boolean equals(Object obj) {
-		try {
+//		try {
 			return obj instanceof TextDisplayCursor && getX()==((TextDisplayCursor)obj).getX()&&getY()==((TextDisplayCursor)obj).getY();
-		} catch(Exception ex){return false;}
+//		} catch(Exception ex){return false;}
 	}
 }
