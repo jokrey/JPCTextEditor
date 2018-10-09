@@ -65,8 +65,6 @@ public class WrappingScrollingLayoutedTextEditor_Example extends JPanel {
         textDisplay.addContextAction(ContextFunctionalityLibrary.getFunctionality_TOGGLE_WRAPPING(textDisplay));
 
 
-        textDisplay.addContextAction(ContextFunctionalityLibrary.getFunctionality_SELECT_CURRENT_LINE(textDisplay, textDisplay.getInputHandler()));
-        textDisplay.addContextAction(ContextFunctionalityLibrary.getFunctionality_SELECT_CURRENT_WORD(textDisplay, textDisplay.getInputHandler()));
         textDisplay.addContextAction(ContextFunctionalityLibrary.getFunctionality_TOGGLE_CAPITALIZE_WORD(textDisplay.getInputHandler()));
         textDisplay.addContextAction(ContextFunctionalityLibrary.getFunctionality_JUMP_TO_END_OF_LINE(textDisplay, textDisplay.getInputHandler()));
         textDisplay.addContextAction(ContextFunctionalityLibrary.getFunctionality_JUMP_TO_START_OF_LINE(textDisplay, textDisplay.getInputHandler()));

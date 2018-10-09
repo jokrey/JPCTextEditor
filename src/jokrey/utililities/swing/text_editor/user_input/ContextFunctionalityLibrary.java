@@ -3,7 +3,6 @@ package jokrey.utililities.swing.text_editor.user_input;
 import jokrey.utililities.swing.text_editor.JPCTextEditor;
 import jokrey.utililities.swing.text_editor.JPCWrappingTextEditor;
 import jokrey.utililities.swing.text_editor.JPC_Connector;
-import jokrey.utililities.swing.text_editor.text_storage.Line;
 import jokrey.utililities.swing.text_editor.ui.core.JPC_Scroller;
 
 import javax.swing.*;
@@ -14,7 +13,7 @@ import java.awt.event.KeyEvent;
 import java.util.Objects;
 
 public class ContextFunctionalityLibrary {
-    public static Action[] getBasicFunctionality(JPCTextEditor editor, JPC_Connector jpc_connector, UserInputHandler input_handler) {
+    public static Action[] getBasicFunctionality(JPCTextEditor editor, JPC_Connector jpc_connector, UserInputHandler input_handler, RawUserInputHandler raw_input_receiver) {
         return new Action[] {
                 getFunctionality_PASTE(input_handler),
                 getFunctionality_COPY(input_handler),
@@ -23,7 +22,9 @@ public class ContextFunctionalityLibrary {
                 getFunctionality_FIND(editor, input_handler),
                 getFunctionality_UNDO(input_handler),
                 getFunctionality_REDO(input_handler),
-                getFunctionality_SELECT_ALL(jpc_connector, input_handler)
+                getFunctionality_SELECT_CURRENT_WORD(raw_input_receiver),
+                getFunctionality_SELECT_CURRENT_LINE(raw_input_receiver),
+                getFunctionality_SELECT_ALL(jpc_connector, input_handler),
         };
     }
 
@@ -110,28 +111,21 @@ public class ContextFunctionalityLibrary {
 
 
     //Additional Functionality
-    public static Action getFunctionality_SELECT_CURRENT_LINE(JPC_Connector jpc_connector, UserInputHandler input_handler) {
+    public static Action getFunctionality_SELECT_CURRENT_WORD(RawUserInputHandler rawInputHandler) {
+        return new AbstractAction("select word") {
+            {putValue("shortcut", KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.CTRL_MASK));
+                putValue("shortcut_name", "ctrl+e");}
+            @Override public void actionPerformed(ActionEvent e) {
+                rawInputHandler.selectCurrentWord();
+            }
+        };
+    }
+    public static Action getFunctionality_SELECT_CURRENT_LINE(RawUserInputHandler rawInputHandler) {
         return new AbstractAction("select line") {
             {putValue("shortcut", KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK));
             putValue("shortcut_name", "ctrl+q");}
             @Override public void actionPerformed(ActionEvent e) {
-                input_handler.cursor.selection.setFromXYs(0,input_handler.cursor.getY(),Integer.MAX_VALUE,input_handler.cursor.getY());
-                jpc_connector.repaint();
-            }
-        };
-    }
-    public static Action getFunctionality_SELECT_CURRENT_WORD(JPC_Connector jpc_connector, UserInputHandler input_handler) {
-        return new AbstractAction("select word") {
-            {putValue("shortcut", KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.CTRL_MASK));
-            putValue("shortcut_name", "ctrl+e");}
-            @Override public void actionPerformed(ActionEvent e) {
-                Line l = input_handler.cursor.getContentEditor().getLine(input_handler.cursor.getY());
-                String l_content = l.toString();
-                int word_begin_index = l_content.lastIndexOf(" ", input_handler.cursor.getX()-1)+1;
-                int word_end_index = l_content.indexOf(" ", input_handler.cursor.getX());
-
-                input_handler.cursor.selection.setFromXYs(word_begin_index,input_handler.cursor.getY(),word_end_index==-1?Integer.MAX_VALUE:word_end_index,input_handler.cursor.getY());
-                jpc_connector.repaint();
+                rawInputHandler.selectCurrentLine();
             }
         };
     }

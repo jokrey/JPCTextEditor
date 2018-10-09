@@ -67,8 +67,8 @@ public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Conne
         /*
          * Initiates Listener. For one to recalculate lines if needed, but also a transfer handler to import stuff upon drag..
          */
-        addContextAction(ContextFunctionalityLibrary.getBasicFunctionality(this, this, input_receiver));
-        new RawUserInputHandler(this, this, input_receiver, content);//on its own initiates its jpc_connector..
+        RawUserInputHandler raw_input_receiver = new RawUserInputHandler(this, this, input_receiver, content);//on its own initiates its jpc_connector..
+        addContextAction(ContextFunctionalityLibrary.getBasicFunctionality(this, this, input_receiver, raw_input_receiver));
         UIManager.getDefaults().put("ScrollPane.ancestorInputMap",
                 new UIDefaults.LazyInputMap(new Object[] {}));  //removes arrow key scrolling
         addComponentListener(new  ComponentAdapter() {
