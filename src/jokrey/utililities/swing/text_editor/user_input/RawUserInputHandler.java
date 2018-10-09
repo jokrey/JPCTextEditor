@@ -320,24 +320,17 @@ public class RawUserInputHandler extends MouseAdapter implements KeyListener, Fo
             selection_mode = SelectionMode.NONE;
 			leftMousePressed=true;
             user_input_handler.cursor.setPositionTo(e.getPoint(), jpc.getTextSpacingLeft(), jpc.getTextSpacingTop());
-            if(!shiftPressed) {
+            if(!shiftPressed)
                 selectionStartPos.setXY(user_input_handler.cursor.getXY());
-                user_input_handler.cursor.clearSelection();
-            }
             if(!content.isSelectionEnabled())
                 selection_mode = SelectionMode.NONE;
             else if(e.getClickCount()==1) {
                 selection_mode = SelectionMode.CHARACTER;
-    			calcNewCursorPosAndNewSelection(e.getPoint());
 			} else if(e.getClickCount() == 2) {
 			    selectCurrentWord();
             } else if(e.getClickCount() == 3) {
 			    selectCurrentLine();
             }
-
-//            System.out.println("user_input_handler.cursor.selection bef: "+user_input_handler.cursor.selection);
-//            jumpSelectionToCursor();
-//            System.out.println("user_input_handler.cursor.selection aft: "+user_input_handler.cursor.selection);
 		}
 	}
 	@Override public void mouseDragged(MouseEvent e) {
@@ -357,6 +350,8 @@ public class RawUserInputHandler extends MouseAdapter implements KeyListener, Fo
 	@Override public void mouseReleased(MouseEvent e) {
 		dragging=false;
 		if(SwingUtilities.isLeftMouseButton(e)) {
+		    if(e.getClickCount()==1)
+                calcNewCursorPosAndNewSelection(e.getPoint());
 			leftMousePressed=false;
 		} else if(SwingUtilities.isRightMouseButton(e)) {
             final JPopupMenu jpm = new JPopupMenu();
