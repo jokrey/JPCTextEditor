@@ -1,5 +1,7 @@
 package jokrey.utililities.swing.text_editor.example;
 
+import jokrey.utililities.swing.text_editor.ui.util.Util;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -10,7 +12,7 @@ public class FrameStarter {
         frame.add(p, BorderLayout.CENTER);
 
         frame.setSize(800, 600);
-        frame.setLocationRelativeTo(null);//centered on main monitor
+        Util.centerOnMouseScreen(frame);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
