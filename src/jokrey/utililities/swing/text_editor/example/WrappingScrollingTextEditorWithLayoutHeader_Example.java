@@ -86,7 +86,7 @@ public class WrappingScrollingTextEditorWithLayoutHeader_Example extends JPanel 
 
 
         headerPanel.add(wrappingToggleButton);
-        headerPanel.add(new LoadStorePanel(textDisplay));
+        headerPanel.add(new LoadStorePanel(textDisplay,false));
 
         add(headerPanel, BorderLayout.NORTH);
 

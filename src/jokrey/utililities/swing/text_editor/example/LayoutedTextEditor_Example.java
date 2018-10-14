@@ -59,7 +59,7 @@ public class LayoutedTextEditor_Example extends JPanel {
         });
 
         add(textDisplay);
-        headerPanel.add(new LoadStorePanel(textDisplay));
+        headerPanel.add(new LoadStorePanel(textDisplay, true));
 
         add(headerPanel, BorderLayout.NORTH);
 
