@@ -33,6 +33,7 @@ public class LoadStorePanel extends JPanel {
                     String str;
                     while ((str = in.readLine()) != null)
                         builder.append(str).append("\n");
+                    builder.deleteCharAt(builder.length()-1); //remove last \n again
                     if(decodeLayout)
                         editor.setText_with_encoded_layout(builder.toString());
                     else
