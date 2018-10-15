@@ -38,20 +38,20 @@ public class TextDisplayCursor {
             int elapsedChars_counter = 0;
 
             Line[] disLines = content.getDisplayLine(i);
-            for (Line disLine : disLines) {
+            for (int d_i=0; d_i < disLines.length; d_i++) {
+                Line disLine = disLines[d_i];
                 int elapsedPixelsInLine = 0;
                 int disLinePixelHeight = disLine.getPixelHeight();
                 for (int part_i = 0; part_i < disLine.partCount(); part_i++) {
                     LinePart lp = disLine.getPart(part_i);
                     int char_count_in_this_sequence = lp.length();
                     if (getY() == i && elapsedChars_counter + char_count_in_this_sequence >= getX()) {
-                        try {
-                            int x_inSequence = getX() - elapsedChars_counter;
+                        int x_inSequence = getX() - elapsedChars_counter;
+                        if(x_inSequence==lp.length() && d_i+1 < disLines.length) {
+                            return new Rectangle(text_spacing_left, elapsedYPixels+disLinePixelHeight, 2, disLines[d_i+1].getPixelHeight());
+                        } else {
                             int pixelsInThisCharSequence = lp.getPixelWidth(0, x_inSequence);//fontM.stringWidth(x_inSequence==char_count_in_this_sequence?charsInSequence:charsInSequence.substring(0, x_inSequence));
                             return new Rectangle(elapsedPixelsInLine + pixelsInThisCharSequence + text_spacing_left, elapsedYPixels, 2, disLinePixelHeight);
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
-                            return null;
                         }
                     }
                     elapsedPixelsInLine += lp.getPixelWidth();
@@ -61,13 +61,12 @@ public class TextDisplayCursor {
                 elapsedYPixels += disLinePixelHeight;
             }
 
-            if(getY()==i) { //happens on insert, if the display lines are not yet updated.
+            if(getY()==i) { //happens on insert, if the display lines are not yet updated. or something
                 Line lastDisLine = disLines[disLines.length-1];
                 int height = lastDisLine.getPixelHeight();
-                return new Rectangle(lastDisLine.getPixelWidth() + text_spacing_left, elapsedYPixels-height, 2, height);
+                return new Rectangle(text_spacing_left, elapsedYPixels, 2, height);
             }
         }
-//        throw new NeverDrawnException();
         return new Rectangle();
     }
 
@@ -91,7 +90,9 @@ public class TextDisplayCursor {
         for (int i = 0; i < content.getLineCount(); i++) {
             int chars_in_real_line_counter = 0;
 
-            for (Line disLine : content.getDisplayLine(i)) {
+            Line[] disLines = content.getDisplayLine(i);
+            for (int d_i=0; d_i < disLines.length; d_i++) {
+                Line disLine = disLines[d_i];
                 int elapsedPixelsInCurLine = text_spacing_left;
                 int disLinePixelHeight = disLine.getPixelHeight();
                 for (int ii = 0; ii < disLine.partCount(); ii++) {
@@ -101,7 +102,7 @@ public class TextDisplayCursor {
                             && (ii == disLine.partCount() - 1 || p.x <= elapsedPixelsInCurLine + pixelsInThisCharSequence)) {
                         int chars_in_sequence_counter = 0;
                         if (p.x <= elapsedPixelsInCurLine + pixelsInThisCharSequence) {
-                            for (; chars_in_sequence_counter < lp.length(); chars_in_sequence_counter++) {
+                            for (; chars_in_sequence_counter < lp.length(); chars_in_sequence_counter++) {  //todo: Maybe use a homing in/jumping algorithm instead
                                 if (p.x <= elapsedPixelsInCurLine + lp.getPixelWidth(0, chars_in_sequence_counter)
                                         + lp.getPixelWidth(chars_in_sequence_counter, Math.min(lp.length(), chars_in_sequence_counter + 1)) / 2 //EXPERIMENTAL
                                         ) {
@@ -109,7 +110,10 @@ public class TextDisplayCursor {
                                 }
                             }
                         } else {
-                            chars_in_sequence_counter = disLine.length();
+                            if(d_i+1 < disLines.length)
+                                chars_in_sequence_counter = disLine.length() - 1;
+                            else
+                                chars_in_sequence_counter = disLine.length();
                         }
 
                         int newX = chars_in_real_line_counter + chars_in_sequence_counter;
