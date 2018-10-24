@@ -30,7 +30,7 @@ public abstract class ContentEditor {
         });
     }
 
-    private LinePartLayout.Instantiated standard_layout = new LinePartLayout.Instantiated(Color.black, new Color(0,0,0,0), new Font("Arial", Font.BOLD, 13));
+    private LinePartLayout.Instantiated standard_layout = new LinePartLayout.Instantiated(Color.black, new Color(0,0,0,0), new Font("Arial", Font.BOLD, 13), new int[]{});
     public LinePartLayout.Instantiated getStandardLayout() { return standard_layout; }
     public void increaseStandardFontSize() {
         float newFontSize = standard_layout.font.getSize()+1;

@@ -10,6 +10,7 @@ public class TextEditor_Example extends JPanel {
         JPCSimpleTextEditor textDisplay = new JPCSimpleTextEditor();
         textDisplay.setForeground(Color.BLACK);
         textDisplay.setFont(new Font("Arial", Font.BOLD, 13));
+        textDisplay.setStandardLayout(textDisplay.getStandardLayout().copy_SetLines(80));
         FrameStarter.start("JPC Editor - this edition allows writing", textDisplay);
     }
 }

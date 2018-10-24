@@ -371,4 +371,13 @@ public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Conne
     public LinePartLayout getCurrentLayout() {
         return input_receiver.cursor.getValidInsertLayout();
     }
+    public void setStandardLayout(LinePartLayout.Instantiated standard) {
+        content.setStandardLayout(standard);
+    }
+    public void setStandardLayout(LinePartLayout standard) {
+        content.setStandardLayout(LinePartLayout.valid(standard, content.getStandardLayout()));
+    }
+    public LinePartLayout getStandardLayout() {
+        return content.getStandardLayout();
+    }
 }

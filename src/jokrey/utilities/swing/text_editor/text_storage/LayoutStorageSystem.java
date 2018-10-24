@@ -66,7 +66,7 @@ public class LayoutStorageSystem {
                     String font_name = ase_layout.getEntry("font_name");
                     Font font = font_name == null ? null : new Font(font_name, ase_layout.getEntry_int("font_style", Font.BOLD), ase_layout.getEntry_int("font_size", 12));
 
-                    lps_restored[lp_i] = new LinePart(ase_linepart.getEntry("txt"), new LinePartLayout.UnInstantiated(fg, bg, font));
+                    lps_restored[lp_i] = new LinePart(ase_linepart.getEntry("txt"), new LinePartLayout.UnInstantiated(fg, bg, font, null));
                 } else {
                     lps_restored[lp_i] = new LinePart(ase_linepart.getEntry("txt"), fallback);
                 }

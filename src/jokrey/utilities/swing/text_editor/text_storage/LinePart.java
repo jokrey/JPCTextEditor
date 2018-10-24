@@ -105,6 +105,11 @@ public class LinePart {
         }
         g.setColor(valid.fg);
         g.drawString(txt, left_offset+x_draw, y_draw - h / 3);
+
+        for(int line:valid.lines) {
+            int y = (int) ((y_draw - h) + h*(line/100.0));
+            g.drawLine(left_offset + x_draw, y, left_offset + x_draw + w, y);
+        }
     }
 
 	//Pixel size querying

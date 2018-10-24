@@ -59,7 +59,7 @@ public class WrappingScrollingLayoutedTextEditor_Example extends JPanel {
                 wrappingToggleButton.setSelected(textDisplay.isLineWrapEnabled());
             }
         });
-        textDisplay.setHint(new LinePart("Please click here and type a text.", new LinePartLayout.UnInstantiated(Color.gray, null, null)));
+        textDisplay.setHint(new LinePart("Please click here and type a text.", new LinePartLayout.UnInstantiated(Color.gray, null, null, null)));
         JPC_Scroller scroller = new JPC_Scroller(textDisplay);
 
         textDisplay.addContextAction(ContextFunctionalityLibrary.getFunctionality_TOGGLE_WRAPPING(textDisplay));
