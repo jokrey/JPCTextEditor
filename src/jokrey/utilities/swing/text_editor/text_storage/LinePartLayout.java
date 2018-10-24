@@ -10,7 +10,7 @@ public abstract class LinePartLayout {
     public final Color fg;
     public final Color bg;
     public final Font font;
-    public final int[] lines; //in percent
+    public final int[] lines; //just height in percent
     public LinePartLayout(Color fg, Color bg, Font font, int[] lines) {
         this.fg = fg;
         this.bg = bg;
