@@ -56,8 +56,9 @@ public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Conne
     //Outside referenced UI Components....
     public Abstract_JPCTextEditor() {
         setLayout(new BorderLayout());
-        setForeground(Color.BLACK);
-        setBackground(Color.WHITE);
+//        setForeground(Color.BLACK);
+//        setFont();
+//        setBackground(Color.WHITE);
 
         setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
 
@@ -86,7 +87,7 @@ public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Conne
     protected abstract UserInputHandler createUserInputHandler(ContentEditor content);
 
     public LinePrefix getLinePrefix(int lineNumber, @SuppressWarnings("unused") String lineText) {
-        return new LinePrefix(lineNumber+"", content.getStandardLayout().bg, content.getStandardLayout().fg);
+        return new LinePrefix(lineNumber+"", null, content.getStandardLayout().fg);
     }
     public int getTextSpacingTop() {
         return 2;
@@ -194,6 +195,8 @@ public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Conne
     }
 
     private void drawAndRecalculateSize(Graphics2D g) {
+        Shape orig = g!=null? g.getClip() : null;
+
         int yDrawPos_l = getTextSpacingTop();
         int highestXDrawPos = 0;
         if(content.getLineCount() == 1 && content.getLine(0).isEmpty()) {//DRAWING THE HINT
@@ -203,16 +206,26 @@ public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Conne
             int cur_line_height = hint.getPixelHeight();
             yDrawPos_l += cur_line_height;
 
-            if(g!=null) hint.draw(this, isOpaque(), g, content.getStandardLayout(), getTextSpacingLeft(), 0, yDrawPos_l);
+            if(g!=null) {
+                Rectangle area = new Rectangle(getTextSpacingLeft(), yDrawPos_l-cur_line_height, hint.getPixelWidth(), cur_line_height);
+                g.setClip(area);
+                hint.draw(this, isOpaque(), g, content.getStandardLayout(), area);
+                g.setClip(orig);
+            }
 
             highestXDrawPos = hint.getPixelWidth();
             LinePrefix linePrefix = getLinePrefix(1, hint.txt);
-            if(g!=null)g.setFont(LinePartLayout.valid(hint.layout, content.getStandardLayout()).font);
-            if(g!=null)linePrefix.draw(g, yDrawPos_l, g.getFontMetrics().getHeight(), input_receiver.cursor.getValidInsertLayout().bg, getLineCountBoxWidth(), true);
+            if(g!=null) {
+                g.setFont(LinePartAppearance.valid(hint.layout, content.getStandardLayout()).font);
+                Rectangle area = new Rectangle(0, yDrawPos_l-cur_line_height, getLineCountBoxWidth(), cur_line_height);
+                g.setClip(area);
+                linePrefix.draw(g, yDrawPos_l, g.getFontMetrics().getHeight(), input_receiver.cursor.getValidInsertLayout().fg, getLineCountBoxWidth(), true);
+            }
         } else {
             //Very important that its +-getLastFontMetrics().getHeight - Otherwise a line maybe painted to late, or just painted in half - DO NOT KNOW WHY REALLY
             int visible_pixel_start = getVisibleRect().y;
             int visible_pixel_end = getVisibleRect().y+getVisibleRect().height;
+
             for (int wl_i = 0; wl_i<content.getLineCount();wl_i++) {
                 Line curRawLine = content.getLine(wl_i);
                 curRawLine.updatePixelKnowledge(this, content.getStandardLayout());
@@ -222,24 +235,33 @@ public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Conne
                 for(int i=0;i<curDisplayLine.length;i++) {
                     Line disLine = curDisplayLine[i];
                     int cur_line_height = disLine.getPixelHeight();
-                    curXdrawPos = 0;
+                    curXdrawPos = getTextSpacingLeft();
                     yDrawPos_l+=cur_line_height;
 
                     if(i==0) {
                         if(yDrawPos_l >= visible_pixel_start && yDrawPos_l-cur_line_height <= visible_pixel_end) {
                             LinePrefix linePrefix = getLinePrefix(wl_i+1, curRawLine.toString());
 
-                            if(g!=null)g.setFont(LinePartLayout.valid(disLine.getPart(0).layout, content.getStandardLayout()).font);
-                            if(g!=null)linePrefix.draw(g, yDrawPos_l, cur_line_height, input_receiver.cursor.getValidInsertLayout().bg, getLineCountBoxWidth(), input_receiver.cursor.getY()==wl_i);
+                            if(g!=null) {
+                                Rectangle area = new Rectangle(0, yDrawPos_l-cur_line_height, getLineCountBoxWidth(), cur_line_height);
+                                g.setClip(area);
+                                g.setFont(LinePartAppearance.valid(disLine.getPart(0).layout, content.getStandardLayout()).font);
+                                linePrefix.draw(g, yDrawPos_l, cur_line_height, input_receiver.cursor.getValidInsertLayout().fg, getLineCountBoxWidth(), input_receiver.cursor.getY()==wl_i);
+                            }
                         }
                     }
 
                     for (int part_i=0;part_i<disLine.partCount();part_i++) {
                         LinePart lp = disLine.getPart(part_i);
+                        int lpw = lp.getPixelWidth();
                         if(yDrawPos_l >= visible_pixel_start && yDrawPos_l-cur_line_height <= visible_pixel_end) {
-                            if(g!=null)lp.draw(this, isOpaque(), g, content.getStandardLayout(), getTextSpacingLeft(), curXdrawPos, yDrawPos_l);
+                            if(g!=null) {
+                                Rectangle area = new Rectangle(curXdrawPos, yDrawPos_l-cur_line_height, lpw, cur_line_height);
+                                g.setClip(area);
+                                lp.draw(this, isOpaque(), g, content.getStandardLayout(), area);
+                            }
                         }
-                        curXdrawPos+=lp.getPixelWidth();
+                        curXdrawPos+=lpw;
                     }
 
                     if(highestXDrawPos<curXdrawPos)
@@ -247,10 +269,13 @@ public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Conne
                 }
             }
         }
-        if(g!=null)g.setColor(getForeground());
-        if(g!=null && getLineCountBoxWidth()>0)g.drawLine(getLineCountBoxWidth(), 0, getLineCountBoxWidth(), getHeight());
-        if(g!=null)
-            input_receiver.cursor.draw(g, getTextSpacingLeft(), getWidth(), getTextSpacingTop(), true, hasFocus()&& input_receiver.isEditable());
+        if(g!=null) {
+            g.setClip(orig);
+            g.setColor(getForeground());
+            if (getLineCountBoxWidth() > 0)
+                g.drawLine(getLineCountBoxWidth(), 0, getLineCountBoxWidth(), getHeight());
+            input_receiver.cursor.draw(g, getTextSpacingLeft(), getWidth(), getTextSpacingTop(), true, hasFocus() && input_receiver.isEditable());
+        }
 
         handlePaintedSpaceRecalculation(new Dimension (getTextSpacingLeft()+highestXDrawPos+2, yDrawPos_l));
     }
@@ -333,8 +358,9 @@ public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Conne
         return content.getStandardLayout().fg;//not useless, if setForeground never called super.getFG maybe null.
     }
     @Override public Color getBackground() {
-        if(content==null) return super.getBackground();
-        return content.getStandardLayout().bg;//not useless.
+        return super.getBackground();
+//        if(content==null) return super.getBackground();
+//        return content.getStandardLayout().bg;//not useless.
     }
     @Override public Font getFont() {
         if(content==null) return super.getFont();
@@ -356,7 +382,6 @@ public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Conne
     @Override public void setBackground(Color bg) {
         if(content==null)return;
         super.setBackground(bg);
-        content.setStandardLayout(content.getStandardLayout().copy_ChangeBG(bg));
     }
     @Override public void setFont(Font font) {
         if(content==null||font==null)return;
@@ -364,20 +389,16 @@ public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Conne
         content.setStandardLayout(content.getStandardLayout().copy_ChangeFont(font));
     }
 
-//    private void setCursorInsertLayout(LinePartLayout layout) {
-//
-//    }
-
-    public LinePartLayout getCurrentLayout() {
+    public LinePartAppearance getCurrentInsertLayout() {
         return input_receiver.cursor.getValidInsertLayout();
     }
-    public void setStandardLayout(LinePartLayout.Instantiated standard) {
+    public void setStandardLayout(LinePartAppearance.Instantiated standard) {
         content.setStandardLayout(standard);
     }
-    public void setStandardLayout(LinePartLayout standard) {
-        content.setStandardLayout(LinePartLayout.valid(standard, content.getStandardLayout()));
+    public void setStandardLayout(LinePartAppearance standard) {
+        content.setStandardLayout(LinePartAppearance.valid(standard, content.getStandardLayout()));
     }
-    public LinePartLayout getStandardLayout() {
+    public LinePartAppearance getStandardLayout() {
         return content.getStandardLayout();
     }
 }

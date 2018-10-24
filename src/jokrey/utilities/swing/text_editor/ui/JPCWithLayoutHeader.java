@@ -1,7 +1,7 @@
 package jokrey.utilities.swing.text_editor.ui;
 
 import jokrey.utilities.swing.text_editor.text_storage.ContentListener;
-import jokrey.utilities.swing.text_editor.text_storage.LinePartLayout;
+import jokrey.utilities.swing.text_editor.text_storage.LinePartAppearance;
 import jokrey.utilities.swing.text_editor.ui.additional.CustomEditorConnector;
 import jokrey.utilities.swing.text_editor.ui.additional.LayoutChangingPanel;
 
@@ -39,9 +39,9 @@ public class JPCWithLayoutHeader extends JPCLayoutedTextEditor {
 
         addContentListener(new ContentListener() {
             @Override public void userCursorLayoutChanged() {
-                LinePartLayout layout = getCurrentLayout();
+                LinePartAppearance layout = getCurrentInsertLayout();
                 if(headerPanelLayout==null)return;
-                headerPanelLayout.updateDisplayValues(layout.fg, layout.bg, layout.font);
+                headerPanelLayout.updateDisplayValues(layout.fg, layout.getBG_canbenull(), layout.font);
             }
         });
     }

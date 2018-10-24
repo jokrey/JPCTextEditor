@@ -10,16 +10,16 @@ import java.util.Objects;
  */
 public class LinePart {
 	public final String txt;
-	public final LinePartLayout layout; //can decidedly be null. Will the be replaced with a standard layout at drawtime.
+	public final LinePartAppearance layout; //can decidedly be null. Will the be replaced with a standard layout at drawtime.
     public LinePart(String string) {
         this(string, null);
     }
-    public LinePart(String string, LinePartLayout layout) {
+    public LinePart(String string, LinePartAppearance layout) {
 		if(string==null)txt="";
 		else            txt = string;
 		this.layout = layout;
 	}
-	private LinePart(String string, LinePartLayout layout, FontMetrics fm) {
+	private LinePart(String string, LinePartAppearance layout, FontMetrics fm) {
         this(string, layout);
         this.fm=fm;
     }
@@ -76,39 +76,40 @@ public class LinePart {
         return ( (orig_x/TAB_PIXEL_WIDTH)+1 ) * TAB_PIXEL_WIDTH;
     }
 	//DRAWING
-    public void draw(FontMetricsSupplier display, boolean opaque, Graphics2D g, LinePartLayout.Instantiated fallback, int left_offset, int x_draw, int y_draw) {
-        LinePartLayout.Instantiated valid = LinePartLayout.valid(layout, fallback);
-        g.setFont(valid.font);
+    public void draw(FontMetricsSupplier display, boolean opaque, Graphics2D g, LinePartAppearance.Instantiated fallback, Rectangle linePartArea) {
         //tab functionality, test regarding performance in large scales.
         int indexOfTab = txt.indexOf("\t");
+        int x_add = 0;
         if(indexOfTab >= 0) {
             LinePart lp = this;
             while (indexOfTab >= 0) {
                 LinePart cs1 = copy_change(lp.substring(0, indexOfTab));
-                cs1.draw(display, opaque, g, fallback, left_offset, x_draw, y_draw);  //does not contain any tabs.
-                x_draw += g.getFontMetrics().stringWidth(cs1.txt);
-                x_draw = getNextTabXPosition(x_draw);
+                cs1.draw(display, opaque, g, fallback, new Rectangle(linePartArea.x + x_add, linePartArea.y, linePartArea.width-x_add, linePartArea.height));  //does not contain any tabs.
+                x_add += g.getFontMetrics().stringWidth(cs1.txt);
+                x_add = getNextTabXPosition(x_add);
                 lp = copy_change(lp.substring(indexOfTab+1));
                 indexOfTab = lp.txt.indexOf("\t");
             }
-            lp.draw(display, opaque, g, fallback, left_offset, x_draw, y_draw); //does not contain any tabs
+            lp.draw(display, opaque, g, fallback, new Rectangle(linePartArea.x + x_add, linePartArea.y, linePartArea.width-x_add, linePartArea.height)); //does not contain any tabs
             return;
         }
 
+        LinePartAppearance.Instantiated valid = LinePartAppearance.valid(layout, fallback);
+
+        for(LinePartEffect bg_effect:valid.background_effects) {
+            g.setColor(valid.fg);
+            bg_effect.drawEffect(g, linePartArea, opaque, true);
+        }
+
+        g.setFont(valid.font);
 
         updateFontMetrics(display, valid);
-        int w = g.getFontMetrics().stringWidth(txt);
-        int h = g.getFontMetrics().getHeight();
-        if(opaque) {
-            g.setColor(valid.bg);
-            g.fillRect(left_offset + x_draw, y_draw - h, w, h);
-        }
         g.setColor(valid.fg);
-        g.drawString(txt, left_offset+x_draw, y_draw - h / 3);
+        g.drawString(txt, linePartArea.x, linePartArea.y + (int)(linePartArea.height * 0.75));
 
-        for(int line:valid.lines) {
-            int y = (int) ((y_draw - h) + h*(line/100.0));
-            g.drawLine(left_offset + x_draw, y, left_offset + x_draw + w, y);
+        for(LinePartEffect fg_effect:valid.foreground_effects) {
+            g.setColor(valid.fg);
+            fg_effect.drawEffect(g, linePartArea, opaque, false);
         }
     }
 
@@ -149,7 +150,7 @@ public class LinePart {
         }
 		return fm.getHeight();
 	}
-    public void updateFontMetrics(FontMetricsSupplier display, LinePartLayout.Instantiated fallback) {
-        fm=display.getFontMetrics(LinePartLayout.valid(layout, fallback).font);
+    public void updateFontMetrics(FontMetricsSupplier display, LinePartAppearance.Instantiated fallback) {
+        fm=display.getFontMetrics(LinePartAppearance.valid(layout, fallback).font);
     }
 }

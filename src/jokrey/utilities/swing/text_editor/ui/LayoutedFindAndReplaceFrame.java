@@ -5,7 +5,7 @@ import jokrey.utilities.swing.text_editor.JPC_Connector;
 import jokrey.utilities.swing.text_editor.text_storage.ContentEditor;
 import jokrey.utilities.swing.text_editor.text_storage.ContentListener;
 import jokrey.utilities.swing.text_editor.text_storage.LinePart;
-import jokrey.utilities.swing.text_editor.text_storage.LinePartLayout;
+import jokrey.utilities.swing.text_editor.text_storage.LinePartAppearance;
 import jokrey.utilities.swing.text_editor.ui.additional.CustomEditorConnector;
 import jokrey.utilities.swing.text_editor.ui.additional.LayoutChangingPanel;
 import jokrey.utilities.swing.text_editor.ui.core.JPC_Scroller;
@@ -95,8 +95,8 @@ public class LayoutedFindAndReplaceFrame {
         find_editor.addContentListener(new ContentListener() {
             @Override public void userCursorLayoutChanged() {
                 if (find_editor == null) return;
-                LinePartLayout layout = find_editor.getCurrentLayout();
-                find_editor_headerPanel.updateDisplayValues(layout.fg, layout.bg, layout.font);
+                LinePartAppearance layout = find_editor.getCurrentInsertLayout();
+                find_editor_headerPanel.updateDisplayValues(layout.fg, layout.getBG_canbenull(), layout.font);
             }
         });
         find_editor.setHintText("Type what you hope to find");
@@ -153,8 +153,8 @@ public class LayoutedFindAndReplaceFrame {
         replace_editor.addContentListener(new ContentListener() {
             @Override public void userCursorLayoutChanged() {
                 if (replace_editor == null) return;
-                LinePartLayout layout = replace_editor.getCurrentLayout();
-                replace_editor_headerPanel.updateDisplayValues(layout.fg, layout.bg, layout.font);
+                LinePartAppearance layout = replace_editor.getCurrentInsertLayout();
+                replace_editor_headerPanel.updateDisplayValues(layout.fg, layout.getBG_canbenull(), layout.font);
             }
         });
         replace_editor.setHintText("Type what will replace the found");
@@ -223,7 +223,7 @@ public class LayoutedFindAndReplaceFrame {
         frame.add(centerInputPanel, BorderLayout.CENTER);
 
         frame.setForeground(parent_content.getStandardLayout().fg);
-        frame.setBackground(parent_content.getStandardLayout().bg);
+        frame.setBackground(editor.getBackground());
 		frame.setAlwaysOnTop(true);
         frame.pack();
         frame.setSize(750, frame.getHeight());

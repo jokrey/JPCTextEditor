@@ -14,7 +14,6 @@ import jokrey.utilities.swing.text_editor.user_input.UserInputHandler;
 public class JPCSimpleTextEditor extends Abstract_JPCTextEditor {
     public JPCSimpleTextEditor() {
         setForeground(content.getStandardLayout().fg);
-        setBackground(content.getStandardLayout().bg);
         setFont(content.getStandardLayout().font);
     }
 

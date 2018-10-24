@@ -15,22 +15,22 @@ public class SingleLineHighlighter extends StandardContentEditor {
         super(c);
         this.rules = new ArrayList<>(Arrays.asList(rules));
     }
-    public void addWordMatchRule(LinePartLayout highlight, String word) {
+    public void addWordMatchRule(LinePartAppearance highlight, String word) {
         rules.add(new WordMatchRule(word, highlight));
     }
-    public void addWordMatchRules(LinePartLayout highlight, String... words) {
+    public void addWordMatchRules(LinePartAppearance highlight, String... words) {
         for (String word : words) addWordMatchRule(highlight, word);
     }
-    public void addBetweenMatchesRule(LinePartLayout highlight, String start, String end, String escape) {
+    public void addBetweenMatchesRule(LinePartAppearance highlight, String start, String end, String escape) {
         rules.add(new BetweenMatchesRule(start, end, escape, highlight));
     }
-    public void addEverythingAfterMatchRule(LinePartLayout highlight, String match) {
+    public void addEverythingAfterMatchRule(LinePartAppearance highlight, String match) {
         rules.add(new EverythingAfterMatchRule(match, highlight));
     }
-    public void addEverythingAfterMatchExceptInBetweenMatchRule(LinePartLayout highlight, String after_match, String in_between_match) {
+    public void addEverythingAfterMatchExceptInBetweenMatchRule(LinePartAppearance highlight, String after_match, String in_between_match) {
         rules.add(new EverythingAfterMatchExceptInBetweenMatchRule(after_match, in_between_match, highlight));
     }
-    public void addWordBeforeMatchRule(LinePartLayout highlight, String match) {
+    public void addWordBeforeMatchRule(LinePartAppearance highlight, String match) {
         rules.add(new WordBeforeMatchRule(match, highlight));
     }
     //override possible::
@@ -81,8 +81,8 @@ public class SingleLineHighlighter extends StandardContentEditor {
         abstract Line apply(Line line);
     }
     private class WordMatchRule extends SyntaxRule {
-        final String word; final LinePartLayout highlight;
-        public WordMatchRule(String word, LinePartLayout highlight) {
+        final String word; final LinePartAppearance highlight;
+        public WordMatchRule(String word, LinePartAppearance highlight) {
             this.word = word;
             this.highlight = highlight;
         }
@@ -104,8 +104,8 @@ public class SingleLineHighlighter extends StandardContentEditor {
         final String start;
         final String end;
         final String escape; //for example in java a " can be escaped with a \
-        final LinePartLayout highlight;
-        public BetweenMatchesRule(String start, String end, String escape, LinePartLayout highlight) {
+        final LinePartAppearance highlight;
+        public BetweenMatchesRule(String start, String end, String escape, LinePartAppearance highlight) {
             this.start = start;
             this.end = end;
             this.escape = escape;
@@ -136,8 +136,8 @@ public class SingleLineHighlighter extends StandardContentEditor {
     }
     private class EverythingAfterMatchRule extends SyntaxRule {
         final String match;
-        final LinePartLayout highlight;
-        public EverythingAfterMatchRule(String match, LinePartLayout highlight) {
+        final LinePartAppearance highlight;
+        public EverythingAfterMatchRule(String match, LinePartAppearance highlight) {
             this.match = match;
             this.highlight = highlight;
         }
@@ -151,8 +151,8 @@ public class SingleLineHighlighter extends StandardContentEditor {
     private class EverythingAfterMatchExceptInBetweenMatchRule extends SyntaxRule {
         final String after_match;
         final String in_between_match;
-        final LinePartLayout highlight;
-        public EverythingAfterMatchExceptInBetweenMatchRule(String after_match, String in_between_match, LinePartLayout highlight) {
+        final LinePartAppearance highlight;
+        public EverythingAfterMatchExceptInBetweenMatchRule(String after_match, String in_between_match, LinePartAppearance highlight) {
             this.after_match = after_match;
             this.in_between_match = in_between_match;
             this.highlight = highlight;
@@ -174,8 +174,8 @@ public class SingleLineHighlighter extends StandardContentEditor {
         }
     }
     private class WordBeforeMatchRule extends SyntaxRule {
-        final String match; final LinePartLayout highlight;
-        public WordBeforeMatchRule(String match, LinePartLayout highlight) {
+        final String match; final LinePartAppearance highlight;
+        public WordBeforeMatchRule(String match, LinePartAppearance highlight) {
             this.match = match;
             this.highlight = highlight;
         }

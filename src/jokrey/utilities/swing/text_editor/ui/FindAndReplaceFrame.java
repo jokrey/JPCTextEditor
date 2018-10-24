@@ -111,7 +111,7 @@ public class FindAndReplaceFrame {
         frame.add(centerInputPanel, BorderLayout.CENTER);
 
         frame.setForeground(parent_content.getStandardLayout().fg);
-        frame.setBackground(parent_content.getStandardLayout().bg);
+        frame.setBackground(editor.getBackground());
 		frame.setAlwaysOnTop(true);
         frame.pack();
         frame.setSize(555, frame.getHeight());

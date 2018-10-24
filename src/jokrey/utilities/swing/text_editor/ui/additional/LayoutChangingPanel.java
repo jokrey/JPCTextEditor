@@ -36,7 +36,10 @@ public class LayoutChangingPanel extends JPanel {
             font_size_jtf.setText(newFont.getSize() + "");
             font_style_Chooser.setSelectedIndex(newFont.getStyle() == Font.BOLD ? 1 : newFont.getStyle() == Font.ITALIC ? 2 : newFont.getStyle() == (Font.BOLD | Font.ITALIC) ? 3 : 0);
             fgOptionsPanelLabel.setBackground(newFG);
-            bgOptionsPanelLabel.setBackground(newBG);
+            if(newBG == null)
+                bgOptionsPanelLabel.setBackground(editorCon.getCurBG());
+            else
+                bgOptionsPanelLabel.setBackground(newBG);
         } catch (IllegalStateException ex) {} //indicates that it was called by a listener to one of the display's. Safe to ignore.
         block_listeners=false;
     }

@@ -3,7 +3,7 @@ package jokrey.utilities.swing.text_editor.user_input;
 import jokrey.utilities.swing.text_editor.text_storage.ContentEditor;
 import jokrey.utilities.swing.text_editor.text_storage.Line;
 import jokrey.utilities.swing.text_editor.text_storage.LinePart;
-import jokrey.utilities.swing.text_editor.text_storage.LinePartLayout;
+import jokrey.utilities.swing.text_editor.text_storage.LinePartAppearance;
 import jokrey.utilities.swing.text_editor.user_input.cursor.TextDisplayCursor;
 import jokrey.utilities.swing.text_editor.user_input.cursor.TextInterval;
 
@@ -13,17 +13,17 @@ import java.awt.*;
  * THE user cursor. Should not be instantiated from the outside and only be used by UserInputHandler.
  */
 public class UserCursor extends TextDisplayCursor {
-	private LinePartLayout insert_layout = null; //null means some standard layout
-        protected LinePartLayout getRawInsertLayout() {
+	private LinePartAppearance insert_layout = null; //null means some standard layout
+        protected LinePartAppearance getRawInsertLayout() {
             return insert_layout;
         }
-        public LinePartLayout.Instantiated getValidInsertLayout() {
+        public LinePartAppearance.Instantiated getValidInsertLayout() {
             if(insert_layout==null) {
                 return content.getStandardLayout();
             } else
-                return LinePartLayout.valid(insert_layout, content.getStandardLayout());
+                return LinePartAppearance.valid(insert_layout, content.getStandardLayout());
         }
-		public void setInsertLayout(LinePartLayout newInsertLayout) {
+		public void setInsertLayout(LinePartAppearance newInsertLayout) {
 			insert_layout = newInsertLayout;
 			content.fireUserCursorLayoutChanged();
 		}
@@ -57,7 +57,7 @@ public class UserCursor extends TextDisplayCursor {
 	    if(drawSelection)
         	selection.draw(g, Color.BLUE.brighter(), text_spacing_left, width, text_spacing_top);
 	    if(drawCursor) {
-			Color fg = LinePartLayout.valid(insert_layout, content.getStandardLayout()).fg;
+			Color fg = LinePartAppearance.valid(insert_layout, content.getStandardLayout()).fg;
 			g.setColor(fg);
 			g.fill(getShape(text_spacing_left, text_spacing_top));
         }
@@ -81,7 +81,7 @@ public class UserCursor extends TextDisplayCursor {
     public void insert(LinePart part) {
         insert(part.txt, part.layout);
     }
-	public void insert(String str, LinePartLayout layoutForInsert) {
+	public void insert(String str, LinePartAppearance layoutForInsert) {
 		if(str==null||str.isEmpty()||!content.allowInsertion(str))return;
 		if(!selection.isClear()) {
 			throw new RuntimeException("SOMEONE FORGOT A SELECTION REMOVAL - NEEDS TO BE MANUAL to avoid unintentionally loosing data..");

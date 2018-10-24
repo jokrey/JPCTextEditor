@@ -2,7 +2,7 @@ package jokrey.utilities.swing.text_editor.example;
 
 import jokrey.utilities.swing.text_editor.text_storage.ContentListener;
 import jokrey.utilities.swing.text_editor.text_storage.LinePart;
-import jokrey.utilities.swing.text_editor.text_storage.LinePartLayout;
+import jokrey.utilities.swing.text_editor.text_storage.LinePartAppearance;
 import jokrey.utilities.swing.text_editor.ui.JPCLayoutedWrappingTextEditor;
 import jokrey.utilities.swing.text_editor.ui.additional.CustomEditorConnector;
 import jokrey.utilities.swing.text_editor.ui.additional.LayoutChangingPanel;
@@ -54,12 +54,12 @@ public class WrappingScrollingLayoutedTextEditor_Example extends JPanel {
         textDisplay.addContentListener(new ContentListener() {
             @Override public void userCursorLayoutChanged() {
                 if(textDisplay==null)return;
-                LinePartLayout layout = textDisplay.getCurrentLayout();
-                headerPanel.updateDisplayValues(layout.fg, layout.bg, layout.font);
+                LinePartAppearance layout = textDisplay.getCurrentInsertLayout();
+                headerPanel.updateDisplayValues(layout.fg, layout.getBG_canbenull(), layout.font);
                 wrappingToggleButton.setSelected(textDisplay.isLineWrapEnabled());
             }
         });
-        textDisplay.setHint(new LinePart("Please click here and type a text.", new LinePartLayout.UnInstantiated(Color.gray, null, null, null)));
+        textDisplay.setHint(new LinePart("Please click here and type a text.", new LinePartAppearance.UnInstantiated(Color.gray, null, null, null)));
         JPC_Scroller scroller = new JPC_Scroller(textDisplay);
 
         textDisplay.addContextAction(ContextFunctionalityLibrary.getFunctionality_TOGGLE_WRAPPING(textDisplay));

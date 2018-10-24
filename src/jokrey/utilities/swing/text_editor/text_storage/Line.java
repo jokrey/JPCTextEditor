@@ -25,10 +25,10 @@ public class Line {
     public Line(String s) {
 	    this(s, null);
     }
-    public Line(LinePartLayout insert_layout) {
+    public Line(LinePartAppearance insert_layout) {
         this("", insert_layout);
     }
-	public Line(String s, LinePartLayout insert_layout) {
+	public Line(String s, LinePartAppearance insert_layout) {
         parts = new LinePart[]{new LinePart(s, insert_layout)};//no need to validate. Definitly fine.
 	}
 
@@ -168,7 +168,7 @@ public class Line {
 
 
 	//adding text
-    public Line insert(int x, String cleanStr, LinePartLayout layoutForInsert) {
+    public Line insert(int x, String cleanStr, LinePartAppearance layoutForInsert) {
 	    return insert(x, new LinePart(cleanStr, layoutForInsert));
     }
     public Line insert(int x, LinePart... toinsert) {
@@ -269,14 +269,14 @@ public class Line {
 
 
     //ONLY MUTABLE PART. DOESN'T CHANGE DATA(ONLY RUNTIME INFORMATION IN LINEPARTLAYOUT
-    public void updatePixelKnowledge(FontMetricsSupplier display, LinePartLayout.Instantiated fallback) {
+    public void updatePixelKnowledge(FontMetricsSupplier display, LinePartAppearance.Instantiated fallback) {
         for(int i=0;i<partCount();i++) {
             LinePart lp = getPart(i);
             lp.updateFontMetrics(display, fallback);
         }
     }
 
-    public Line overrideLayoutWithin(int start, int end, LinePartLayout override) {
+    public Line overrideLayoutWithin(int start, int end, LinePartAppearance override) {
 	    String content = substring(start, end);
         Line line = removeInterval(start, end);
         return line.insert(start, new LinePart(content, override));

@@ -12,10 +12,10 @@ public class LinePrefix {
 		this.fg = fg;
 	}
 
-	public void draw(Graphics2D g, int yDrawPos, int lineH, Color cursorBG, int prefixW, boolean cursor_line) {
+	public void draw(Graphics2D g, int yDrawPos, int lineH, Color cursorFG, int prefixW, boolean cursor_line) {
 		if(prefixW<=0)return;
     	if(bg!=null){
-    		g.setColor(cursor_line?(cursorBG==null?Color.BLUE:cursorBG):bg);
+    		g.setColor(cursor_line?(cursorFG==null?Color.BLUE:cursorFG):bg);
     		g.fillRect(0, (yDrawPos-lineH),prefixW, lineH);
     	}
     	if(fg!=null)

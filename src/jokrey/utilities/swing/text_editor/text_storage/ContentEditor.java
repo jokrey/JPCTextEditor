@@ -30,19 +30,19 @@ public abstract class ContentEditor {
         });
     }
 
-    private LinePartLayout.Instantiated standard_layout = new LinePartLayout.Instantiated(Color.black, new Color(0,0,0,0), new Font("Arial", Font.BOLD, 13), new int[]{});
-    public LinePartLayout.Instantiated getStandardLayout() { return standard_layout; }
+    private LinePartAppearance.Instantiated standard_layout = new LinePartAppearance.Instantiated(Color.black, new Font("Arial", Font.BOLD, 13));
+    public LinePartAppearance.Instantiated getStandardLayout() { return standard_layout; }
     public void increaseStandardFontSize() {
-        float newFontSize = standard_layout.font.getSize()+1;
+        int newFontSize = standard_layout.font.getSize()+1;
         if(newFontSize>=4)
-            setStandardLayout(standard_layout.copy_ChangeFont(standard_layout.font.deriveFont(newFontSize)));
+            setStandardLayout(standard_layout.copy_ChangeFontSize(newFontSize));
     }
     public void decreaseStandardFontSize() {
         float newFontSize = standard_layout.font.getSize()-1;
         if(newFontSize>=4)
             setStandardLayout((standard_layout.copy_ChangeFont(standard_layout.font.deriveFont(newFontSize))));
     }
-    public void setStandardLayout(LinePartLayout.Instantiated n) {
+    public void setStandardLayout(LinePartAppearance.Instantiated n) {
         standard_layout=n;
 //        if(!rawLines.isEmpty())
 //            getLine(0).getPart(0).invalidatePixelCache(); //makes sure all operations that require pixel knowledge fail until repaint was done.
@@ -240,7 +240,7 @@ public abstract class ContentEditor {
         fireTextChanged(line_number,line_number,ret.toString(),false);
         return ret;
     }
-    public void setLineText(int i, String s, LinePartLayout layout) {
+    public void setLineText(int i, String s, LinePartAppearance layout) {
         setLine(i, new Line(s, layout));
     }
     public void setLine(int i, Line line) {

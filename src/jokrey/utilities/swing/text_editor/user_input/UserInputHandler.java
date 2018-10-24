@@ -3,7 +3,7 @@ package jokrey.utilities.swing.text_editor.user_input;
 import jokrey.utilities.swing.text_editor.text_storage.ContentEditor;
 import jokrey.utilities.swing.text_editor.text_storage.Line;
 import jokrey.utilities.swing.text_editor.text_storage.LinePart;
-import jokrey.utilities.swing.text_editor.text_storage.LinePartLayout;
+import jokrey.utilities.swing.text_editor.text_storage.LinePartAppearance;
 import jokrey.utilities.swing.text_editor.user_input.cursor.TextInterval;
 import jokrey.utilities.swing.text_editor.user_input.step_manager.Step;
 import jokrey.utilities.swing.text_editor.user_input.step_manager.StepManager;
@@ -160,7 +160,7 @@ public class UserInputHandler {
         }
     }
 
-    public void _user_change_insert_layout(LinePartLayout new_layout, boolean replace_selected_interval_with_new_layout) {
+    public void _user_change_insert_layout(LinePartAppearance new_layout, boolean replace_selected_interval_with_new_layout) {
         cursor.setInsertLayout(new_layout);
         if (!cursor.getSelection().isClear() && replace_selected_interval_with_new_layout) {
             int[] previous_selection_1 = cursor.getSelection().get1XY();
