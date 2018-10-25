@@ -78,7 +78,6 @@ public class RawUserInputHandler extends MouseAdapter implements KeyListener, Fo
 //        	ctrlPressed=false;  //why was this ever here? -> sometimes on focus lost this wasn't updated, now it is.
         //	return;
         //}
-        System.out.println("after typed");
 	}
 
 	@Override public void keyReleased(KeyEvent e) {
