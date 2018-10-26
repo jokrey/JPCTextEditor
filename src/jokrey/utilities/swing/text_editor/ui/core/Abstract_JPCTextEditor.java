@@ -277,7 +277,7 @@ public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Conne
             input_receiver.cursor.draw(g, getTextSpacingLeft(), getWidth(), getTextSpacingTop(), true, hasFocus() && input_receiver.isEditable());
         }
 
-        handlePaintedSpaceRecalculation(new Dimension (getTextSpacingLeft()+highestXDrawPos+2, yDrawPos_l));
+        handlePaintedSpaceRecalculation(new Dimension (getTextSpacingLeft()+highestXDrawPos + TextDisplayCursor.PIXEL_WIDTH, yDrawPos_l));
     }
 
     protected boolean handlePaintedSpaceRecalculation(Dimension newResult) {

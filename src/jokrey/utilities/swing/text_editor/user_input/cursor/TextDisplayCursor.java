@@ -10,6 +10,8 @@ import java.awt.*;
  * A cursor position in the provided ContentEditor.
  */
 public class TextDisplayCursor {
+    public static int PIXEL_WIDTH = 2;
+
 	private int x = 0;
 	    public int getX(){return x;}
 	private int y = 0;
@@ -48,10 +50,10 @@ public class TextDisplayCursor {
                     if (getY() == i && elapsedChars_counter + char_count_in_this_sequence >= getX()) {
                         int x_inSequence = getX() - elapsedChars_counter;
                         if(x_inSequence==lp.length() && d_i+1 < disLines.length) {
-                            return new Rectangle(text_spacing_left, elapsedYPixels+disLinePixelHeight, 2, disLines[d_i+1].getPixelHeight());
+                            return new Rectangle(text_spacing_left, elapsedYPixels+disLinePixelHeight, PIXEL_WIDTH, disLines[d_i+1].getPixelHeight());
                         } else {
                             int pixelsInThisCharSequence = lp.getPixelWidth(0, x_inSequence);//fontM.stringWidth(x_inSequence==char_count_in_this_sequence?charsInSequence:charsInSequence.substring(0, x_inSequence));
-                            return new Rectangle(elapsedPixelsInLine + pixelsInThisCharSequence + text_spacing_left, elapsedYPixels, 2, disLinePixelHeight);
+                            return new Rectangle(elapsedPixelsInLine + pixelsInThisCharSequence + text_spacing_left, elapsedYPixels, PIXEL_WIDTH, disLinePixelHeight);
                         }
                     }
                     elapsedPixelsInLine += lp.getPixelWidth();
@@ -64,7 +66,7 @@ public class TextDisplayCursor {
             if(getY()==i) { //happens on insert, if the display lines are not yet updated. or something
                 Line lastDisLine = disLines[disLines.length-1];
                 int height = lastDisLine.getPixelHeight();
-                return new Rectangle(text_spacing_left, elapsedYPixels, 2, height);
+                return new Rectangle(text_spacing_left, elapsedYPixels, PIXEL_WIDTH, height);
             }
         }
         return new Rectangle();

@@ -1,6 +1,7 @@
 package jokrey.utilities.swing.text_editor.text_storage;
 
 import jokrey.utilities.swing.text_editor.JPC_Connector;
+import jokrey.utilities.swing.text_editor.user_input.cursor.TextDisplayCursor;
 import jokrey.utilities.timediffmarker.CallCountMarker;
 
 import java.util.ArrayList;
@@ -33,13 +34,13 @@ public class WrappingContentEditor extends StandardContentEditor {
         if (isLineWrapEnabled()) {
             if(displayLines.size()==getLineCount() && line>=0 && line<getLineCount()) {
                     Line disp_line = getLine(line);
-                    int[] lineWraps = getAutomaticLineWrapsFor(disp_line, jpc_connector.getTextSpacingLeft(), jpc_connector.getDisplayWidth()/*-jpc_connector.getTextSpacingLeft()*/);
+                    int[] lineWraps = getAutomaticLineWrapsFor(disp_line, jpc_connector.getTextSpacingLeft(), jpc_connector.getDisplayWidth()- TextDisplayCursor.PIXEL_WIDTH);
                     displayLines.set(line, disp_line.splitAt(lineWraps));
             } else {
                 displayLines = new ArrayList<>(getLineCount());
                 for (int i = 0; i < getLineCount(); i++) {
                     Line disp_line = getLine(i);
-                    int[] lineWraps = getAutomaticLineWrapsFor(disp_line, jpc_connector.getTextSpacingLeft(), jpc_connector.getDisplayWidth()/*-jpc_connector.getTextSpacingLeft()*/);
+                    int[] lineWraps = getAutomaticLineWrapsFor(disp_line, jpc_connector.getTextSpacingLeft(), jpc_connector.getDisplayWidth()- TextDisplayCursor.PIXEL_WIDTH);
                     displayLines.add(disp_line.splitAt(lineWraps));
                 }
             }
