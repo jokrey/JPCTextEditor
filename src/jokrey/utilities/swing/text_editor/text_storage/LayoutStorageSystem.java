@@ -22,19 +22,19 @@ public class LayoutStorageSystem {
 //                LinePart linepart = line.getPart(part_i);
 //
 //                UniversalStringEncoder ase_linepart = new UniversalStringEncoder();
-//                ase_linepart.addEntry("txt", linepart.txt);
+//                ase_linepart.addEntryT("txt", linepart.txt);
 //                UniversalStringEncoder ase_layout = new UniversalStringEncoder();
 //                LinePartAppearance.Instantiated valid = LinePartAppearance.valid(linepart.layout, fallback);
-//                ase_layout.addEntry("fg",
+//                ase_layout.addEntryT("fg",
 //                        valid.fg.getRed(), valid.fg.getGreen(),
 //                        valid.fg.getBlue(), valid.fg.getAlpha());
-//                ase_layout.addEntry("bg",
+//                ase_layout.addEntryT("bg",
 //                        valid.bg.getRed(), valid.bg.getGreen(),
 //                        valid.bg.getBlue(), valid.bg.getAlpha());
-//                ase_layout.addEntry("font_name", valid.font.getName());
-//                ase_layout.addEntry("font_style", valid.font.getStyle());
-//                ase_layout.addEntry("font_size", valid.font.getSize());
-//                ase_linepart.addEntry("layout", ase_layout.getEncodedString());
+//                ase_layout.addEntryT("font_name", valid.font.getName());
+//                ase_layout.addEntryT("font_style", valid.font.getStyle());
+//                ase_layout.addEntryT("font_size", valid.font.getSize());
+//                ase_linepart.addEntryT("layout", ase_layout.getEncodedString());
 //
 //                lise_lps.li_encode_single(ase_linepart.getEncodedString());
 //            }
@@ -56,19 +56,19 @@ public class LayoutStorageSystem {
 //
 //            for (int lp_i = 0; lp_i < lps_encoded.length; lp_i++) {
 //                UniversalStringEncoder ase_linepart = new UniversalStringEncoder(lps_encoded[lp_i]);
-//                String layout_encoded = ase_linepart.getEntry("layout");
+//                String layout_encoded = ase_linepart.getEntryT("layout");
 //                if (layout_encoded != null) {
 //                    UniversalStringEncoder ase_layout = new UniversalStringEncoder(layout_encoded);
 //                    int[] fg_a = ase_layout.getEntry_intArray("fg", new int[0]);
 //                    Color fg = fg_a.length == 0 ? null : new Color(fg_a[0], fg_a[1], fg_a[2], fg_a[3]);
 //                    int[] bg_a = ase_layout.getEntry_intArray("bg", new int[0]);
 //                    Color bg = bg_a.length == 0 ? null : new Color(bg_a[0], bg_a[1], bg_a[2], bg_a[3]);
-//                    String font_name = ase_layout.getEntry("font_name");
+//                    String font_name = ase_layout.getEntryT("font_name");
 //                    Font font = font_name == null ? null : new Font(font_name, ase_layout.getEntry_int("font_style", Font.BOLD), ase_layout.getEntry_int("font_size", 12));
 //
-//                    lps_restored[lp_i] = new LinePart(ase_linepart.getEntry("txt"), new LinePartAppearance.UnInstantiated(fg, bg, font, null));
+//                    lps_restored[lp_i] = new LinePart(ase_linepart.getEntryT("txt"), new LinePartAppearance.UnInstantiated(fg, bg, font, null));
 //                } else {
-//                    lps_restored[lp_i] = new LinePart(ase_linepart.getEntry("txt"), fallback);
+//                    lps_restored[lp_i] = new LinePart(ase_linepart.getEntryT("txt"), fallback);
 //                }
 //            }
 //
