@@ -2,7 +2,7 @@ package jokrey.utilities.swing.text_editor.text_storage;
 
 import jokrey.utilities.swing.text_editor.JPC_Connector;
 import jokrey.utilities.swing.text_editor.user_input.cursor.TextDisplayCursor;
-import jokrey.utilities.timediffmarker.CallCountMarker;
+import jokrey.utilities.debug_analysis_helper.CallCountMarker;
 
 import java.util.ArrayList;
 
