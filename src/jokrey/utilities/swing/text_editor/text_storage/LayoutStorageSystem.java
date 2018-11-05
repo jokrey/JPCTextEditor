@@ -1,9 +1,7 @@
 package jokrey.utilities.swing.text_editor.text_storage;
 
-import jokrey.utilities.encoder.string.LIse;
-import jokrey.utilities.encoder.string.UniversalStringEncoder;
+import jokrey.utilities.encoder.length_indicator.string.LIse;
 
-import java.awt.*;
 import java.util.List;
 
 /**
@@ -21,9 +19,9 @@ public class LayoutStorageSystem {
 //            for (int part_i=0;part_i<line.partCount();part_i++) {
 //                LinePart linepart = line.getPart(part_i);
 //
-//                UniversalStringEncoder ase_linepart = new UniversalStringEncoder();
+//                LITagStringEncoder ase_linepart = new LITagStringEncoder();
 //                ase_linepart.addEntryT("txt", linepart.txt);
-//                UniversalStringEncoder ase_layout = new UniversalStringEncoder();
+//                LITagStringEncoder ase_layout = new LITagStringEncoder();
 //                LinePartAppearance.Instantiated valid = LinePartAppearance.valid(linepart.layout, fallback);
 //                ase_layout.addEntryT("fg",
 //                        valid.fg.getRed(), valid.fg.getGreen(),
@@ -55,10 +53,10 @@ public class LayoutStorageSystem {
 //            LinePart[] lps_restored = new LinePart[lps_encoded.length];
 //
 //            for (int lp_i = 0; lp_i < lps_encoded.length; lp_i++) {
-//                UniversalStringEncoder ase_linepart = new UniversalStringEncoder(lps_encoded[lp_i]);
+//                LITagStringEncoder ase_linepart = new LITagStringEncoder(lps_encoded[lp_i]);
 //                String layout_encoded = ase_linepart.getEntryT("layout");
 //                if (layout_encoded != null) {
-//                    UniversalStringEncoder ase_layout = new UniversalStringEncoder(layout_encoded);
+//                    LITagStringEncoder ase_layout = new LITagStringEncoder(layout_encoded);
 //                    int[] fg_a = ase_layout.getEntry_intArray("fg", new int[0]);
 //                    Color fg = fg_a.length == 0 ? null : new Color(fg_a[0], fg_a[1], fg_a[2], fg_a[3]);
 //                    int[] bg_a = ase_layout.getEntry_intArray("bg", new int[0]);
