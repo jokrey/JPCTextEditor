@@ -186,7 +186,7 @@ public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Conne
         super.paintComponent(gg);
         Graphics2D g = (Graphics2D)gg;
 
-        runBeforePaintQueue.callAllAndIgnore();//remove if problem.... see above declaration
+        runBeforePaintQueue.callAndRemoveAll_orIgnore();
 
         drawAndRecalculateSize(g);
     }
