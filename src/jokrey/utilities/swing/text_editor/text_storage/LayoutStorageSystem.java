@@ -1,6 +1,6 @@
 package jokrey.utilities.swing.text_editor.text_storage;
 
-import jokrey.utilities.encoder.length_indicator.string.LIse;
+import jokrey.utilities.encoder.implementation.length_indicator.string.LIse;
 
 import java.util.List;
 
@@ -34,10 +34,10 @@ public class LayoutStorageSystem {
 //                ase_layout.addEntryT("font_size", valid.font.getSize());
 //                ase_linepart.addEntryT("layout", ase_layout.getEncodedString());
 //
-//                lise_lps.li_encode_single(ase_linepart.getEncodedString());
+//                lise_lps.li_encode(ase_linepart.getEncodedString());
 //            }
 
-            lise_lines.li_encode_single(lise_lps.getEncodedString());
+            lise_lines.li_encode(lise_lps.getEncodedString());
         }
         return lise_lines.getEncodedString();
     }
