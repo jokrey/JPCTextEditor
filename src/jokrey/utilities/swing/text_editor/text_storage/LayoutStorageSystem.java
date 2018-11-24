@@ -1,6 +1,6 @@
 package jokrey.utilities.swing.text_editor.text_storage;
 
-import jokrey.utilities.encoder.implementation.length_indicator.string.LIse;
+import jokrey.utilities.encoder.tag_based.implementation.length_indicator.string.LIse;
 
 import java.util.List;
 
