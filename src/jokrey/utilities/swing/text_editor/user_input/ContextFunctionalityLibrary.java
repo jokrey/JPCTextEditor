@@ -10,7 +10,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
 import java.util.Objects;
+
+import static jokrey.utilities.swing.text_editor.ui.additional.LayoutChangingPanel.getAvailableFontFamilies;
 
 public class ContextFunctionalityLibrary {
     public static Action[] getBasicFunctionality(JPCTextEditor editor, JPC_Connector jpc_connector, UserInputHandler input_handler, RawUserInputHandler raw_input_receiver) {
@@ -223,7 +226,7 @@ public class ContextFunctionalityLibrary {
     public static Action getFunctionality_FONT_CYCLE_STYLE(JPCTextEditor jpc_connector) {
         return new AbstractAction("font style cycle") {
             {putValue("shortcut", KeyStroke.getKeyStroke(KeyEvent.VK_PERIOD, InputEvent.CTRL_MASK));
-            putValue("shortcut_name", "ctrl+'.'");}
+                putValue("shortcut_name", "ctrl+'.'");}
             @Override public void actionPerformed(ActionEvent e) {
                 Font current = jpc_connector.getFont();
                 if(current.isBold() && current.isItalic())
@@ -234,6 +237,19 @@ public class ContextFunctionalityLibrary {
                     jpc_connector.setFont(current.deriveFont(Font.ITALIC));
                 else if(current.isItalic())
                     jpc_connector.setFont(current.deriveFont(Font.BOLD | Font.ITALIC));
+            }
+        };
+    }
+
+    public static Action getFunctionality_FONT_CYCLE(JPCTextEditor jpc_connector) {
+        return new AbstractAction("font family cycle") {
+            {putValue("shortcut", KeyStroke.getKeyStroke(KeyEvent.VK_COMMA, InputEvent.CTRL_MASK));
+                putValue("shortcut_name", "ctrl+','");}
+            @Override public void actionPerformed(ActionEvent e) {
+                Font current = jpc_connector.getFont();
+                java.util.List<String> fonts = Arrays.asList(getAvailableFontFamilies());
+                int index = fonts.indexOf(current.getFamily());
+                jpc_connector.setFont(new Font(fonts.get((index + 1) % fonts.size()), current.getStyle(), current.getSize()));
             }
         };
     }

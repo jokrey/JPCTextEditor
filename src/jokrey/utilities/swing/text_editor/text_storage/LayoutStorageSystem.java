@@ -1,6 +1,6 @@
 package jokrey.utilities.swing.text_editor.text_storage;
 
-import jokrey.utilities.encoder.tag_based.implementation.length_indicator.string.LIse;
+import jokrey.utilities.encoder.as_union.li.string.LIse;
 
 import java.util.List;
 
@@ -34,17 +34,17 @@ public class LayoutStorageSystem {
 //                ase_layout.addEntryT("font_size", valid.font.getSize());
 //                ase_linepart.addEntryT("layout", ase_layout.getEncodedString());
 //
-//                lise_lps.li_encode(ase_linepart.getEncodedString());
+//                lise_lps.encode(ase_linepart.getEncodedString());
 //            }
 
-            lise_lines.li_encode(lise_lps.getEncodedString());
+            lise_lines.encode(lise_lps.getEncodedString());
         }
         return lise_lines.getEncodedString();
     }
 
     public static Line[] restoreFrom(String encodedText, LinePartAppearance.Instantiated fallback) {
         LIse lise_lines = new LIse(encodedText);
-        String[] lines_encoded = lise_lines.li_decode_all();
+        String[] lines_encoded = lise_lines.decodeAll();
         Line[] lines_decoded = new Line[lines_encoded.length];
 
 //        for(int i=0;i<lines_encoded.length;i++) {

@@ -24,6 +24,7 @@ public class WrappingScrollingTextEditor_Example {
         textDisplay.addContextAction(ContextFunctionalityLibrary.getFunctionality_FONT_CYCLE_STYLE(textDisplay));
         textDisplay.addContextAction(ContextFunctionalityLibrary.getFunctionality_CYCLE_FG_COLOR(textDisplay));
         textDisplay.addContextAction(ContextFunctionalityLibrary.getFunctionality_CYCLE_BG_COLOR(textDisplay));
+        textDisplay.addContextAction(ContextFunctionalityLibrary.getFunctionality_FONT_CYCLE(textDisplay));
 
         textDisplay.setFont(new Font("Arial", Font.BOLD, 13));
 
