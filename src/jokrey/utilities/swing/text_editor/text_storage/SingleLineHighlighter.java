@@ -53,15 +53,12 @@ public class SingleLineHighlighter extends StandardContentEditor {
     }
 
     @Override public void recalculateDisplayLine(int line)  {
-//        if (block_recalculateDisplayLines) return;
-        if(displayLines.size()==getLineCount()) {
-//            for (int i = firstAffectedLine; i <= lastAffectedLine; i++) {
-                Line disp_line = getLine(line);
-                for(SyntaxRule r:rules)
-                    disp_line=r.apply(disp_line); //entails a ton of line copying
-                disp_line.updatePixelKnowledge(jpc_connector, getStandardLayout());
-                displayLines.set(line, disp_line);
-//            }
+        if(displayLines.size()==getLineCount() && line >= 0 && line < getLineCount()) {
+            Line disp_line = getLine(line);
+            for (SyntaxRule r : rules)
+                disp_line = r.apply(disp_line); //entails a ton of line copying
+            disp_line.updatePixelKnowledge(jpc_connector, getStandardLayout());
+            displayLines.set(line, disp_line);
         } else {
             displayLines = new ArrayList<>(getLineCount());
             for (int i = 0; i < getLineCount(); i++) {
