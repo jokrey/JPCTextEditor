@@ -247,6 +247,7 @@ public class RawUserInputHandler extends MouseAdapter implements KeyListener, Fo
 			    		user_input_handler.cursor.clearSelection();
 
 						if(data instanceof LinePart[]) {
+						    //todo - if the editor does not use layouting(which is currently undeterminable), then insert as string..
 							LinePart[] toInsert=((LinePart[])data);
 							if(toInsert.length==0) return false;
 							display.requestFocus();
