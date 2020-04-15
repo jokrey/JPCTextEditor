@@ -3,13 +3,14 @@ package jokrey.utilities.swing.text_editor.text_storage;
 import jokrey.utilities.swing.text_editor.text_storage.lineparteffects.LPEffect_Fill;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
 
 /**
  * IMMUTABLE
  */
-public abstract class LinePartAppearance {
+public abstract class LinePartAppearance implements Serializable {
     public final Color fg;
     public final Font font;
     public final LinePartEffects background_effects;

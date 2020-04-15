@@ -1,6 +1,7 @@
 package jokrey.utilities.swing.text_editor.text_storage;
 
 import java.awt.*;
+import java.io.Serializable;
 
 /**
  * IMMUTABLE
@@ -8,7 +9,7 @@ import java.awt.*;
  *
  * Can be extended to create custom effects.
  */
-public abstract class LinePartEffect {
+public abstract class LinePartEffect implements Serializable {
     public abstract void drawEffect(Graphics2D g, Rectangle linePartArea, boolean opaque, boolean is_background);
 
     @Override public abstract String toString();

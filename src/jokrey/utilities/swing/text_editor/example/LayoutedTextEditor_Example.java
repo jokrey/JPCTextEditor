@@ -1,12 +1,14 @@
 package jokrey.utilities.swing.text_editor.example;
 
 import jokrey.utilities.swing.text_editor.text_storage.ContentListener;
+import jokrey.utilities.swing.text_editor.text_storage.LinePart;
 import jokrey.utilities.swing.text_editor.text_storage.LinePartAppearance;
 import jokrey.utilities.swing.text_editor.ui.JPCLayoutedTextEditor;
 import jokrey.utilities.swing.text_editor.ui.JPCLayoutedWrappingTextEditor;
 import jokrey.utilities.swing.text_editor.ui.additional.CustomEditorConnector;
 import jokrey.utilities.swing.text_editor.ui.additional.LayoutChangingPanel;
 import jokrey.utilities.swing.text_editor.ui.additional.LoadStorePanel;
+import jokrey.utilities.swing.text_editor.user_input.ContextFunctionalityLibrary;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,16 +38,13 @@ public class LayoutedTextEditor_Example extends JPanel {
                 return textDisplay.getFont();
             }
             @Override public void fg_changed(Color fg) {
-                if(fg != null)
-                    textDisplay.setForeground(fg);
+                if(fg!=null) textDisplay.setForeground(fg);
             }
             @Override public void bg_changed(Color bg) {
-                if(bg != null)
-                    textDisplay.setCursorBackground(bg);
+                if(bg!=null) textDisplay.setCursorBackground(bg);
             }
             @Override public void font_changed(Font font) {
-                if(font != null)
-                    textDisplay.setFont(font);
+                if(font!=null) textDisplay.setFont(font);
             }
         });
 
@@ -57,6 +56,18 @@ public class LayoutedTextEditor_Example extends JPanel {
                 headerPanel.updateDisplayValues(layout.fg, layout.getBG_canbenull(), layout.font);
             }
         });
+        textDisplay.setHint(new LinePart("Please click here and type a text.", new LinePartAppearance.UnInstantiated(Color.gray, null, null, null)));
+
+        textDisplay.addContextAction(ContextFunctionalityLibrary.getFunctionality_TOGGLE_CAPITALIZE_WORD(textDisplay.getInputHandler()));
+        textDisplay.addContextAction(ContextFunctionalityLibrary.getFunctionality_JUMP_TO_END_OF_LINE(textDisplay, textDisplay.getInputHandler()));
+        textDisplay.addContextAction(ContextFunctionalityLibrary.getFunctionality_JUMP_TO_START_OF_LINE(textDisplay, textDisplay.getInputHandler()));
+
+        textDisplay.addContextAction(ContextFunctionalityLibrary.getFunctionality_FONT_SIZE_UP(textDisplay));
+        textDisplay.addContextAction(ContextFunctionalityLibrary.getFunctionality_FONT_SIZE_DOWN(textDisplay));
+        textDisplay.addContextAction(ContextFunctionalityLibrary.getFunctionality_FONT_CYCLE_STYLE(textDisplay));
+        textDisplay.addContextAction(ContextFunctionalityLibrary.getFunctionality_FONT_CYCLE(textDisplay));
+        textDisplay.addContextAction(ContextFunctionalityLibrary.getFunctionality_CYCLE_FG_COLOR(textDisplay));
+        textDisplay.addContextAction(ContextFunctionalityLibrary.getFunctionality_CYCLE_BG_COLOR(textDisplay));
 
         add(textDisplay);
         headerPanel.add(new LoadStorePanel(textDisplay, true));
@@ -64,7 +75,7 @@ public class LayoutedTextEditor_Example extends JPanel {
         add(headerPanel, BorderLayout.NORTH);
 
         textDisplay.setForeground(Color.BLACK);
-        textDisplay.setBackground(new Color(0,0,0,0));
+        textDisplay.setBackground(headerPanel.getBackground());
         textDisplay.setFont(new Font("Arial", Font.BOLD, 13));
     }
 }

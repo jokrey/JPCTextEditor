@@ -3,12 +3,13 @@ package jokrey.utilities.swing.text_editor.text_storage;
 import jokrey.utilities.swing.text_editor.FontMetricsSupplier;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * Immutable.
  */
-public class LinePart {
+public class LinePart implements Serializable {
 	public final String txt;
 	public final LinePartAppearance layout; //can decidedly be null. Will the be replaced with a standard layout at drawtime.
     public LinePart(String string) {

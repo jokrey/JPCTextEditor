@@ -226,6 +226,7 @@ public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Conne
             int visible_pixel_start = getVisibleRect().y;
             int visible_pixel_end = getVisibleRect().y+getVisibleRect().height;
 
+            LinePartAppearance.Instantiated linePrefixLayout = null;
             for (int wl_i = 0; wl_i<content.getLineCount();wl_i++) {
                 Line curRawLine = content.getLine(wl_i);
                 curRawLine.updatePixelKnowledge(this, content.getStandardLayout());
@@ -239,14 +240,16 @@ public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Conne
                     yDrawPos_l+=cur_line_height;
 
                     if(i==0) {
+                        if(linePrefixLayout == null)
+                            linePrefixLayout = LinePartAppearance.valid(disLine.getPart(0).layout, content.getStandardLayout());
                         if(yDrawPos_l >= visible_pixel_start && yDrawPos_l-cur_line_height <= visible_pixel_end) {
                             LinePrefix linePrefix = getLinePrefix(wl_i+1, curRawLine.toString());
 
                             if(g!=null) {
                                 Rectangle area = new Rectangle(0, yDrawPos_l-cur_line_height, getLineCountBoxWidth(), cur_line_height);
                                 g.setClip(area);
-                                g.setFont(LinePartAppearance.valid(disLine.getPart(0).layout, content.getStandardLayout()).font);
-                                linePrefix.draw(g, yDrawPos_l, cur_line_height, input_receiver.cursor.getValidInsertLayout().fg, getLineCountBoxWidth(), input_receiver.cursor.getY()==wl_i);
+                                g.setFont(linePrefixLayout.font);
+                                linePrefix.draw(g, yDrawPos_l, cur_line_height, linePrefixLayout.fg, getLineCountBoxWidth(), input_receiver.cursor.getY()==wl_i);
                             }
                         }
                     }

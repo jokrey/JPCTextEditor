@@ -1,11 +1,10 @@
 package jokrey.utilities.swing.text_editor.text_storage;
 
-import jokrey.utilities.swing.text_editor.text_storage.lineparteffects.LPEffect_Fill;
-
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
 
-public class LinePartEffects implements Iterable<LinePartEffect> {
+public class LinePartEffects implements Iterable<LinePartEffect>, Serializable {
     private final LinePartEffect[] effects;
     public LinePartEffects(LinePartEffect... effects) {
         this.effects = effects;

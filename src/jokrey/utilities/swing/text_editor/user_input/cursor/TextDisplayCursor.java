@@ -195,6 +195,12 @@ public class TextDisplayCursor {
             }
         }
 	}
+    public void setX(int x) {
+        setXY(x, y);
+    }
+    public void setY(int y) {
+        setXY(x, y);
+    }
 
     /**
      * @return getX and getY as a 2 part array.
