@@ -4,7 +4,7 @@ import jokrey.utilities.swing.text_editor.JPCTextEditor;
 import jokrey.utilities.swing.text_editor.JPC_Connector;
 import jokrey.utilities.swing.text_editor.text_storage.ContentEditor;
 import jokrey.utilities.swing.text_editor.text_storage.ContentListener;
-import jokrey.utilities.swing.text_editor.text_storage.LinePart;
+import jokrey.utilities.swing.text_editor.text_storage.DecoratedLinePart;
 import jokrey.utilities.swing.text_editor.text_storage.LinePartAppearance;
 import jokrey.utilities.swing.text_editor.ui.additional.CustomEditorConnector;
 import jokrey.utilities.swing.text_editor.ui.additional.LayoutChangingPanel;
@@ -31,7 +31,7 @@ public class LayoutedFindAndReplaceFrame {
     private boolean ignore_layout() {
         return !find_editor_headerPanel.isVisible();
     }
-	public LayoutedFindAndReplaceFrame(JPC_Connector jpc, JPCTextEditor editor, ContentEditor parent_content, UserInputHandler parent_input_handler, LinePart[] origFindWhat) {
+	public LayoutedFindAndReplaceFrame(JPC_Connector jpc, JPCTextEditor editor, ContentEditor parent_content, UserInputHandler parent_input_handler, DecoratedLinePart[] origFindWhat) {
         this.content = parent_content;
         this.input_handler = parent_input_handler;
 
@@ -241,15 +241,15 @@ public class LayoutedFindAndReplaceFrame {
 
 
 
-    public int count(LinePart[] find) {
+    public int count(DecoratedLinePart[] find) {
         if(ignore_layout()) {
-            String find_as_str = LinePart.toString(find);
+            String find_as_str = DecoratedLinePart.toString(find);
             if (find_as_str.isEmpty()) return 0; // to avoid / 0
             return (content.getText().length() - content.getText().replaceAll(find_as_str, "").length()) / find_as_str.length();
         } else {
             int counter = 0;
             TextInterval virtual_interval = new TextInterval(content);
-            String find_as_str = LinePart.toString(find);
+            String find_as_str = DecoratedLinePart.toString(find);
             int find_index = -1;
             while((find_index = content.getText().indexOf(find_as_str, find_index+1)) != -1) {
                 virtual_interval.setFromDistance(find_index, find_index+find_as_str.length());

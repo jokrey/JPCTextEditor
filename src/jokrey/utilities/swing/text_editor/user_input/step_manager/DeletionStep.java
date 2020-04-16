@@ -1,10 +1,10 @@
 package jokrey.utilities.swing.text_editor.user_input.step_manager;
 
-import jokrey.utilities.swing.text_editor.text_storage.LinePart;
+import jokrey.utilities.swing.text_editor.text_storage.DecoratedLinePart;
 import jokrey.utilities.swing.text_editor.user_input.UserCursor;
 
 public class DeletionStep extends Step {
-	public DeletionStep(LinePart altered, int alteredAt_distanceFrom0) {
+	public DeletionStep(DecoratedLinePart altered, int alteredAt_distanceFrom0) {
 		super(altered, alteredAt_distanceFrom0);
 	}
 

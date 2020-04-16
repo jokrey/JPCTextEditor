@@ -20,7 +20,7 @@ public class LayoutStorageSystem {
         for(Line line:rawLines) {
             LIse lise_lps = new LIse();
             for (int part_i=0;part_i<line.partCount();part_i++) {
-                LinePart linepart = line.getPart(part_i);
+                DecoratedLinePart linepart = line.getPart(part_i);
 
                 LITagStringEncoder ase_linepart = new LITagStringEncoder();
                 ase_linepart.addEntryT("txt", linepart.txt);
@@ -51,7 +51,7 @@ public class LayoutStorageSystem {
         for(int i=0;i<lines_encoded.length;i++) {
             LIse lise_lps = new LIse(lines_encoded[i]);
             String[] lps_encoded = lise_lps.decodeAll();
-            LinePart[] lps_restored = new LinePart[lps_encoded.length];
+            DecoratedLinePart[] lps_restored = new DecoratedLinePart[lps_encoded.length];
 
             for (int lp_i = 0; lp_i < lps_encoded.length; lp_i++) {
                 LITagStringEncoder ase_linepart = new LITagStringEncoder(lps_encoded[lp_i]);
@@ -66,9 +66,9 @@ public class LayoutStorageSystem {
                     Font font = font_name == null ? null : new Font(font_name, ase_layout.getEntryT("font_style", Font.BOLD), ase_layout.getEntryT("font_size", 12));
 
                     //todo - correctly handle effects....
-                    lps_restored[lp_i] = new LinePart(ase_linepart.getEntry("txt"), new LinePartAppearance.UnInstantiated(fg, font, new LinePartEffects(new LPEffect_Fill(bg)), null));
+                    lps_restored[lp_i] = new DecoratedLinePart(ase_linepart.getEntry("txt"), new LinePartAppearance.UnInstantiated(fg, font, new LinePartEffects(new LPEffect_Fill(bg)), null));
                 } else {
-                    lps_restored[lp_i] = new LinePart(ase_linepart.getEntry("txt"), fallback);
+                    lps_restored[lp_i] = new DecoratedLinePart(ase_linepart.getEntry("txt"), fallback);
                 }
             }
 

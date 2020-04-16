@@ -1,7 +1,7 @@
 package jokrey.utilities.swing.text_editor.example;
 
 import jokrey.utilities.swing.text_editor.text_storage.ContentListener;
-import jokrey.utilities.swing.text_editor.text_storage.LinePart;
+import jokrey.utilities.swing.text_editor.text_storage.DecoratedLinePart;
 import jokrey.utilities.swing.text_editor.text_storage.LinePartAppearance;
 import jokrey.utilities.swing.text_editor.ui.JPCLayoutedWrappingTextEditor;
 import jokrey.utilities.swing.text_editor.ui.additional.CustomEditorConnector;
@@ -59,7 +59,7 @@ public class WrappingScrollingLayoutedTextEditor_Example extends JPanel {
                 wrappingToggleButton.setSelected(textDisplay.isLineWrapEnabled());
             }
         });
-        textDisplay.setHint(new LinePart("Please click here and type a text.", new LinePartAppearance.UnInstantiated(Color.gray, null, null, null)));
+        textDisplay.setHint(new DecoratedLinePart("Please click here and type a text.", new LinePartAppearance.UnInstantiated(Color.gray, null, null, null)));
         JPC_Scroller scroller = new JPC_Scroller(textDisplay);
 
         textDisplay.addContextAction(ContextFunctionalityLibrary.getFunctionality_TOGGLE_WRAPPING(textDisplay));

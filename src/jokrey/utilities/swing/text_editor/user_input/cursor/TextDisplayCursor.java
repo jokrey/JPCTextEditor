@@ -2,7 +2,7 @@ package jokrey.utilities.swing.text_editor.user_input.cursor;
 
 import jokrey.utilities.swing.text_editor.text_storage.ContentEditor;
 import jokrey.utilities.swing.text_editor.text_storage.Line;
-import jokrey.utilities.swing.text_editor.text_storage.LinePart;
+import jokrey.utilities.swing.text_editor.text_storage.DecoratedLinePart;
 
 import java.awt.*;
 
@@ -45,7 +45,7 @@ public class TextDisplayCursor {
                 int elapsedPixelsInLine = 0;
                 int disLinePixelHeight = disLine.getPixelHeight();
                 for (int part_i = 0; part_i < disLine.partCount(); part_i++) {
-                    LinePart lp = disLine.getPart(part_i);
+                    DecoratedLinePart lp = disLine.getPart(part_i);
                     int char_count_in_this_sequence = lp.length();
                     if (getY() == i && elapsedChars_counter + char_count_in_this_sequence >= getX()) {
                         int x_inSequence = getX() - elapsedChars_counter;
@@ -98,7 +98,7 @@ public class TextDisplayCursor {
                 int elapsedPixelsInCurLine = text_spacing_left;
                 int disLinePixelHeight = disLine.getPixelHeight();
                 for (int ii = 0; ii < disLine.partCount(); ii++) {
-                    LinePart lp = disLine.getPart(ii);
+                    DecoratedLinePart lp = disLine.getPart(ii);
                     int pixelsInThisCharSequence = lp.getPixelWidth();
                     if (elapsedYPixels >= (p.y - disLinePixelHeight)
                             && (ii == disLine.partCount() - 1 || p.x <= elapsedPixelsInCurLine + pixelsInThisCharSequence)) {

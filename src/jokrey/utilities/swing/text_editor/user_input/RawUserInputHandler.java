@@ -2,7 +2,7 @@ package jokrey.utilities.swing.text_editor.user_input;
 
 import jokrey.utilities.swing.text_editor.JPC_Connector;
 import jokrey.utilities.swing.text_editor.text_storage.ContentEditor;
-import jokrey.utilities.swing.text_editor.text_storage.LinePart;
+import jokrey.utilities.swing.text_editor.text_storage.DecoratedLinePart;
 import jokrey.utilities.swing.text_editor.user_input.cursor.TextDisplayCursor;
 import jokrey.utilities.swing.text_editor.user_input.cursor.TextInterval;
 
@@ -246,9 +246,9 @@ public class RawUserInputHandler extends MouseAdapter implements KeyListener, Fo
 						}
 			    		user_input_handler.cursor.clearSelection();
 
-						if(data instanceof LinePart[]) {
+						if(data instanceof DecoratedLinePart[]) {
 						    //todo - if the editor does not use layouting(which is currently undeterminable), then insert as string..
-							LinePart[] toInsert=((LinePart[])data);
+							DecoratedLinePart[] toInsert=((DecoratedLinePart[])data);
 							if(toInsert.length==0) return false;
 							display.requestFocus();
                             user_input_handler._user_insert(toInsert);
@@ -289,7 +289,7 @@ public class RawUserInputHandler extends MouseAdapter implements KeyListener, Fo
             private DataFlavor customLinePartArrayDataFlavor = null;
             {
                 try {
-                    customLinePartArrayDataFlavor = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=\"" + LinePart[].class.getName() + "\"");
+                    customLinePartArrayDataFlavor = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=\"" + DecoratedLinePart[].class.getName() + "\"");
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -298,7 +298,7 @@ public class RawUserInputHandler extends MouseAdapter implements KeyListener, Fo
 	    	@Override protected Transferable createTransferable(JComponent jc) {
                 if(!content.isDragAndDropEnabled())return null;
 	    		final String intervalText = user_input_handler.cursor.selection.getIntervalText();
-	    		final LinePart[] intervalData = user_input_handler.cursor.selection.getIntervalSequences();
+	    		final DecoratedLinePart[] intervalData = user_input_handler.cursor.selection.getIntervalSequences();
                 return new Transferable() {
                     @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
                         return Arrays.asList(flavors).contains(flavor);

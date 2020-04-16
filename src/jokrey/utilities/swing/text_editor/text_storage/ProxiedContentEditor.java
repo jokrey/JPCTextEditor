@@ -32,7 +32,7 @@ public abstract class ProxiedContentEditor extends ContentEditor {
     @Override public void clearText() {
         backingContent.clearText();
     }
-    @Override public LinePart[] getTextAsLineParts() {
+    @Override public DecoratedLinePart[] getTextAsLineParts() {
         return backingContent.getTextAsLineParts();
     }
     @Override public String getText_with_encoded_layout() {

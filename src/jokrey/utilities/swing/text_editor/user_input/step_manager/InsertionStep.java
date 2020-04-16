@@ -1,10 +1,10 @@
 package jokrey.utilities.swing.text_editor.user_input.step_manager;
 
-import jokrey.utilities.swing.text_editor.text_storage.LinePart;
+import jokrey.utilities.swing.text_editor.text_storage.DecoratedLinePart;
 import jokrey.utilities.swing.text_editor.user_input.UserCursor;
 
 public class InsertionStep extends Step {
-	public InsertionStep(LinePart altered, int alteredAt_distanceFrom00) {
+	public InsertionStep(DecoratedLinePart altered, int alteredAt_distanceFrom00) {
 		super(altered, alteredAt_distanceFrom00);
 	}
 

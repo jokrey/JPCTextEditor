@@ -119,7 +119,7 @@ public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Conne
         input_receiver.reset_step_manager();
         input_receiver.cursor.selection.clear();
     }
-    public void setText(LinePart[] text) {
+    public void setText(DecoratedLinePart[] text) {
         content.setText(text);
         input_receiver.reset_step_manager();
         input_receiver.cursor.selection.clear();
@@ -127,7 +127,7 @@ public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Conne
     public String getText() {
         return content.getText();
     }
-    @Override public LinePart[] getTextAsLineParts() {
+    @Override public DecoratedLinePart[] getTextAsLineParts() {
         return content.getTextAsLineParts();
     }
     public String getText_with_encoded_layout() {
@@ -139,13 +139,13 @@ public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Conne
         input_receiver.cursor.selection.clear();
     }
 
-    public final void setHint(LinePart hint) {
+    public final void setHint(DecoratedLinePart hint) {
         content.setHint(hint);
     }
     public final void setHintText(String hint) {
-        content.setHint(new LinePart(hint, null));
+        content.setHint(new DecoratedLinePart(hint, null));
     }
-    public final LinePart getHint() {return content.getHint();}
+    public final DecoratedLinePart getHint() {return content.getHint();}
 
     //User Input Wrapping
     public void setEditable(boolean editable) {
@@ -201,7 +201,7 @@ public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Conne
         int highestXDrawPos = 0;
         if(content.getLineCount() == 1 && content.getLine(0).isEmpty()) {//DRAWING THE HINT
             content.getDisplayLine(0)[0].updatePixelKnowledge(this, content.getStandardLayout());
-            LinePart hint = content.getHint();
+            DecoratedLinePart hint = content.getHint();
             hint.updateFontMetrics(this, content.getStandardLayout());
             int cur_line_height = hint.getPixelHeight();
             yDrawPos_l += cur_line_height;
@@ -255,7 +255,7 @@ public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Conne
                     }
 
                     for (int part_i=0;part_i<disLine.partCount();part_i++) {
-                        LinePart lp = disLine.getPart(part_i);
+                        DecoratedLinePart lp = disLine.getPart(part_i);
                         int lpw = lp.getPixelWidth();
                         if(yDrawPos_l >= visible_pixel_start && yDrawPos_l-cur_line_height <= visible_pixel_end) {
                             if(g!=null) {

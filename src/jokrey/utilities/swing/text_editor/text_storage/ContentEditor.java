@@ -3,7 +3,6 @@ package jokrey.utilities.swing.text_editor.text_storage;
 import jokrey.utilities.swing.text_editor.JPC_Connector;
 
 import java.awt.*;
-import java.io.File;
 import java.util.*;
 import java.util.List;
 
@@ -118,34 +117,34 @@ public abstract class ContentEditor {
     public abstract void clearText();
     public String getText() {
         StringBuilder text = new StringBuilder();
-        for(LinePart line:getTextAsLineParts())
+        for(DecoratedLinePart line:getTextAsLineParts())
             text.append(line.toString());
         return text.toString();
     }
 
     public void setText(String text) {
-        setText(new LinePart(text, null));
+        setText(new DecoratedLinePart(text, null));
     }
-    public void setText(LinePart... text) {
+    public void setText(DecoratedLinePart... text) {
         clearText();
-        List<LinePart> parts_in_current_line = new LinkedList<>();
-        for(LinePart part:text) {
+        List<DecoratedLinePart> parts_in_current_line = new LinkedList<>();
+        for(DecoratedLinePart part:text) {
             if(part.txt.contains("\n")) {
                 String[] lines_in_part = part.txt.split("\n", -1);
-                parts_in_current_line.add(new LinePart(lines_in_part[0], part.layout));
+                parts_in_current_line.add(new DecoratedLinePart(lines_in_part[0], part.layout));
                 if(getLine(0).isEmpty())
-                    setLine(0, new Line(parts_in_current_line.toArray(new LinePart[0])));
+                    setLine(0, new Line(parts_in_current_line.toArray(new DecoratedLinePart[0])));
                 else
-                    addLine(new Line(parts_in_current_line.toArray(new LinePart[0])));
+                    addLine(new Line(parts_in_current_line.toArray(new DecoratedLinePart[0])));
                 for (int i = 1; i < lines_in_part.length - 1; i++)
-                    addLine(new Line(new LinePart(lines_in_part[i], part.layout)));
+                    addLine(new Line(new DecoratedLinePart(lines_in_part[i], part.layout)));
                 parts_in_current_line.clear();
-                parts_in_current_line.add(new LinePart(lines_in_part[lines_in_part.length - 1], part.layout));
+                parts_in_current_line.add(new DecoratedLinePart(lines_in_part[lines_in_part.length - 1], part.layout));
             } else {
                 parts_in_current_line.add(part);
             }
         }
-        addLine(new Line(parts_in_current_line.toArray(new LinePart[0])));
+        addLine(new Line(parts_in_current_line.toArray(new DecoratedLinePart[0])));
         fireEntireTextChanged();
     }
     public String getTextInLines(int... lineIndices) {
@@ -153,7 +152,7 @@ public abstract class ContentEditor {
         for (int lineIndex : lineIndices) text.append(getLine(lineIndex - 1).toString()).append("\n");
         return text.toString();
     }
-    public abstract LinePart[] getTextAsLineParts();
+    public abstract DecoratedLinePart[] getTextAsLineParts();
     public abstract String getText_with_encoded_layout();
     public abstract void setText_with_encoded_layout(String text);
 
@@ -206,12 +205,12 @@ public abstract class ContentEditor {
         addLine(getLineCount(), line);
     }
 
-    private LinePart hint = new LinePart("");
-    public void setHint(LinePart hint) {
+    private DecoratedLinePart hint = new DecoratedLinePart("");
+    public void setHint(DecoratedLinePart hint) {
         if(hint!=null)
             this.hint=hint;
     }
-    public LinePart getHint() {return hint;}
+    public DecoratedLinePart getHint() {return hint;}
 
     public void validateCursorVisibility() {
         jpc_connector.validateCursorVisibility();

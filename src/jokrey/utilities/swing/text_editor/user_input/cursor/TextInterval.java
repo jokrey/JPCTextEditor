@@ -2,7 +2,7 @@ package jokrey.utilities.swing.text_editor.user_input.cursor;
 
 import jokrey.utilities.swing.text_editor.text_storage.ContentEditor;
 import jokrey.utilities.swing.text_editor.text_storage.Line;
-import jokrey.utilities.swing.text_editor.text_storage.LinePart;
+import jokrey.utilities.swing.text_editor.text_storage.DecoratedLinePart;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -127,44 +127,44 @@ public class TextInterval {
 		return "";
 	}
 
-	public LinePart[] getIntervalSequences() {
+	public DecoratedLinePart[] getIntervalSequences() {
 		if(!isClear()) {
 			validateP1SmallerP2();
 			if(p1.getY()==p2.getY()) {
 				return content.getLine(p1.getY()).getSubSequences(p1.getX(), p2.getX());
 			} else {
-				LinePart[] firstLineSequences = content.getLine(p1.getY()).getSubSequences(p1.getX(), content.getLine(p1.getY()).length());
-				ArrayList<LinePart> sequences = new ArrayList<>(Arrays.asList(firstLineSequences));
+				DecoratedLinePart[] firstLineSequences = content.getLine(p1.getY()).getSubSequences(p1.getX(), content.getLine(p1.getY()).length());
+				ArrayList<DecoratedLinePart> sequences = new ArrayList<>(Arrays.asList(firstLineSequences));
 				for(int i=p1.getY()+1;i<p2.getY();i++) {
-					LinePart lastInLastLine = sequences.get(sequences.size()-1);
+					DecoratedLinePart lastInLastLine = sequences.get(sequences.size()-1);
 
-					LinePart[] lastLineSequences = content.getLine(i).getSubSequences(0, content.getLine(i).length());
-					LinePart firstInLine = lastLineSequences[0];
+					DecoratedLinePart[] lastLineSequences = content.getLine(i).getSubSequences(0, content.getLine(i).length());
+					DecoratedLinePart firstInLine = lastLineSequences[0];
 					if(lastInLastLine.sameLayoutAs(firstInLine)) {
                         sequences.set(sequences.size()-1, lastInLastLine.copy_change(lastInLastLine.txt+"\n"+firstInLine.txt));
                         sequences.addAll(Arrays.asList(lastLineSequences).subList(1, lastLineSequences.length));
 					} else {
-                        sequences.add(new LinePart("\n"));
+                        sequences.add(new DecoratedLinePart("\n"));
                         Collections.addAll(sequences, lastLineSequences);
 					}
 				}
 
-				LinePart lastInLastLine = sequences.get(sequences.size()-1);
-				LinePart[] lastLineSequences = content.getLine(p2.getY()).getSubSequences(0, p2.getX());
+				DecoratedLinePart lastInLastLine = sequences.get(sequences.size()-1);
+				DecoratedLinePart[] lastLineSequences = content.getLine(p2.getY()).getSubSequences(0, p2.getX());
 				if(lastLineSequences.length>0) {
-					LinePart firstInLine = lastLineSequences[0];
+					DecoratedLinePart firstInLine = lastLineSequences[0];
 					if(lastInLastLine.sameLayoutAs(firstInLine)) {
 					    sequences.set(sequences.size()-1, lastInLastLine.copy_change(lastInLastLine.txt+"\n"+firstInLine.txt));
                         sequences.addAll(Arrays.asList(lastLineSequences).subList(1, lastLineSequences.length));
 					} else {
-						sequences.add(new LinePart("\n"));
+						sequences.add(new DecoratedLinePart("\n"));
                         sequences.addAll(Arrays.asList(lastLineSequences));
 					}
 				}
-				return sequences.toArray(new LinePart[sequences.size()]);
+				return sequences.toArray(new DecoratedLinePart[sequences.size()]);
 			}
 		}
-		return new LinePart[0];
+		return new DecoratedLinePart[0];
 	}
 	public void removeIntervalText(TextDisplayCursor parentCursor) {
 		if(!isClear()) {

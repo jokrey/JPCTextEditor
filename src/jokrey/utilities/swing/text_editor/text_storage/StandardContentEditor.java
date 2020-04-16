@@ -66,15 +66,15 @@ public class StandardContentEditor extends ContentEditor {
     @Override public Line getLine(int line_number) {
         return rawLines.get(line_number);
     }
-    @Override public LinePart[] getTextAsLineParts() {
-        LinkedList<LinePart> list = new LinkedList<>();
+    @Override public DecoratedLinePart[] getTextAsLineParts() {
+        LinkedList<DecoratedLinePart> list = new LinkedList<>();
         for(int i=0;i<rawLines.size();i++) {
             for(int ii=0;ii<rawLines.get(i).partCount();ii++)
                 list.add(rawLines.get(i).getPart(ii));
             if(i<rawLines.size()-1)
-                list.add(new LinePart("\n"));
+                list.add(new DecoratedLinePart("\n"));
         }
-        return list.toArray(new LinePart[0]);
+        return list.toArray(new DecoratedLinePart[0]);
     }
 
     @Override public void clearText() {

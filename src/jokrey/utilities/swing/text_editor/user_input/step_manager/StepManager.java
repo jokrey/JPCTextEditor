@@ -1,6 +1,6 @@
 package jokrey.utilities.swing.text_editor.user_input.step_manager;
 
-import jokrey.utilities.swing.text_editor.text_storage.LinePart;
+import jokrey.utilities.swing.text_editor.text_storage.DecoratedLinePart;
 import jokrey.utilities.swing.text_editor.user_input.UserCursor;
 
 import java.lang.reflect.InvocationTargetException;
@@ -49,9 +49,9 @@ public class StepManager {
 //						if they are of the same class and occur directly after one another....
 						try {
 							Step newJoinedStep =
-									stepAt_i.getClass().getDeclaredConstructor(LinePart.class, int.class)
+									stepAt_i.getClass().getDeclaredConstructor(DecoratedLinePart.class, int.class)
 									.newInstance(
-										new LinePart(stepAt_i_minus1.altered.txt+stepAt_i.altered.txt, stepAt_i.altered.layout),
+										new DecoratedLinePart(stepAt_i_minus1.altered.txt+stepAt_i.altered.txt, stepAt_i.altered.layout),
 										stepAt_i_minus1.alteredAt_distanceFrom00
 									);
 							steps.set(i-1, newJoinedStep);
@@ -88,7 +88,7 @@ public class StepManager {
 
 
 
-	public static Step getStepDeletion(int cursor_distance_from_00, LinePart[] removed) {
+	public static Step getStepDeletion(int cursor_distance_from_00, DecoratedLinePart[] removed) {
 		if(removed.length!=0) {
 			DeletionStep[] del_steps = new DeletionStep[removed.length];
 			int elapsedChars = 0;
@@ -106,9 +106,9 @@ public class StepManager {
             return null;
 		}
 	}
-	public static Step getStepInsert(int cursor_distance_from_00, LinePart[] toInsert) {
+	public static Step getStepInsert(int cursor_distance_from_00, DecoratedLinePart[] toInsert) {
         ArrayList<InsertionStep> ins_steps = new ArrayList<>();
-        for (LinePart aToInsert : toInsert) {
+        for (DecoratedLinePart aToInsert : toInsert) {
             ins_steps.add(new InsertionStep(aToInsert, cursor_distance_from_00));
         }
 
@@ -119,17 +119,17 @@ public class StepManager {
         }
     }
 
-	public void userPerformedOperation_remove(LinePart[] removed, UserCursor cursor) {
+	public void userPerformedOperation_remove(DecoratedLinePart[] removed, UserCursor cursor) {
 	    Step deletion = getStepDeletion(cursor.getDistanceFrom00(), removed);
 	    if(deletion!=null)
 	        addStep(deletion);
 	}
-	public void userPerformedOperation_insert(UserCursor cursor, LinePart[] toInsert) {
+	public void userPerformedOperation_insert(UserCursor cursor, DecoratedLinePart[] toInsert) {
         Step insert = getStepInsert(cursor.getDistanceFrom00(), toInsert);
         if(insert!=null)
             addStep(insert);
 	}
-	public void userPerformedOperation_replace(LinePart[] removed, int cursor_distance_from_00, LinePart[] toInsert) {
+	public void userPerformedOperation_replace(DecoratedLinePart[] removed, int cursor_distance_from_00, DecoratedLinePart[] toInsert) {
         Step deletion = getStepDeletion(cursor_distance_from_00, removed);
         Step insert = getStepInsert(cursor_distance_from_00, toInsert);
         if(deletion!=null && insert!=null) {

@@ -91,8 +91,8 @@ public class WrappingContentEditor extends ProxiedContentEditor {
     private int getNextLineWrap_butgobacktolastspace(Line remaining, int remaining_space) {
         int elapsedPixels = 0;
         int elapsedChars = 0;
-        LinePart[] parts = remaining.getCopyOfInternalParts();
-        for (LinePart part : parts) {
+        DecoratedLinePart[] parts = remaining.getCopyOfInternalParts();
+        for (DecoratedLinePart part : parts) {
             int part_pixel_width = part.getPixelWidth();
             if (elapsedPixels + part_pixel_width > remaining_space) {  //if this is greater, then we have found the part in which the wrapping occurs
                 //now we know that the wrap point is somewhere in part[i].

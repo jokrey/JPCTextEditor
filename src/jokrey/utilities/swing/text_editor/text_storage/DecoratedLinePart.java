@@ -1,6 +1,7 @@
 package jokrey.utilities.swing.text_editor.text_storage;
 
 import jokrey.utilities.swing.text_editor.FontMetricsSupplier;
+import jokrey.utilities.transparent_storage.SubStorage;
 
 import java.awt.*;
 import java.io.Serializable;
@@ -9,23 +10,23 @@ import java.util.Objects;
 /**
  * Immutable.
  */
-public class LinePart implements Serializable {
+public class DecoratedLinePart implements Serializable {
 	public final String txt;
 	public final LinePartAppearance layout; //can decidedly be null. Will the be replaced with a standard layout at drawtime.
-    public LinePart(String string) {
+    public DecoratedLinePart(String string) {
         this(string, null);
     }
-    public LinePart(String string, LinePartAppearance layout) {
-		if(string==null)txt="";
-		else            txt = string;
+    public DecoratedLinePart(String string, LinePartAppearance layout) {
+		if(string==null) txt="";
+		else             txt = string;
 		this.layout = layout;
 	}
-	private LinePart(String string, LinePartAppearance layout, FontMetrics fm) {
+	private DecoratedLinePart(String string, LinePartAppearance layout, FontMetrics fm) {
         this(string, layout);
         this.fm=fm;
     }
-	public LinePart copy_change(String string) {
-        return new LinePart(string, layout, fm);
+	public DecoratedLinePart copy_change(String string) {
+        return new DecoratedLinePart(string, layout, fm);
     }
 
 	//txt quick accessor.
@@ -42,13 +43,13 @@ public class LinePart implements Serializable {
         return txt.substring(start, end);
     }
 
-	public LinePart[] splitAt(int x) {
+	public DecoratedLinePart[] splitAt(int x) {
         if(x<0 || x>length())
             throw new ArrayIndexOutOfBoundsException("x="+x);
 
-		LinePart cs1 = copy_change(substring(0, x));
-		LinePart cs2 = copy_change(substring(x));
-		return new LinePart[]{cs1, cs2};
+		DecoratedLinePart cs1 = copy_change(substring(0, x));
+		DecoratedLinePart cs2 = copy_change(substring(x));
+		return new DecoratedLinePart[]{cs1, cs2};
 	}
 
 
@@ -57,16 +58,16 @@ public class LinePart implements Serializable {
 	//to string, equals
     @Override public String toString() {return "[LinePart: "+txt+", "+layout+"]";}
     @Override public boolean equals(Object o) {
-        return o instanceof LinePart &&
-                txt.equals(((LinePart)o).txt) &&
-                layout.equals(((LinePart)o).layout);
+        return o instanceof DecoratedLinePart &&
+                txt.equals(((DecoratedLinePart)o).txt) &&
+                layout.equals(((DecoratedLinePart)o).layout);
     }
-	public boolean sameLayoutAs(LinePart o) {
+	public boolean sameLayoutAs(DecoratedLinePart o) {
 		return Objects.equals(layout, o.layout);
 	}
-	public static String toString(LinePart... parts) {
+	public static String toString(DecoratedLinePart... parts) {
         StringBuilder sb = new StringBuilder();
-        for (LinePart part : parts) sb.append(part.txt);
+        for (DecoratedLinePart part : parts) sb.append(part.txt);
         return sb.toString();
     }
 
@@ -82,9 +83,9 @@ public class LinePart implements Serializable {
         int indexOfTab = txt.indexOf("\t");
         int x_add = 0;
         if(indexOfTab >= 0) {
-            LinePart lp = this;
+            DecoratedLinePart lp = this;
             while (indexOfTab >= 0) {
-                LinePart cs1 = copy_change(lp.substring(0, indexOfTab));
+                DecoratedLinePart cs1 = copy_change(lp.substring(0, indexOfTab));
                 cs1.draw(display, opaque, g, fallback, new Rectangle(linePartArea.x + x_add, linePartArea.y, linePartArea.width-x_add, linePartArea.height));  //does not contain any tabs.
                 x_add += g.getFontMetrics().stringWidth(cs1.txt);
                 x_add = getNextTabXPosition(x_add);
@@ -124,10 +125,10 @@ public class LinePart implements Serializable {
         //tab functionality, test regarding performance in large scales.
         int indexOfTab = txt.indexOf("\t");
         if(indexOfTab >= 0) {
-            LinePart lp = this;
+            DecoratedLinePart lp = this;
             int x_draw = 0;
             while (indexOfTab >= 0) {
-                LinePart cs1 = copy_change(lp.substring(0, indexOfTab));
+                DecoratedLinePart cs1 = copy_change(lp.substring(0, indexOfTab));
                 x_draw += cs1.fm.stringWidth(cs1.txt);
                 x_draw = getNextTabXPosition(x_draw);
                 lp = copy_change(lp.substring(indexOfTab+1));

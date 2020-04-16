@@ -2,7 +2,7 @@ package jokrey.utilities.swing.text_editor.ui;
 
 import jokrey.utilities.swing.text_editor.JPC_Connector;
 import jokrey.utilities.swing.text_editor.text_storage.ContentEditor;
-import jokrey.utilities.swing.text_editor.text_storage.LinePart;
+import jokrey.utilities.swing.text_editor.text_storage.DecoratedLinePart;
 import jokrey.utilities.swing.text_editor.text_storage.StandardContentEditor;
 import jokrey.utilities.swing.text_editor.ui.core.Abstract_JPCTextEditor;
 import jokrey.utilities.swing.text_editor.user_input.UserInputHandler;
@@ -35,8 +35,8 @@ public class JPCLayoutedTextEditor extends Abstract_JPCTextEditor {
                         try {
                             DataFlavor something = Toolkit.getDefaultToolkit().getSystemClipboard().getAvailableDataFlavors()[0];
                             Object pasteData = Toolkit.getDefaultToolkit().getSystemClipboard().getData(something);
-                            if (pasteData instanceof LinePart[]) {
-                                _user_insert((LinePart[]) pasteData);
+                            if (pasteData instanceof DecoratedLinePart[]) {
+                                _user_insert((DecoratedLinePart[]) pasteData);
                                 return;
                             }
                         } catch (MalformedURLException ex) { } //ok so hand back to super below.

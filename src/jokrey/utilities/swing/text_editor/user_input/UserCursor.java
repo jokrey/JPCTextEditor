@@ -2,7 +2,7 @@ package jokrey.utilities.swing.text_editor.user_input;
 
 import jokrey.utilities.swing.text_editor.text_storage.ContentEditor;
 import jokrey.utilities.swing.text_editor.text_storage.Line;
-import jokrey.utilities.swing.text_editor.text_storage.LinePart;
+import jokrey.utilities.swing.text_editor.text_storage.DecoratedLinePart;
 import jokrey.utilities.swing.text_editor.text_storage.LinePartAppearance;
 import jokrey.utilities.swing.text_editor.user_input.cursor.TextDisplayCursor;
 import jokrey.utilities.swing.text_editor.user_input.cursor.TextInterval;
@@ -74,11 +74,11 @@ public class UserCursor extends TextDisplayCursor {
 	public void insert(String str) {
 		insert(str, insert_layout);
 	}
-    public void insert(LinePart... parts) {
-        for(LinePart part:parts)
+    public void insert(DecoratedLinePart... parts) {
+        for(DecoratedLinePart part:parts)
             insert(part.txt, part.layout);
     }
-    public void insert(LinePart part) {
+    public void insert(DecoratedLinePart part) {
         insert(part.txt, part.layout);
     }
 	public void insert(String str, LinePartAppearance layoutForInsert) {
@@ -110,15 +110,15 @@ public class UserCursor extends TextDisplayCursor {
 			}
 		}
 	}
-	public LinePart[] delete() {
+	public DecoratedLinePart[] delete() {
 		if(!selection.isClear()) {
 			return removeSelectedInterval();
 		} else {
-			LinePart removed = null;
+			DecoratedLinePart removed = null;
 			Line curCursorLine = content.getLine(getY());
 			if (getX()==curCursorLine.length()&&getY()+1<content.getLineCount()) {
 			    content.setLine(getY(), content.getLine(getY()).append(content.removeLine(getY()+1)));
-				removed=new LinePart("\n", insert_layout);//fuck coloring for an invisible line wrap
+				removed=new DecoratedLinePart("\n", insert_layout);//fuck coloring for an invisible line wrap
 			} else {
 				if(getX()<curCursorLine.length()) {
 					removed=content.getLine(getY()).getSingleCharAt_AsLinePart(getX());
@@ -126,34 +126,34 @@ public class UserCursor extends TextDisplayCursor {
 				}
 			}
 
-			return removed==null?new LinePart[0]:new LinePart[]{removed};
+			return removed==null?new DecoratedLinePart[0]:new DecoratedLinePart[]{removed};
 		}
 	}
-	public LinePart[] backspace() {
+	public DecoratedLinePart[] backspace() {
 		if(!selection.isClear()) {
 			return removeSelectedInterval();
 		} else {
-			if(getX()==0&&getY()==0) return new LinePart[0];
-			LinePart removed;
+			if(getX()==0&&getY()==0) return new DecoratedLinePart[0];
+			DecoratedLinePart removed;
 			if (getX()==0&&getY()>0) {
 				Line curCursorLine = content.getLine(getY());
 				content.setLine(getY()-1, content.getLine(getY()-1).append(curCursorLine));
 				content.removeLine(getY());
 				x_minus(curCursorLine.length()+1);
-				removed=new LinePart("\n", insert_layout);
+				removed=new DecoratedLinePart("\n", insert_layout);
 			} else {
 				removed=content.getLine(getY()).getSingleCharAt_AsLinePart(getX()-1);
                 content.setLine(getY(), content.getLine(getY()).removeCharAt(getX()-1));
 				x_minus(1);
 			}
-			return removed==null?new LinePart[0]:new LinePart[]{removed};
+			return removed==null?new DecoratedLinePart[0]:new DecoratedLinePart[]{removed};
 		}
 	}
 
-	public LinePart[] removeSelectedInterval() {
-		if(selection.isClear())return new LinePart[0];
+	public DecoratedLinePart[] removeSelectedInterval() {
+		if(selection.isClear())return new DecoratedLinePart[0];
 		int distancep1From=selection.get1_distance00();
-		LinePart[] interval_clrb = selection.getIntervalSequences();
+		DecoratedLinePart[] interval_clrb = selection.getIntervalSequences();
 		selection.removeIntervalText(this);
 		setFromDistance(distancep1From);
 		return interval_clrb;

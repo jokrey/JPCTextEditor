@@ -1,7 +1,7 @@
 package jokrey.utilities.swing.text_editor;
 
 import jokrey.utilities.swing.text_editor.text_storage.ContentListener;
-import jokrey.utilities.swing.text_editor.text_storage.LinePart;
+import jokrey.utilities.swing.text_editor.text_storage.DecoratedLinePart;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,16 +20,16 @@ public interface JPCTextEditor {
 
 
     void setText(String text);
-    void setText(LinePart[] text);
+    void setText(DecoratedLinePart[] text);
     void setText_with_encoded_layout(String text);
     String getText();
-    LinePart[] getTextAsLineParts();
+    DecoratedLinePart[] getTextAsLineParts();
     String getText_with_encoded_layout();
     String getTextFromVisibleLines();
 
-    void setHint(LinePart hint);
+    void setHint(DecoratedLinePart hint);
     void setHintText(String hint);
-    LinePart getHint();
+    DecoratedLinePart getHint();
 
     void setEditable(boolean editable);
     boolean isEditable();

@@ -1,15 +1,15 @@
 package jokrey.utilities.swing.text_editor.user_input.step_manager;
 
-import jokrey.utilities.swing.text_editor.text_storage.LinePart;
+import jokrey.utilities.swing.text_editor.text_storage.DecoratedLinePart;
 import jokrey.utilities.swing.text_editor.user_input.UserCursor;
 
 /**
  * Immutable.
  */
 public abstract class Step {
-	public final LinePart altered;
+	public final DecoratedLinePart altered;
     public final int alteredAt_distanceFrom00;
-	public Step(LinePart altered, int alteredAt_distanceFrom00) {
+	public Step(DecoratedLinePart altered, int alteredAt_distanceFrom00) {
 		this.altered= altered;
 		this.alteredAt_distanceFrom00=alteredAt_distanceFrom00;
 	}
