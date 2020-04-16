@@ -39,5 +39,4 @@ public interface JPCTextEditor {
 
     void setCursorPosition(int x, int y);
     void addContentListener(ContentListener contentListener);
-
 }

@@ -4,7 +4,7 @@ package jokrey.utilities.swing.text_editor.text_storage;
  * @author jokrey
  */
 public abstract class ProxiedContentEditor extends ContentEditor {
-    private ContentEditor backingContent;
+    public final ContentEditor backingContent;
     public ProxiedContentEditor(ContentEditor backingContent) {
         super(backingContent.jpc_connector);
         this.backingContent = backingContent;
