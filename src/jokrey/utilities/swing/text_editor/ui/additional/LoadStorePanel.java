@@ -23,7 +23,7 @@ public class LoadStorePanel extends JPanel {
         loadB.addActionListener(e -> {
             JFileChooser jf = new JFileChooser();
             jf.setFileFilter(filter);
-            int result = jf.showSaveDialog(this);
+            int result = jf.showOpenDialog(this);
             if (result == JOptionPane.OK_OPTION) {
                 File f = jf.getSelectedFile();
 

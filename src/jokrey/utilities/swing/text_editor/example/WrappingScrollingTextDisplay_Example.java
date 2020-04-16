@@ -2,6 +2,7 @@ package jokrey.utilities.swing.text_editor.example;
 
 import jokrey.utilities.swing.text_editor.JPC_Connector;
 import jokrey.utilities.swing.text_editor.text_storage.ContentEditor;
+import jokrey.utilities.swing.text_editor.text_storage.StandardContentEditor;
 import jokrey.utilities.swing.text_editor.text_storage.WrappingContentEditor;
 import jokrey.utilities.swing.text_editor.ui.JPCSimpleWrappingTextEditor;
 import jokrey.utilities.swing.text_editor.ui.core.JPC_Scroller;
@@ -13,7 +14,7 @@ public class WrappingScrollingTextDisplay_Example {
     public static void main(String[] args) {
         JPCSimpleWrappingTextEditor textDisplay = new JPCSimpleWrappingTextEditor() {
             @Override public ContentEditor createContentEditor(JPC_Connector c) {
-                return new WrappingContentEditor(c) {
+                return new WrappingContentEditor(new StandardContentEditor(c)) {
                     @Override public boolean isSelectionEnabled() {
                         return true;//ok, because copying out is disabled, by not adding the context function and DND is disabled below.
                     }

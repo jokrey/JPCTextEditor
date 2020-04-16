@@ -1,6 +1,5 @@
 package jokrey.utilities.swing.text_editor.text_storage;
 
-import jokrey.utilities.swing.text_editor.JPC_Connector;
 import jokrey.utilities.swing.text_editor.user_input.cursor.TextDisplayCursor;
 import jokrey.utilities.debug_analysis_helper.CallCountMarker;
 
@@ -9,11 +8,10 @@ import java.util.ArrayList;
 /**
  * Adds a wrapping functionality to the StandardContentEditor.
  */
-public class WrappingContentEditor extends StandardContentEditor {
+public class WrappingContentEditor extends ProxiedContentEditor {
     private ArrayList<Line[]> displayLines = new ArrayList<>();
-
-    public WrappingContentEditor(JPC_Connector con) {
-        super(con);
+    public WrappingContentEditor(ContentEditor backingContent) {
+        super(backingContent);
     }
 
     @Override public Line[] getDisplayLine(int line_number) {

@@ -3,6 +3,7 @@ package jokrey.utilities.swing.text_editor.ui;
 import jokrey.utilities.swing.text_editor.JPCWrappingTextEditor;
 import jokrey.utilities.swing.text_editor.JPC_Connector;
 import jokrey.utilities.swing.text_editor.text_storage.ContentEditor;
+import jokrey.utilities.swing.text_editor.text_storage.StandardContentEditor;
 import jokrey.utilities.swing.text_editor.text_storage.WrappingContentEditor;
 
 import java.awt.*;
@@ -11,7 +12,7 @@ public class JPCSimpleWrappingTextEditor extends JPCSimpleTextEditor implements 
     public JPCSimpleWrappingTextEditor() {}
 
     @Override public ContentEditor createContentEditor(JPC_Connector c) {
-        return new WrappingContentEditor(c);
+        return new WrappingContentEditor(new StandardContentEditor(c));
     }
 
     public void setLineWrap(boolean wrap_lines) {

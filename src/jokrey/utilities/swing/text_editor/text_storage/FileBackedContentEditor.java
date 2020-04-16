@@ -2,6 +2,9 @@ package jokrey.utilities.swing.text_editor.text_storage;
 
 import jokrey.utilities.swing.text_editor.JPC_Connector;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -10,9 +13,10 @@ import java.util.List;
 /**
  * An implementation of the ContentEditor that implements it's abstract methods in the least invasive way possible.
  */
-public class StandardContentEditor extends ContentEditor {
+public class FileBackedContentEditor extends ContentEditor {
+    private RandomAccessFile backingFile;
     private final List<Line> rawLines = new ArrayList<>();
-    public StandardContentEditor(JPC_Connector con) {
+    public FileBackedContentEditor(JPC_Connector con) {
         super(con);
 
         rawLines.add(new Line(""));
@@ -26,6 +30,20 @@ public class StandardContentEditor extends ContentEditor {
                 jpc_connector.repaint();
             }
         });
+    }
+
+
+    public void setFile(File f) throws FileNotFoundException {
+        if(f==null)
+            backingFile = null;
+        else
+            backingFile = new RandomAccessFile(f, "rw");
+    }
+    @Override public LinePart getHint() {
+        if(backingFile!=null)
+            return super.getHint();
+        else
+            return new LinePart("<NO FILE SELECTED>");
     }
 
     @Override public int getMaxLineCount() {

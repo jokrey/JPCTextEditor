@@ -320,7 +320,7 @@ public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Conne
         int[] visibleLines = new int[(getLastVisibleLine()-getFirstVisibleLine())+1];
         for(int i=0;i<visibleLines.length;i++)
             visibleLines[i]=getFirstVisibleLine()+i;
-        return content.getTextFromLines(visibleLines);
+        return content.getTextInLines(visibleLines);
     }
     public int getFirstVisibleLine() {
         return getLineToPoint(new Point(0, -getY()))+1;//don't know why +1, occurred while testing..

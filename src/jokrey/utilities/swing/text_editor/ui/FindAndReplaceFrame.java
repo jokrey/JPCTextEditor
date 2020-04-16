@@ -68,7 +68,7 @@ public class FindAndReplaceFrame {
         });
         JButton countAB = new JButton("Count");
         countAB.addActionListener(ae ->
-                JOptionPane.showMessageDialog(countAB, count(find_editor.getText()) + "")
+                JOptionPane.showMessageDialog(countAB, content.count(find_editor.getText()) + "")
         );
         JButton replaceFindAB = new JButton("Replace+Find");
         replaceFindAB.addActionListener(ae -> {
@@ -126,9 +126,4 @@ public class FindAndReplaceFrame {
         replace_editor.setForeground(editor.getForeground());
         frame.setVisible(true);
 	}
-
-    public int count(String toFind) {
-        if(toFind.isEmpty())return 0; // to avoid / 0
-        return (content.getText().length() - content.getText().replaceAll(toFind, "").length()) / toFind.length();
-    }
 }

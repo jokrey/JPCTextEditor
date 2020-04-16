@@ -1,9 +1,7 @@
 package jokrey.utilities.swing.text_editor.example;
 
-import jokrey.utilities.swing.text_editor.text_storage.lineparteffects.LPEffect_HorizontalLine;
 import jokrey.utilities.swing.text_editor.text_storage.lineparteffects.LPEffect_UnderlineLine;
 import jokrey.utilities.swing.text_editor.ui.JPCSimpleTextEditor;
-
 import javax.swing.*;
 import java.awt.*;
 

@@ -3,9 +3,8 @@ package jokrey.utilities.swing.text_editor.text_storage;
 import jokrey.utilities.swing.text_editor.JPC_Connector;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
+import java.io.File;
+import java.util.*;
 import java.util.List;
 
 /**
@@ -13,21 +12,9 @@ import java.util.List;
  * Handed around as reference a bunch, but only one per JPC should actually be on heap.
  */
 public abstract class ContentEditor {
-    private final List<Line> rawLines = new ArrayList<>();
     protected final JPC_Connector jpc_connector;
     public ContentEditor(JPC_Connector con) {
         jpc_connector=con;
-        rawLines.add(new Line(""));
-        addContentListener(new ContentListener() {
-            @Override public void textChanged(int firstAffectedLine, int lastAffectedLine, String text, boolean insert) {
-                while(getMaxLineCount()>0 && rawLines.size()>getMaxLineCount())
-                    rawLines.remove(rawLines.size()-1);
-                jpc_connector.recalculateSize();
-                for (int i = firstAffectedLine; i <= lastAffectedLine; i++)
-                    jpc_connector.recalculateDisplayLine(i);
-                jpc_connector.repaint();
-            }
-        });
     }
 
     private LinePartAppearance.Instantiated standard_layout = new LinePartAppearance.Instantiated(Color.black, new Font("Arial", Font.BOLD, 13));
@@ -128,64 +115,52 @@ public abstract class ContentEditor {
 
 
 
+    public abstract void clearText();
+    public String getText() {
+        StringBuilder text = new StringBuilder();
+        for(LinePart line:getTextAsLineParts())
+            text.append(line.toString());
+        return text.toString();
+    }
 
     public void setText(String text) {
         setText(new LinePart(text, null));
     }
-    public String getText() {
-        StringBuilder text = new StringBuilder();
-        for(Line line:rawLines)
-            text.append(line.toString()).append("\n");
-        return text.deleteCharAt(text.length()-1).toString();//deleting last \n...
-    }
     public void setText(LinePart... text) {
-        rawLines.clear();
+        clearText();
         List<LinePart> parts_in_current_line = new LinkedList<>();
         for(LinePart part:text) {
             if(part.txt.contains("\n")) {
                 String[] lines_in_part = part.txt.split("\n", -1);
                 parts_in_current_line.add(new LinePart(lines_in_part[0], part.layout));
-                rawLines.add(new Line(parts_in_current_line.toArray(new LinePart[0])));
+                if(getLine(0).isEmpty())
+                    setLine(0, new Line(parts_in_current_line.toArray(new LinePart[0])));
+                else
+                    addLine(new Line(parts_in_current_line.toArray(new LinePart[0])));
                 for (int i = 1; i < lines_in_part.length - 1; i++)
-                    rawLines.add(new Line(new LinePart(lines_in_part[i], part.layout)));
+                    addLine(new Line(new LinePart(lines_in_part[i], part.layout)));
                 parts_in_current_line.clear();
                 parts_in_current_line.add(new LinePart(lines_in_part[lines_in_part.length - 1], part.layout));
             } else {
                 parts_in_current_line.add(part);
             }
         }
-        rawLines.add(new Line(parts_in_current_line.toArray(new LinePart[0])));
+        addLine(new Line(parts_in_current_line.toArray(new LinePart[0])));
         fireEntireTextChanged();
     }
-    public LinePart[] getTextAsLineParts() {
-        LinkedList<LinePart> list = new LinkedList<>();
-        for(int i=0;i<rawLines.size();i++) {
-            for(int ii=0;ii<rawLines.get(i).partCount();ii++)
-                list.add(rawLines.get(i).getPart(ii));
-            if(i<rawLines.size()-1)
-                list.add(new LinePart("\n"));
-        }
-        return list.toArray(new LinePart[0]);
-    }
-    public String getTextFromLines(int... lines) {
+    public String getTextInLines(int... lineIndices) {
         StringBuilder text = new StringBuilder();
-        for(int i=0;i<lines.length;i++)
-            text.append(rawLines.get(lines[i]-1).toString()).append("\n");
+        for (int lineIndex : lineIndices) text.append(getLine(lineIndex - 1).toString()).append("\n");
         return text.toString();
     }
+    public abstract LinePart[] getTextAsLineParts();
+    public abstract String getText_with_encoded_layout();
+    public abstract void setText_with_encoded_layout(String text);
 
-    public String getText_with_encoded_layout() {
-        return LayoutStorageSystem.getStoredText(rawLines, getStandardLayout());
+    public int count(String toFind) {
+        if(toFind.isEmpty())return 0; // to avoid / 0
+        return (getText().length() - getText().replaceAll(toFind, "").length()) / toFind.length();
     }
-    public void setText_with_encoded_layout(String text) {
-        rawLines.clear();
-        rawLines.addAll(Arrays.asList(LayoutStorageSystem.restoreFrom(text, getStandardLayout())));
-        if(rawLines.isEmpty())
-            rawLines.add(new Line(getStandardLayout()));
-        fireEntireTextChanged();
-    }
-
-
 
 
 
@@ -209,55 +184,34 @@ public abstract class ContentEditor {
     }
     //Wrapper on the raw Lines list.
     //Provides semantic helpers
-    public int getLineCount() {
-        return rawLines.size();
-    }
-    public Line getLine(int line_number) {
-        return rawLines.get(line_number);
-    }
-    public String getLineText(int line_number) {
-        return rawLines.get(line_number).toString();
-    }
+    public abstract int getLineCount();
+    public abstract Line getLine(int line_number);
     public int getLineLength(int line_number) {
         if(line_number<0||line_number>=getLineCount())
             return 0;
-        return rawLines.get(line_number).length();
+        return getLine(line_number).length();
     }
-    public int getLinePixelWidth(int line_number) {
-        return getLine(line_number).getPixelWidth();
-    }
-    public int getLinePixelWidth(int line_number, int start, int end) {
-        Line line = getLine(line_number);
-        return line.getPixelWidth(start, Math.min(end, line.length()));
-    }
-    public int getLinePixelHeight(int line_number) {
-        return getLine(line_number).getPixelHeight();
+    public String getLineText(int line_number) {
+        return getLine(line_number).toString();
     }
 
     //mutating
-    public Line removeLine(int line_number) {
-        Line ret =  rawLines.remove(line_number);
-        fireTextChanged(line_number,line_number,ret.toString(),false);
-        return ret;
-    }
     public void setLineText(int i, String s, LinePartAppearance layout) {
         setLine(i, new Line(s, layout));
     }
-    public void setLine(int i, Line line) {
-        rawLines.set(i, line);
-        fireTextChanged(i,i,line.toString(),true);
-    }
-    public void addLine(int i, Line line) {
-        rawLines.add(i, line);
-        fireTextChanged(i,i,line.toString(),true);
+    public abstract Line removeLine(int line_number);
+    public abstract void setLine(int i, Line line);
+    public abstract void addLine(int i, Line line);
+    public void addLine(Line line) {
+        addLine(getLineCount(), line);
     }
 
     private LinePart hint = new LinePart("");
-    public final void setHint(LinePart hint) {
+    public void setHint(LinePart hint) {
         if(hint!=null)
             this.hint=hint;
     }
-    public final LinePart getHint() {return hint;}
+    public LinePart getHint() {return hint;}
 
     public void validateCursorVisibility() {
         jpc_connector.validateCursorVisibility();
