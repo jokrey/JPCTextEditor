@@ -66,7 +66,7 @@ public class LayoutStorageSystem {
                     Font font = font_name == null ? null : new Font(font_name, ase_layout.getEntryT("font_style", Font.BOLD), ase_layout.getEntryT("font_size", 12));
 
                     //todo - correctly handle effects....
-                    lps_restored[lp_i] = new DecoratedLinePart(ase_linepart.getEntry("txt"), new LinePartAppearance.UnInstantiated(fg, font, new LinePartEffects(new LPEffect_Fill(bg)), null));
+                    lps_restored[lp_i] = new DecoratedLinePart(ase_linepart.getEntry("txt"), new LinePartAppearance.UnInstantiated(fg, font, new LinePartEffects(new LPEffect_Fill(bg)), new LinePartEffects()));
                 } else {
                     lps_restored[lp_i] = new DecoratedLinePart(ase_linepart.getEntry("txt"), fallback);
                 }

@@ -83,7 +83,7 @@ public abstract class ContentEditor {
 
 
 
-    private ArrayList<ContentListener> listeners = new ArrayList<>();
+    private final ArrayList<ContentListener> listeners = new ArrayList<>();
     public void addContentListener(ContentListener contentListener) {
         listeners.add(contentListener);
     }
@@ -118,7 +118,7 @@ public abstract class ContentEditor {
     public String getText() {
         StringBuilder text = new StringBuilder();
         for(DecoratedLinePart line:getTextAsLineParts())
-            text.append(line.toString());
+            text.append(line.txt);
         return text.toString();
     }
 
