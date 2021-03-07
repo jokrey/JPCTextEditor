@@ -46,11 +46,11 @@ public class UserCursor extends TextDisplayCursor {
         content.validateCursorVisibility();
     }
 
-	@Override public void setXY(int... xy) {
+	@Override public void setXY(int x, int y) {
 		int[] old = getXY();
-		super.setXY(xy);
+		super.setXY(x, y);
 		if(getX()!=old[0] || getY()!=old[1])
-    		content.fireUserCursorPosChanged(xy[0], xy[1]);
+    		content.fireUserCursorPosChanged(x, y);
 	}
 
 	public void draw(Graphics2D g, int text_spacing_left, int width, int text_spacing_top, boolean drawSelection, boolean drawCursor) {

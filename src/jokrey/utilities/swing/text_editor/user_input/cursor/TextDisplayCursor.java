@@ -170,29 +170,23 @@ public class TextDisplayCursor {
         setXY(getX(), getY()+hm);
     }
 
+    public void setXY(int[] newXY) {
+	    setXY(newXY[0], newXY[1]);
+    }
     /**
      * sets x and y and checks if the are valid, validating them to the next best fit if they are not.
      * Array is required to have 2 cells. More won't be a problem, but will be disregarded
      */
-	public void setXY(int... newXY) {
-        int nx = newXY[0];
-		int ny = newXY[1];
-
-        if(ny<0) {
+	public void setXY(int newX, int newY) {
+        if(newY < 0) {
             y=0;
             x=0;
-        } else if (ny>content.getLineCount()-1) {
+        } else if (newY > content.getLineCount()-1) {
             y= content.getLineCount()-1;
             x= content.getLineLength(y);
         } else {
-            y=ny;
-            if(nx>content.getLineLength(y)) {
-                x= content.getLineLength(y);
-            } else if(nx<0) {
-                x=0;
-            } else {
-                x=nx;
-            }
+            y = newY;
+            x = Math.max(0, Math.min(content.getLineLength(y), newX));
         }
 	}
     public void setX(int x) {
@@ -200,6 +194,9 @@ public class TextDisplayCursor {
     }
     public void setY(int y) {
         setXY(x, y);
+    }
+    public void resetToClosestValid() {
+	    setXY(getXY());
     }
 
     /**

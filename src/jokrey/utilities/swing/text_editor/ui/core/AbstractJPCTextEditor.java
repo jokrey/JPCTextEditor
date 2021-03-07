@@ -118,11 +118,13 @@ public abstract class AbstractJPCTextEditor extends JPanel implements JPC_Connec
         content.setText(text);
         input_receiver.reset_step_manager();
         input_receiver.cursor.selection.clear();
+        input_receiver.cursor.resetToClosestValid();
     }
     public void setText(DecoratedLinePart[] text) {
         content.setText(text);
         input_receiver.reset_step_manager();
         input_receiver.cursor.selection.clear();
+        input_receiver.cursor.resetToClosestValid();
     }
     public String getText() {
         return content.getText();
@@ -137,6 +139,7 @@ public abstract class AbstractJPCTextEditor extends JPanel implements JPC_Connec
         content.setText_with_encoded_layout(text);
         input_receiver.reset_step_manager();
         input_receiver.cursor.selection.clear();
+        input_receiver.cursor.resetToClosestValid();
     }
 
     public final void setHint(DecoratedLinePart hint) {
