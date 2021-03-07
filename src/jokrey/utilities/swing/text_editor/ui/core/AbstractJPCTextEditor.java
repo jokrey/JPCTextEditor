@@ -46,7 +46,7 @@ import java.awt.event.ComponentEvent;
  *      i.e. allow working directly from disk memory and not ram. Probably "just" means writing a new ContentEditor that works on a RandomAccessFile...
  * TODO: Add even more keyboard shortcuts to allow vim like workflow
  */
-public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Connector, JPCTextEditor {
+public abstract class AbstractJPCTextEditor extends JPanel implements JPC_Connector, JPCTextEditor {
     public final ContentEditor content = createContentEditor(this);
     protected final UserInputHandler input_receiver = createUserInputHandler(content);
     public UserInputHandler getInputHandler() {
@@ -54,7 +54,7 @@ public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Conne
     }
 
     //Outside referenced UI Components....
-    public Abstract_JPCTextEditor() {
+    public AbstractJPCTextEditor() {
         setLayout(new BorderLayout());
 //        setForeground(Color.BLACK);
 //        setFont();

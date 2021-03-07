@@ -4,7 +4,7 @@ import jokrey.utilities.swing.text_editor.JPC_Connector;
 import jokrey.utilities.swing.text_editor.text_storage.ContentEditor;
 import jokrey.utilities.swing.text_editor.text_storage.DecoratedLinePart;
 import jokrey.utilities.swing.text_editor.text_storage.StandardContentEditor;
-import jokrey.utilities.swing.text_editor.ui.core.Abstract_JPCTextEditor;
+import jokrey.utilities.swing.text_editor.ui.core.AbstractJPCTextEditor;
 import jokrey.utilities.swing.text_editor.user_input.UserInputHandler;
 
 import java.awt.*;
@@ -14,7 +14,7 @@ import java.net.MalformedURLException;
 /**
  * "Removes" the standard layouting option in ContentEditor and allows access to the user cursors layouting.
  */
-public class JPCLayoutedTextEditor extends Abstract_JPCTextEditor {
+public class JPCLayoutedTextEditor extends AbstractJPCTextEditor {
     public JPCLayoutedTextEditor() {
         input_receiver.cursor.setInsertLayout(content.getStandardLayout());
     }

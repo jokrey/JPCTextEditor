@@ -8,8 +8,8 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 public class JPC_Scroller extends JScrollPane {
-    private Abstract_JPCTextEditor jpc_editor;
-    public JPC_Scroller(Abstract_JPCTextEditor jpc_editor) {
+    private final AbstractJPCTextEditor jpc_editor;
+    public JPC_Scroller(AbstractJPCTextEditor jpc_editor) {
         this.jpc_editor = jpc_editor;
         UIManager.getDefaults().put("ScrollPane.ancestorInputMap",
                 new UIDefaults.LazyInputMap(new Object[] {}));  //removes arrow key scrolling
