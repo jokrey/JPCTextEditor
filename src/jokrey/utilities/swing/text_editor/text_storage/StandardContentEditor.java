@@ -109,4 +109,34 @@ public class StandardContentEditor extends ContentEditor {
         rawLines.set(lineNr, newLine);
         fireTextChanged(lineNr, lineNr, newLine.toString(),true);
     }
+
+    @Override public void setText(DecoratedLinePart... text) {
+        rawLines.clear();
+        if(text.length == 0) {
+            rawLines.add(new Line(""));
+        } else {
+            List<DecoratedLinePart> parts_in_current_line = new LinkedList<>();
+            for (DecoratedLinePart part : text) {
+                if (part.txt.contains("\n")) {
+                    String[] lines_in_part = part.txt.split("\n", -1);
+
+                    //add before \n to current line
+                    parts_in_current_line.add(new DecoratedLinePart(lines_in_part[0], part.layout));
+                    rawLines.add(new Line(parts_in_current_line.toArray(new DecoratedLinePart[0])));
+                    parts_in_current_line.clear();
+
+                    //add everything between '\n's as new lines
+                    for (int i = 1; i < lines_in_part.length - 1; i++)
+                        rawLines.add(new Line(new DecoratedLinePart(lines_in_part[i], part.layout)));
+
+                    //add everything after last \n to parts_in_current_line
+                    parts_in_current_line.add(new DecoratedLinePart(lines_in_part[lines_in_part.length - 1], part.layout));
+                } else {
+                    parts_in_current_line.add(part);
+                }
+            }
+            rawLines.add(new Line(parts_in_current_line.toArray(new DecoratedLinePart[0])));
+        }
+        fireEntireTextChanged();
+    }
 }

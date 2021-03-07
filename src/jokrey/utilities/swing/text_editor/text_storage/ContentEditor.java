@@ -125,31 +125,7 @@ public abstract class ContentEditor {
     public void setText(String text) {
         setText(new DecoratedLinePart(text, null));
     }
-    public void setText(DecoratedLinePart... text) {
-        clearText();
-        List<DecoratedLinePart> parts_in_current_line = new LinkedList<>();
-        for(DecoratedLinePart part:text) {
-            if(part.txt.contains("\n")) {
-                String[] lines_in_part = part.txt.split("\n", -1);
-                parts_in_current_line.add(new DecoratedLinePart(lines_in_part[0], part.layout));
-                if(getLine(0).isEmpty())
-                    setLine(0, new Line(parts_in_current_line.toArray(new DecoratedLinePart[0])));
-                else
-                    addLine(new Line(parts_in_current_line.toArray(new DecoratedLinePart[0])));
-                for (int i = 1; i < lines_in_part.length - 1; i++)
-                    addLine(new Line(new DecoratedLinePart(lines_in_part[i], part.layout)));
-                parts_in_current_line.clear();
-                parts_in_current_line.add(new DecoratedLinePart(lines_in_part[lines_in_part.length - 1], part.layout));
-            } else {
-                parts_in_current_line.add(part);
-            }
-        }
-        if(getLine(getLineCount()-1).isEmpty())
-            setLine(getLineCount()-1, new Line(parts_in_current_line.toArray(new DecoratedLinePart[0])));
-        else
-            addLine(new Line(parts_in_current_line.toArray(new DecoratedLinePart[0])));
-        fireEntireTextChanged();
-    }
+    public abstract void setText(DecoratedLinePart... text);
     public String getTextInLines(int... lineIndices) {
         StringBuilder text = new StringBuilder();
         for (int lineIndex : lineIndices) text.append(getLine(lineIndex - 1).toString()).append("\n");
