@@ -13,6 +13,14 @@ public class StandardContentEditorTest {
         assertEquals("", e.getText());
         e.setText("\n");
         assertEquals("\n", e.getText());
+        e.setText("\n\n\n\n\n\n\n\n\n\n\n\n");
+        assertEquals("\n\n\n\n\n\n\n\n\n\n\n\n", e.getText());
+        e.setText("\nhallo");
+        assertEquals("\nhallo", e.getText());
+        e.setText("\nhal\nlo");
+        assertEquals("\nhal\nlo", e.getText());
+        e.setText("h\nal\nlo");
+        assertEquals("h\nal\nlo", e.getText());
     }
 
     @org.junit.Test
