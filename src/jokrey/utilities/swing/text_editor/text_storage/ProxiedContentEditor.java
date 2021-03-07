@@ -53,6 +53,9 @@ public abstract class ProxiedContentEditor extends ContentEditor {
     @Override public void setLine(int i, Line line) {
         backingContent.setLine(i, line);
     }
+    @Override public void insert(int xInLine, int lineNr, String text, LinePartAppearance insertLayout) {
+        backingContent.insert(xInLine, lineNr, text, insertLayout);
+    }
     @Override public void addLine(int i, Line line) {
         backingContent.addLine(i, line);
     }

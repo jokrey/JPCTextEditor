@@ -22,18 +22,18 @@ import java.util.Arrays;
  * Now with layouting support
  */
 public class LayoutedFindAndReplaceFrame {
-    private ContentEditor content;
-    private UserInputHandler input_handler;
+    private final ContentEditor parentContent;
+    private final UserInputHandler parentInputHandler;
 
-    private LayoutChangingPanel find_editor_headerPanel;
-    private JPCLayoutedTextEditor find_editor;
-    private JPCLayoutedTextEditor replace_editor;
+    private final LayoutChangingPanel find_editor_headerPanel;
+    private final JPCLayoutedTextEditor find_editor;
+    private final JPCLayoutedTextEditor replace_editor;
     private boolean ignore_layout() {
         return !find_editor_headerPanel.isVisible();
     }
 	public LayoutedFindAndReplaceFrame(JPC_Connector jpc, JPCTextEditor editor, ContentEditor parent_content, UserInputHandler parent_input_handler, DecoratedLinePart[] origFindWhat) {
-        this.content = parent_content;
-        this.input_handler = parent_input_handler;
+        this.parentContent = parent_content;
+        this.parentInputHandler = parent_input_handler;
 
         JFrame frame = new JFrame("Find/Replace");
 
@@ -178,7 +178,7 @@ public class LayoutedFindAndReplaceFrame {
 
         JButton findAB = new JButton("Find");
         findAB.addActionListener(ae -> {
-            if (!input_handler._user_select_next_occurrence(ignore_layout(), find_editor.getTextAsLineParts()))
+            if (!parentInputHandler._user_select_next_occurrence(ignore_layout(), find_editor.getTextAsLineParts()))
                 Toolkit.getDefaultToolkit().beep();
             jpc.repaint();
         });
@@ -188,22 +188,22 @@ public class LayoutedFindAndReplaceFrame {
         );
         JButton replaceFindAB = new JButton("Replace Sel->Find");
         replaceFindAB.addActionListener(ae -> {
-            if (!input_handler._user_replace_current_and_select_next_occurrence(ignore_layout(), find_editor.getTextAsLineParts(), replace_editor.getTextAsLineParts()))
+            if (!parentInputHandler._user_replace_current_and_select_next_occurrence(ignore_layout(), find_editor.getTextAsLineParts(), replace_editor.getTextAsLineParts()))
                 Toolkit.getDefaultToolkit().beep();
         });
         JButton replaceAllAB = new JButton("Replace All");
         replaceAllAB.addActionListener(ae -> {
             int number_of_occurrences_replaced =
-                    input_handler._user_replace_all_occurrences(ignore_layout(), find_editor.getTextAsLineParts(), replace_editor.getTextAsLineParts());
+                    parentInputHandler._user_replace_all_occurrences(ignore_layout(), find_editor.getTextAsLineParts(), replace_editor.getTextAsLineParts());
             if(number_of_occurrences_replaced==0)
                 Toolkit.getDefaultToolkit().beep();
             else
                 JOptionPane.showMessageDialog(countAB, "Replaced "+ number_of_occurrences_replaced + " occurrences");
         });
         JButton undoAB = new JButton("undo");
-        undoAB.addActionListener(ae -> input_handler._user_undo());
+        undoAB.addActionListener(ae -> parentInputHandler._user_undo());
         JButton redoAB = new JButton("redo");
-        redoAB.addActionListener(ae -> input_handler._user_redo());
+        redoAB.addActionListener(ae -> parentInputHandler._user_redo());
 
         button_side_panel.add(findAB, cons);
         button_side_panel.add(replaceFindAB, cons);
@@ -245,13 +245,13 @@ public class LayoutedFindAndReplaceFrame {
         if(ignore_layout()) {
             String find_as_str = DecoratedLinePart.toString(find);
             if (find_as_str.isEmpty()) return 0; // to avoid / 0
-            return (content.getText().length() - content.getText().replaceAll(find_as_str, "").length()) / find_as_str.length();
+            return (parentContent.getText().length() - parentContent.getText().replaceAll(find_as_str, "").length()) / find_as_str.length();
         } else {
             int counter = 0;
-            TextInterval virtual_interval = new TextInterval(content);
+            TextInterval virtual_interval = new TextInterval(parentContent);
             String find_as_str = DecoratedLinePart.toString(find);
             int find_index = -1;
-            while((find_index = content.getText().indexOf(find_as_str, find_index+1)) != -1) {
+            while((find_index = parentContent.getText().indexOf(find_as_str, find_index+1)) != -1) {
                 virtual_interval.setFromDistance(find_index, find_index+find_as_str.length());
                 if(Arrays.equals(virtual_interval.getIntervalSequences(), find)) {
                     counter++;

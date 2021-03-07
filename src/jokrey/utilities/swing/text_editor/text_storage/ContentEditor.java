@@ -144,7 +144,10 @@ public abstract class ContentEditor {
                 parts_in_current_line.add(part);
             }
         }
-        addLine(new Line(parts_in_current_line.toArray(new DecoratedLinePart[0])));
+        if(getLine(getLineCount()-1).isEmpty())
+            setLine(getLineCount()-1, new Line(parts_in_current_line.toArray(new DecoratedLinePart[0])));
+        else
+            addLine(new Line(parts_in_current_line.toArray(new DecoratedLinePart[0])));
         fireEntireTextChanged();
     }
     public String getTextInLines(int... lineIndices) {
@@ -201,6 +204,7 @@ public abstract class ContentEditor {
     public abstract Line removeLine(int line_number);
     public abstract void setLine(int i, Line line);
     public abstract void addLine(int i, Line line);
+    public abstract void insert(int xInLine, int lineNr, String text, LinePartAppearance insertLayout);
     public void addLine(Line line) {
         addLine(getLineCount(), line);
     }
@@ -215,5 +219,6 @@ public abstract class ContentEditor {
     public void validateCursorVisibility() {
         jpc_connector.validateCursorVisibility();
     }
+
 }
 

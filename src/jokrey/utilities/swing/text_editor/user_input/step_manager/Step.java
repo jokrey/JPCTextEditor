@@ -6,7 +6,7 @@ import jokrey.utilities.swing.text_editor.user_input.UserCursor;
 /**
  * Immutable.
  */
-public abstract class Step {
+public abstract class Step implements Stepable {
 	public final DecoratedLinePart altered;
     public final int alteredAt_distanceFrom00;
 	public Step(DecoratedLinePart altered, int alteredAt_distanceFrom00) {
@@ -16,7 +16,5 @@ public abstract class Step {
 	@Override public String toString() {
 		return getClass().getSimpleName()+"[at:"+alteredAt_distanceFrom00+"-"+altered.txt+"]";
 	}
-
-	public abstract void redo(UserCursor cursor);
-	public abstract void undo(UserCursor cursor);
 }
+

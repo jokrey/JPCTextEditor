@@ -105,7 +105,7 @@ public class UserCursor extends TextDisplayCursor {
 			} else {
 				String cleanStr = str.replaceAll("[^\\P{Cc}\t]", "");// \\p{C}
 
-				content.setLine(getY(), content.getLine(getY()).insert(getX(), cleanStr, layoutForInsert));
+				content.insert(getX(), getY(), cleanStr, layoutForInsert);
 				x_plus(cleanStr.length());
 			}
 		}

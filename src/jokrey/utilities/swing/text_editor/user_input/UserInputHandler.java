@@ -5,8 +5,7 @@ import jokrey.utilities.swing.text_editor.text_storage.Line;
 import jokrey.utilities.swing.text_editor.text_storage.DecoratedLinePart;
 import jokrey.utilities.swing.text_editor.text_storage.LinePartAppearance;
 import jokrey.utilities.swing.text_editor.user_input.cursor.TextInterval;
-import jokrey.utilities.swing.text_editor.user_input.step_manager.Step;
-import jokrey.utilities.swing.text_editor.user_input.step_manager.StepManager;
+import jokrey.utilities.swing.text_editor.user_input.step_manager.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -49,7 +48,8 @@ public class UserInputHandler {
         else if(direction > 0)  removed=cursor.delete();
         else                    removed=cursor.removeSelectedInterval();
 
-        step_manager.userPerformedOperation_remove(removed, cursor);
+        step_manager.deletion(removed, cursor);
+        fireDeleted(DecoratedLinePart.toString(removed), cursor.getDistanceFrom00());
 
         cursor.validateCursorVisibility();
 
@@ -67,15 +67,19 @@ public class UserInputHandler {
         if(!cursor.selection.isClear()) {
             DecoratedLinePart[] removed = cursor.removeSelectedInterval();
 
-            step_manager.userPerformedOperation_replace(removed, cursor.getDistanceFrom00(), insertData);
+            addReplaceMultiStep(removed, cursor.getDistanceFrom00(), insertData);
 
             for (DecoratedLinePart lp : insertData)
                 cursor.insert(lp.txt, lp.layout);
         } else {
-            step_manager.userPerformedOperation_insert(cursor, insertData);
+            step_manager.insertion(cursor, insertData);
+
+            int preCursorPos = cursor.getDistanceFrom00();
 
             for (DecoratedLinePart lp : insertData)
                 cursor.insert(lp.txt, lp.layout);
+
+            fireInserted(DecoratedLinePart.toString(insertData), preCursorPos);
         }
         cursor.validateCursorVisibility();
     }
@@ -155,7 +159,7 @@ public class UserInputHandler {
                 Line finished_line = line_with_removed_word_leading_char.insert(word_begin_index, case_changed_word_leading_char);
                 cursor.getContentEditor().setLine(cursor.getY(), finished_line);
 
-                step_manager.userPerformedOperation_replace(new DecoratedLinePart[]{word_leading_char}, cursor.getContentEditor().getDistanceFrom00(word_begin_index, cursor.getY()), new DecoratedLinePart[]{case_changed_word_leading_char});
+                addReplaceMultiStep(new DecoratedLinePart[]{word_leading_char}, cursor.getContentEditor().getDistanceFrom00(word_begin_index, cursor.getY()), new DecoratedLinePart[]{case_changed_word_leading_char});
             }
         }
     }
@@ -170,14 +174,23 @@ public class UserInputHandler {
             String interval_text = cursor.getSelection().getIntervalText();
             cursor.getSelection().removeIntervalText(cursor);
             DecoratedLinePart replacement_part = new DecoratedLinePart(interval_text, new_layout);
-            step_manager.userPerformedOperation_replace(selected_interval, cursor.getDistanceFrom00(), new DecoratedLinePart[]{replacement_part});
+
+            int preCursorPos = cursor.getDistanceFrom00();
+
             cursor.insert(replacement_part.txt, replacement_part.layout);
             cursor.getSelection().setFromXYs(previous_selection_1, previous_selection_2);
+
+            addReplaceMultiStep(selected_interval, preCursorPos, new DecoratedLinePart[]{replacement_part});
         }
     }
 
-
-
+    private void addReplaceMultiStep(DecoratedLinePart[] deleted, int at, DecoratedLinePart[] inserted) {
+        Stepable deletion = StepManager.getStepDeletion(at, deleted);
+        Stepable insert = StepManager.getStepInsert(at, inserted);
+        step_manager.multiStep(deletion, insert);
+        fireDeleted(DecoratedLinePart.toString(deleted), at);
+        fireInserted(DecoratedLinePart.toString(inserted), at);
+    }
 
 
     public boolean _user_select_next_occurrence(boolean ignoreLayout, DecoratedLinePart[] find) {
@@ -197,7 +210,7 @@ public class UserInputHandler {
         return _user_select_next_occurrence(ignoreLayout, find);
     }
     public int _user_replace_all_occurrences(boolean ignoreLayout, DecoratedLinePart[] find, DecoratedLinePart[] replace) {
-        LinkedList<Step> steps = new LinkedList<>();
+        LinkedList<Stepable> steps = new LinkedList<>();
         int counter = 0;
         boolean replace_with_nothing = DecoratedLinePart.toString(replace).isEmpty();
         cursor.clearSelection();
@@ -206,19 +219,24 @@ public class UserInputHandler {
         while(_user_select_next_occurrence(ignoreLayout, find) && last_cursor_pos < cursor.getDistanceFrom00()) {
             DecoratedLinePart[] removed = cursor.removeSelectedInterval();
 
-            steps.add(StepManager.getStepDeletion(cursor.getDistanceFrom00(), removed));
-            if(!replace_with_nothing)
-                steps.add(StepManager.getStepInsert(cursor.getDistanceFrom00(), replace));
+            int preCursorPos = cursor.getDistanceFrom00();
 
             for (DecoratedLinePart lp : replace)
                 cursor.insert(lp.txt, lp.layout);
+
+            steps.add(StepManager.getStepDeletion(preCursorPos, removed));
+            fireDeleted(DecoratedLinePart.toString(removed), preCursorPos);
+            if(!replace_with_nothing) {
+                steps.add(StepManager.getStepInsert(preCursorPos, replace));
+                fireInserted(DecoratedLinePart.toString(replace), preCursorPos);
+            }
 
             counter++;
             last_cursor_pos = cursor.getDistanceFrom00();
         }
         cursor.clearSelection();
         cursor.setFromDistance(0);
-        step_manager.userPerformedOperation_custom(steps.toArray(new Step[0]));
+        step_manager.multiStep(steps.toArray(new Stepable[0]));
         return counter;
     }
 
@@ -276,5 +294,16 @@ public class UserInputHandler {
             if(!other.equals(arg0))
                 return other;
         return null;
+    }
+
+    private final LinkedList<UserInputListener> listeners = new LinkedList<>();
+    public void addListener(UserInputListener l) { listeners.add(l); }
+    public void removeListener(UserInputListener l) { listeners.remove(l); }
+    public void fireInserted(String text, int at) {listeners.forEach(l -> l.inserted(text, at));}
+    public void fireDeleted(String text, int at) {listeners.forEach(l -> l.deleted(text, at));}
+
+    public interface UserInputListener {
+        void inserted(String text, int at);
+        void deleted(String text, int at);
     }
 }

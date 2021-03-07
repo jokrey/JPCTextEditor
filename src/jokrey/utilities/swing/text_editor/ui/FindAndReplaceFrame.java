@@ -14,14 +14,14 @@ import java.awt.*;
  * Adds the functionality of finding and replacing simple text in a text editor.
  */
 public class FindAndReplaceFrame {
-    private ContentEditor content;
-    private UserInputHandler input_handler;
+    private final ContentEditor parentContent;
+    private final UserInputHandler parentInputHandler;
 
-    private JPCSimpleTextEditor find_editor;
-    private JPCSimpleTextEditor replace_editor;
+    private final JPCSimpleTextEditor find_editor;
+    private final JPCSimpleTextEditor replace_editor;
 	public FindAndReplaceFrame(JPC_Connector jpc, JPCTextEditor editor, ContentEditor parent_content, UserInputHandler parent_input_handler, String orig_find) {
-	    this.content=parent_content;
-	    this.input_handler=parent_input_handler;
+	    this.parentContent =parent_content;
+	    this.parentInputHandler =parent_input_handler;
 
 		JFrame frame = new JFrame("Find/Replace");
 
@@ -62,23 +62,23 @@ public class FindAndReplaceFrame {
 
         JButton findAB = new JButton("Find");
         findAB.addActionListener(ae -> {
-            if (!input_handler._user_select_next_occurrence(true, find_editor.getTextAsLineParts()))
+            if (!parentInputHandler._user_select_next_occurrence(true, find_editor.getTextAsLineParts()))
                 Toolkit.getDefaultToolkit().beep();
             jpc.repaint();
         });
         JButton countAB = new JButton("Count");
         countAB.addActionListener(ae ->
-                JOptionPane.showMessageDialog(countAB, content.count(find_editor.getText()) + "")
+                JOptionPane.showMessageDialog(countAB, parentContent.count(find_editor.getText()) + "")
         );
         JButton replaceFindAB = new JButton("Replace+Find");
         replaceFindAB.addActionListener(ae -> {
-            if (!input_handler._user_replace_current_and_select_next_occurrence(true, find_editor.getTextAsLineParts(), replace_editor.getTextAsLineParts()))
+            if (!parentInputHandler._user_replace_current_and_select_next_occurrence(true, find_editor.getTextAsLineParts(), replace_editor.getTextAsLineParts()))
                 Toolkit.getDefaultToolkit().beep();
         });
         JButton replaceAllAB = new JButton("Replace All");
         replaceAllAB.addActionListener(ae -> {
             int number_of_occurrences_replaced =
-                    input_handler._user_replace_all_occurrences(true, find_editor.getTextAsLineParts(), replace_editor.getTextAsLineParts());
+                    parentInputHandler._user_replace_all_occurrences(true, find_editor.getTextAsLineParts(), replace_editor.getTextAsLineParts());
             if(number_of_occurrences_replaced==0)
                 Toolkit.getDefaultToolkit().beep();
             else
@@ -86,11 +86,11 @@ public class FindAndReplaceFrame {
         });
         JButton undoAB = new JButton("undo");
         undoAB.addActionListener(ae -> {
-            input_handler._user_undo();
+            parentInputHandler._user_undo();
         });
         JButton redoAB = new JButton("redo");
         redoAB.addActionListener(ae -> {
-            input_handler._user_redo();
+            parentInputHandler._user_redo();
         });
 
         button_side_panel.add(findAB, cons);

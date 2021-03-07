@@ -20,9 +20,9 @@ public class StepManager {
 		curPosInSteps=0;
 	}
 
-	private final LinkedList<Step> steps = new LinkedList<>();
+	private final LinkedList<Stepable> steps = new LinkedList<>();
 	private int curPosInSteps = 0;
-	private void addStep(Step step) {
+	private Stepable addStep(Stepable step) {
 		if(curPosInSteps<0)steps.clear();
 		else if(!steps.isEmpty()) {
 			for(int i=curPosInSteps;i<steps.size();i++) {
@@ -34,38 +34,10 @@ public class StepManager {
 			}
 		}
 
-		if(step.altered!=null && (step.altered.length()>1 || Pattern.compile("[^a-zA-Z0-9'üöäß_-]").matcher(step.altered.txt).find())) {
-			//Joining steps to words:
-			for(int i=steps.size()-1;i>=1;i--) {//breaks at position 1. So there always is a i-1 in steps....
-				Step stepAt_i = steps.get(i);
-				Step stepAt_i_minus1 = steps.get(i-1);
-				if(stepAt_i.altered==null || Pattern.compile("[^a-zA-Z0-9'üöäß_-]").matcher(stepAt_i.altered.txt).find() ||
-						(stepAt_i_minus1.altered != null && !stepAt_i_minus1.altered.txt.equals(" ") && Pattern.compile("[^a-zA-Z0-9'üöäß_-]").matcher(stepAt_i_minus1.altered.txt).find())) {//The Step minus 1 allows a space.
-					break;//at this point any previous Steps have already been handled
-				} else if(stepAt_i_minus1.altered != null) {
-					if(stepAt_i.getClass().equals(stepAt_i_minus1.getClass()) &&
-							stepAt_i.altered.sameLayoutAs(stepAt_i_minus1.altered) &&
-							stepAt_i_minus1.alteredAt_distanceFrom00+stepAt_i_minus1.altered.length() == stepAt_i.alteredAt_distanceFrom00) {
-//						if they are of the same class and occur directly after one another....
-						try {
-							Step newJoinedStep =
-									stepAt_i.getClass().getDeclaredConstructor(DecoratedLinePart.class, int.class)
-									.newInstance(
-										new DecoratedLinePart(stepAt_i_minus1.altered.txt+stepAt_i.altered.txt, stepAt_i.altered.layout),
-										stepAt_i_minus1.alteredAt_distanceFrom00
-									);
-							steps.set(i-1, newJoinedStep);
-							steps.remove(i);
-//							curPosInSteps--;//not neccassary
-						} catch (InstantiationException
-								| IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-							e.printStackTrace();
-							break;
-						}
-					} else {
-						break;
-					}
-				}
+		if(step instanceof Step) {
+			Step combinableStep = (Step) step;
+			if((combinableStep.altered.length()>1 || Pattern.compile("[^a-zA-Z0-9'üöäß_-]").matcher(combinableStep.altered.txt).find())) {
+				squashSteps();
 			}
 		}
 
@@ -73,7 +45,10 @@ public class StepManager {
 			steps.removeFirst();
 		steps.addLast(step);
 		curPosInSteps = steps.size();
+
+		return step;
 	}
+
 	public void redo(UserCursor cursor) {
 		if(curPosInSteps<steps.size()) {
 			steps.get(curPosInSteps++).redo(cursor);
@@ -88,7 +63,7 @@ public class StepManager {
 
 
 
-	public static Step getStepDeletion(int cursor_distance_from_00, DecoratedLinePart[] removed) {
+	public static Stepable getStepDeletion(int cursor_distance_from_00, DecoratedLinePart[] removed) {
 		if(removed.length!=0) {
 			DeletionStep[] del_steps = new DeletionStep[removed.length];
 			int elapsedChars = 0;
@@ -100,13 +75,13 @@ public class StepManager {
 			if(removed.length==1) {
 				return (del_steps[0]);
 			} else {
-				return (new MultiStep(del_steps));
+				return new MultiStep(del_steps);
 			}
 		} else {
             return null;
 		}
 	}
-	public static Step getStepInsert(int cursor_distance_from_00, DecoratedLinePart[] toInsert) {
+	public static Stepable getStepInsert(int cursor_distance_from_00, DecoratedLinePart[] toInsert) {
         ArrayList<InsertionStep> ins_steps = new ArrayList<>();
         for (DecoratedLinePart aToInsert : toInsert) {
             ins_steps.add(new InsertionStep(aToInsert, cursor_distance_from_00));
@@ -119,33 +94,65 @@ public class StepManager {
         }
     }
 
-	public void userPerformedOperation_remove(DecoratedLinePart[] removed, UserCursor cursor) {
-	    Step deletion = getStepDeletion(cursor.getDistanceFrom00(), removed);
+	public Stepable deletion(DecoratedLinePart[] removed, UserCursor cursor) {
+		Stepable deletion = getStepDeletion(cursor.getDistanceFrom00(), removed);
 	    if(deletion!=null)
-	        addStep(deletion);
+	        return addStep(deletion);
+		return null;
 	}
-	public void userPerformedOperation_insert(UserCursor cursor, DecoratedLinePart[] toInsert) {
-        Step insert = getStepInsert(cursor.getDistanceFrom00(), toInsert);
+	public Stepable insertion(UserCursor cursor, DecoratedLinePart[] toInsert) {
+		Stepable insert = getStepInsert(cursor.getDistanceFrom00(), toInsert);
         if(insert!=null)
-            addStep(insert);
+            return addStep(insert);
+        return null;
 	}
-	public void userPerformedOperation_replace(DecoratedLinePart[] removed, int cursor_distance_from_00, DecoratedLinePart[] toInsert) {
-        Step deletion = getStepDeletion(cursor_distance_from_00, removed);
-        Step insert = getStepInsert(cursor_distance_from_00, toInsert);
-        if(deletion!=null && insert!=null) {
-            addStep(new MultiStep(deletion, insert));
-        } else if(deletion!=null) {
-            addStep(deletion);
-        } else if(insert!=null) {
-            addStep(insert);
-        }
-	}
-	public void userPerformedOperation_custom(Step... steps) {
-		addStep(new MultiStep(steps));
+	public Stepable multiStep(Stepable... steps) {
+		return addStep(new MultiStep(steps));
 	}
 
 
 
+
+	private void squashSteps() {
+		//Joining steps to words:
+		for (int i = steps.size() - 1; i >= 1; i--) {//breaks at position 1. So there always is a i-1 in steps....
+			Stepable stepAt_i = steps.get(i);
+			Step combinableStepAtI = null;
+			if(stepAt_i instanceof Step)
+				combinableStepAtI = (Step) stepAt_i;
+			Stepable stepAt_i_minus1 = steps.get(i - 1);
+			Step combinableStepAt_i_minus1 = null;
+			if(stepAt_i_minus1 instanceof Step)
+				combinableStepAt_i_minus1 = (Step) stepAt_i_minus1;
+			if (combinableStepAtI == null || Pattern.compile("[^a-zA-Z0-9'üöäß_-]").matcher(combinableStepAtI.altered.txt).find() ||
+					(combinableStepAt_i_minus1 != null && !combinableStepAt_i_minus1.altered.txt.equals(" ") && Pattern.compile("[^a-zA-Z0-9'üöäß_-]").matcher(combinableStepAt_i_minus1.altered.txt).find())) {//The Step minus 1 allows a space.
+				break;//at this point any previous Steps have already been handled
+			} else if (combinableStepAt_i_minus1 != null) {
+				if (stepAt_i.getClass().equals(stepAt_i_minus1.getClass()) &&
+						combinableStepAtI.altered.sameLayoutAs(combinableStepAt_i_minus1.altered) &&
+						combinableStepAt_i_minus1.alteredAt_distanceFrom00 + combinableStepAt_i_minus1.altered.length() == combinableStepAtI.alteredAt_distanceFrom00) {
+//						if they are of the same class and occur directly after one another....
+					try {
+						Step newJoinedStep =
+								combinableStepAtI.getClass().getDeclaredConstructor(DecoratedLinePart.class, int.class)
+										.newInstance(
+												new DecoratedLinePart(combinableStepAt_i_minus1.altered.txt + combinableStepAtI.altered.txt, combinableStepAtI.altered.layout),
+												combinableStepAt_i_minus1.alteredAt_distanceFrom00
+										);
+						steps.set(i - 1, newJoinedStep);
+						steps.remove(i);
+//							curPosInSteps--;//not neccassary
+					} catch (InstantiationException
+							| IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+						e.printStackTrace();
+						break;
+					}
+				} else {
+					break;
+				}
+			}
+		}
+	}
 
 	public static void reverseArray(Object[] arr) {
 		for(int i=0; i<arr.length/2; i++) {

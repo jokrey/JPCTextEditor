@@ -1,18 +1,33 @@
 package jokrey.utilities.swing.text_editor.user_input.step_manager;
 
 import jokrey.utilities.swing.text_editor.user_input.UserCursor;
+import java.lang.reflect.Array;
 
-public class MultiStep extends Step {
-	private final Step[] steps; //DO NOT CALL ALTERING OPERATIONS. Then a copy has to be obtained in constructor.
+public class MultiStep implements Stepable {
+	private final Stepable[] steps; //DO NOT CALL ALTERING OPERATIONS. Then a copy has to be obtained in constructor.
 
-	public MultiStep(Step... array) {
-		super(null, -1);
-//		steps= Arrays.copyOf(array, array.length); //not required. steps is private anyways.
-        steps=array;
+	public MultiStep(Stepable... array) {
+		steps = filterNulls(array);
+	}
+
+	private<E> E[] filterNulls(E[] array) {
+		E[] r = (E[]) Array.newInstance(array.getClass().getComponentType(), countNotNull(array));
+		for(int i=0,c=0;i<array.length;i++) {
+			E a = array[i];
+			if(a != null)
+				r[c++] = a;
+		}
+		return r;
+	}
+
+	private int countNotNull(Object[] array) {
+		int notNull = 0;
+		for(Object a : array) if(a != null) notNull++;
+		return notNull;
 	}
 
 	@Override public void redo(UserCursor cursor) {
-		for(Step step:steps) {
+		for(Stepable step:steps) {
 			step.redo(cursor);
 		}
 	}

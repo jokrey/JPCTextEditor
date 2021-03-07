@@ -47,7 +47,7 @@ import java.awt.event.ComponentEvent;
  * TODO: Add even more keyboard shortcuts to allow vim like workflow
  */
 public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Connector, JPCTextEditor {
-    protected final ContentEditor content = createContentEditor(this);
+    public final ContentEditor content = createContentEditor(this);
     protected final UserInputHandler input_receiver = createUserInputHandler(content);
     public UserInputHandler getInputHandler() {
         return input_receiver;
@@ -167,7 +167,7 @@ public abstract class Abstract_JPCTextEditor extends JPanel implements JPC_Conne
 //---------------------- PAINTING PAINTING PAINTING PAINTING PAINTING PAINTING:: -------------------------
     //the following is done ENTIRELY too safe some recalculateDisplayLines calls that would not be visible anyways...
     //if that proves to be ANY issue just replace with the commented out methods.
-    private ASAP_Queue runBeforePaintQueue = new ASAP_Queue();
+    private final ASAP_Queue runBeforePaintQueue = new ASAP_Queue();
     @Override public void recalculateDisplayLines() {
         runBeforePaintQueue.callOncePostponed(-1, content::recalculateDisplayLines);
         repaint();

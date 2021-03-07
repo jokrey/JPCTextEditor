@@ -82,16 +82,31 @@ public class StandardContentEditor extends ContentEditor {
         rawLines.add(new Line(""));
     }
     @Override public Line removeLine(int line_number) {
-        Line ret =  rawLines.remove(line_number);
-        fireTextChanged(line_number,line_number,ret.toString(),false);
-        return ret;
+        Line delLine = rawLines.remove(line_number);
+        fireTextChanged(line_number, line_number, delLine.toString(),false);
+        return delLine;
     }
+
+    private int countCharsUpUntil(int lineNr) {
+        int charCounter = 0;
+        for(int i = 0; i< lineNr -1; i++)
+            charCounter += rawLines.get(i).length();
+        return charCounter;
+    }
+
     @Override public void setLine(int i, Line line) {
-        rawLines.set(i, line);
+        Line delLine = rawLines.set(i, line);
+        fireTextChanged(i,i,delLine.toString(),false);
         fireTextChanged(i,i,line.toString(),true);
     }
     @Override public void addLine(int i, Line line) {
         rawLines.add(i, line);
         fireTextChanged(i,i,line.toString(),true);
+    }
+    @Override public void insert(int xInLine, int lineNr, String text, LinePartAppearance insertLayout) {
+        int chars = countCharsUpUntil(lineNr);
+        Line newLine = rawLines.get(lineNr).insert(xInLine, text, insertLayout);
+        rawLines.set(lineNr, newLine);
+        fireTextChanged(lineNr, lineNr, newLine.toString(),true);
     }
 }
