@@ -28,12 +28,12 @@ public class WrappingContentEditor extends ProxiedContentEditor {
     }
 
     @Override public void recalculateDisplayLine(int line) {
-        CallCountMarker.mark_call_print("recalculateDisplayLines");
+//        CallCountMarker.mark_call_print("recalculateDisplayLines");
         if (isLineWrapEnabled()) {
             if(displayLines.size()==getLineCount() && line>=0 && line<getLineCount()) {
-                    Line disp_line = getLine(line);
-                    int[] lineWraps = getAutomaticLineWrapsFor(disp_line, jpc_connector.getTextSpacingLeft(), jpc_connector.getDisplayWidth()- TextDisplayCursor.PIXEL_WIDTH);
-                    displayLines.set(line, disp_line.splitAt(lineWraps));
+                Line disp_line = getLine(line);
+                int[] lineWraps = getAutomaticLineWrapsFor(disp_line, jpc_connector.getTextSpacingLeft(), jpc_connector.getDisplayWidth()- TextDisplayCursor.PIXEL_WIDTH);
+                displayLines.set(line, disp_line.splitAt(lineWraps));
             } else {
                 displayLines = new ArrayList<>(getLineCount());
                 for (int i = 0; i < getLineCount(); i++) {

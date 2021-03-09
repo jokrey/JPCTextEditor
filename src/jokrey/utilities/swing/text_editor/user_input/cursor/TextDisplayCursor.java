@@ -196,7 +196,7 @@ public class TextDisplayCursor {
         setXY(x, y);
     }
     public void resetToClosestValid() {
-	    setXY(getXY());
+	    setXY(getX(), getY());
     }
 
     /**
