@@ -56,17 +56,13 @@ public abstract class AbstractJPCTextEditor extends JPanel implements JPC_Connec
     //Outside referenced UI Components....
     public AbstractJPCTextEditor() {
         setLayout(new BorderLayout());
-//        setForeground(Color.BLACK);
-//        setFont();
-//        setBackground(Color.WHITE);
 
         setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
 
         setFocusTraversalKeysEnabled(false);
 
-
         /*
-         * Initiates Listener. For one to recalculate lines if needed, but also a transfer handler to import stuff upon drag..
+         * Initiates Listener. For one to recalculate lines if needed, but also a transfer handler to import stuff upon drag...
          */
         RawUserInputHandler raw_input_receiver = new RawUserInputHandler(this, this, input_receiver, content);//on its own initiates its jpc_connector..
         addContextAction(ContextFunctionalityLibrary.getBasicFunctionality(this, this, input_receiver, raw_input_receiver));
@@ -280,7 +276,7 @@ public abstract class AbstractJPCTextEditor extends JPanel implements JPC_Connec
             g.setColor(getForeground());
             if (getLineCountBoxWidth() > 0)
                 g.drawLine(getLineCountBoxWidth(), 0, getLineCountBoxWidth(), getHeight());
-            input_receiver.cursor.draw(g, getTextSpacingLeft(), getWidth(), getTextSpacingTop(), true, hasFocus() && input_receiver.isEditable());
+            input_receiver.cursor.draw(g, getTextSpacingLeft(), getWidth(), getTextSpacingTop(), true, (true) && input_receiver.isEditable());
         }
 
         handlePaintedSpaceRecalculation(new Dimension (getTextSpacingLeft()+highestXDrawPos + TextDisplayCursor.PIXEL_WIDTH, yDrawPos_l));
@@ -357,8 +353,14 @@ public abstract class AbstractJPCTextEditor extends JPanel implements JPC_Connec
     @Override public void setCursorPosition(int x, int y) {
         input_receiver.cursor.setXY(x, y);
     }
-    //Layout relays.
+    @Override public void setCursorPositionFromDistance(int distance) {
+        input_receiver.cursor.setFromDistance(distance);
+    }
+    public int getCursorPositionAsDistance() {
+        return input_receiver.cursor.getDistanceFrom00();
+    }
 
+    //Layout relays.
     @Override public Color getForeground() {
         if(content==null) return super.getForeground();
         return content.getStandardLayout().fg;//not useless, if setForeground never called super.getFG maybe null.

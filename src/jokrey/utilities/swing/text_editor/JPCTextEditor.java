@@ -38,5 +38,6 @@ public interface JPCTextEditor {
     void setAllowTabs(boolean tabs);
 
     void setCursorPosition(int x, int y);
+    void setCursorPositionFromDistance(int distance);
     void addContentListener(ContentListener contentListener);
 }

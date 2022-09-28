@@ -66,11 +66,15 @@ public class UserInputHandler {
         if(insertData.length==0)return;
         if(!cursor.selection.isClear()) {
             DecoratedLinePart[] removed = cursor.removeSelectedInterval();
+            int at = cursor.getDistanceFrom00();
 
-            addReplaceMultiStep(removed, cursor.getDistanceFrom00(), insertData);
+            addReplaceMultiStep(removed, at, insertData);
 
             for (DecoratedLinePart lp : insertData)
                 cursor.insert(lp.txt, lp.layout);
+
+            fireDeleted(DecoratedLinePart.toString(removed), at);
+            fireInserted(DecoratedLinePart.toString(insertData), at);
         } else {
             step_manager.insertion(cursor, insertData);
 
@@ -159,7 +163,11 @@ public class UserInputHandler {
                 Line finished_line = line_with_removed_word_leading_char.insert(word_begin_index, case_changed_word_leading_char);
                 cursor.getContentEditor().setLine(cursor.getY(), finished_line);
 
-                addReplaceMultiStep(new DecoratedLinePart[]{word_leading_char}, cursor.getContentEditor().getDistanceFrom00(word_begin_index, cursor.getY()), new DecoratedLinePart[]{case_changed_word_leading_char});
+                int at = cursor.getContentEditor().getDistanceFrom00(word_begin_index, cursor.getY());
+                addReplaceMultiStep(new DecoratedLinePart[]{word_leading_char}, at, new DecoratedLinePart[]{case_changed_word_leading_char});
+
+                fireDeleted(orig_text_content, at);
+                fireInserted(case_changed, at);
             }
         }
     }
@@ -181,6 +189,9 @@ public class UserInputHandler {
             cursor.getSelection().setFromXYs(previous_selection_1, previous_selection_2);
 
             addReplaceMultiStep(selected_interval, preCursorPos, new DecoratedLinePart[]{replacement_part});
+
+            fireDeleted(DecoratedLinePart.toString(selected_interval), preCursorPos);
+            fireInserted(DecoratedLinePart.toString(replacement_part), preCursorPos);
         }
     }
 
@@ -188,8 +199,6 @@ public class UserInputHandler {
         Stepable deletion = StepManager.getStepDeletion(at, deleted);
         Stepable insert = StepManager.getStepInsert(at, inserted);
         step_manager.multiStep(deletion, insert);
-        fireDeleted(DecoratedLinePart.toString(deleted), at);
-        fireInserted(DecoratedLinePart.toString(inserted), at);
     }
 
 

@@ -104,7 +104,7 @@ public class StandardContentEditor extends ContentEditor {
         fireTextChanged(i,i,line.toString(),true);
     }
     @Override public void insert(int xInLine, int lineNr, String text, LinePartAppearance insertLayout) {
-        int chars = countCharsUpUntil(lineNr);
+//        int chars = countCharsUpUntil(lineNr);
         Line newLine = rawLines.get(lineNr).insert(xInLine, text, insertLayout);
         rawLines.set(lineNr, newLine);
         fireTextChanged(lineNr, lineNr, newLine.toString(),true);
