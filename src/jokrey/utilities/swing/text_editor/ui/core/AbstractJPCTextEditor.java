@@ -276,7 +276,7 @@ public abstract class AbstractJPCTextEditor extends JPanel implements JPC_Connec
             g.setColor(getForeground());
             if (getLineCountBoxWidth() > 0)
                 g.drawLine(getLineCountBoxWidth(), 0, getLineCountBoxWidth(), getHeight());
-            input_receiver.cursor.draw(g, getTextSpacingLeft(), getWidth(), getTextSpacingTop(), true, (true) && input_receiver.isEditable());
+            input_receiver.cursor.draw(g, getTextSpacingLeft(), getWidth(), getTextSpacingTop(), true, hasFocus() && input_receiver.isEditable());
         }
 
         handlePaintedSpaceRecalculation(new Dimension (getTextSpacingLeft()+highestXDrawPos + TextDisplayCursor.PIXEL_WIDTH, yDrawPos_l));
