@@ -53,7 +53,7 @@ public class Line {
             if(tovalidate.length==0)
                 return new DecoratedLinePart[]{new DecoratedLinePart("")};
             else
-                return new DecoratedLinePart[]{tovalidate[0]};//tovalidate[0] must be an empty string. Otherwise vi couldn't be 0
+                return new DecoratedLinePart[]{tovalidate[0]};//tovalidate[0] must be an empty string. Otherwise, vi couldn't be 0
         }
         DecoratedLinePart[] valid = new DecoratedLinePart[vi];
 	    System.arraycopy(valid_but_padded, 0, valid, 0, valid.length);

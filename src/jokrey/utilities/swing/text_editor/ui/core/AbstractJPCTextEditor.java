@@ -221,7 +221,7 @@ public abstract class AbstractJPCTextEditor extends JPanel implements JPC_Connec
                 linePrefix.draw(g, yDrawPos_l, g.getFontMetrics().getHeight(), input_receiver.cursor.getValidInsertLayout().fg, getLineCountBoxWidth(), true);
             }
         } else {
-            //Very important that its +-getLastFontMetrics().getHeight - Otherwise a line maybe painted to late, or just painted in half - DO NOT KNOW WHY REALLY
+            //Very important that its +-getLastFontMetrics().getHeight - Otherwise, a line maybe painted to late, or just painted in half - DO NOT KNOW WHY REALLY
             int visible_pixel_start = getVisibleRect().y;
             int visible_pixel_end = getVisibleRect().y+getVisibleRect().height;
 
